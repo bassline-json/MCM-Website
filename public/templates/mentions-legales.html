@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="../assets/images/logo/logomcm.svg">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>Mentions Légales - Ministère Catholique Miséricorde</title>
+    <style>
+        .legal-page {
+            padding-top: 140px;
+            background: var(--off-white);
+            min-height: 100vh;
+        }
+        .legal-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 3rem;
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 5rem;
+        }
+        .legal-header {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 2rem;
+        }
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+        .back-home:hover {
+            color: var(--primary-red);
+            transform: translateX(-4px);
+        }
+        .legal-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--black);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+        .legal-meta {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+        .legal-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--black);
+            margin: 2.5rem 0 1rem;
+            letter-spacing: -0.01em;
+        }
+        .legal-content p {
+            font-size: 1rem;
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        .legal-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        .legal-content li {
+            font-size: 1rem;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .legal-page {
+                padding-top: 100px;
+            }
+            .legal-container {
+                padding: 2.5rem 1.5rem;
+                margin-bottom: 3rem;
+            }
+            .legal-title {
+                font-size: 1.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content show">
+        <!-- Navigation -->
+        <header class="hero-top-bar on-light scrolled" id="heroTopBar">
+            <a href="/" class="hero-logo">
+                <img src="../assets/images/logo/logomcm.svg" alt="Logo MCM">
+                <span class="logo-text">MCM</span>
+            </a>
+            <div class="hero-slogan">
+                <span>Jésus j'ai confiance en toi</span>
+            </div>
+            <div class="hero-login-container">
+                <a href="/" class="hero-login-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour au site</span>
+                </a>
+            </div>
+        </header>
+
+        <section class="legal-page">
+            <div class="legal-container">
+                <div class="legal-header">
+                    <a href="/" class="back-home">
+                        <i class="fas fa-arrow-left"></i> Retour à l'accueil
+                    </a>
+                    <h1 class="legal-title">Mentions Légales</h1>
+                    <div class="legal-meta">Dernière mise à jour : 26 mai 2026</div>
+                </div>
+                
+                <div class="legal-content">
+                    <h2>1. Éditeur de la Plateforme</h2>
+                    <p>Le site internet et le portail de gestion du <strong>Ministère Catholique Miséricorde (MCM)</strong> sont édités et gérés par le Secrétariat Administratif du MCM Bénin.</p>
+                    <ul>
+                        <li><strong>Organisation</strong> : Ministère Catholique Miséricorde (MCM Bénin)</li>
+                        <li><strong>Statut</strong> : Association religieuse à but non lucratif</li>
+                        <li><strong>Siège Social</strong> : Abomey-Calavi, Atlantique, République du Bénin</li>
+                        <li><strong>Directeur de la Publication</strong> : Le Bureau Exécutif du MCM Bénin</li>
+                        <li><strong>Contact Principal</strong> : <a href="mailto:contact@mcm-benin.org">contact@mcm-benin.org</a></li>
+                    </ul>
+
+                    <h2>2. Hébergement du Système</h2>
+                    <p>La plateforme internet et le système de base de données PostgreSQL de gestion du personnel sont hébergés sur des serveurs sécurisés garantissant une haute disponibilité et confidentialité :</p>
+                    <ul>
+                        <li><strong>Fournisseur d'Hébergement</strong> : Hébergement Local / Cloud sécurisé</li>
+                        <li><strong>Base de Données</strong> : PostgreSQL 15+ sous architecture isolée</li>
+                    </ul>
+
+                    <h2>3. Conception et Développement</h2>
+                    <p>La plateforme a été développée sur-mesure pour répondre aux besoins spécifiques d'organisation des commissions du Ministère Catholique Miséricorde, combinant les technologies Node.js, Express, Socket.io et PostgreSQL.</p>
+
+                    <h2>4. Limitation de Responsabilité</h2>
+                    <p>Le MCM met en œuvre tous les moyens raisonnables pour s'assurer que les informations figurant sur son site sont exactes et à jour. Toutefois, le ministère ne saurait être tenu pour responsable en cas d'erreurs ou d'omissions involontaires, de suspensions temporaires du système pour des opérations de maintenance technique, ou de perte d'accès temporaire due à une mauvaise couverture réseau.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-large-brand">
+                    Ministère Catholique Miséricorde
+                </div>
+                
+                <hr class="footer-divider">
+                
+                <div class="footer-bottom">
+                    <div class="footer-socials">
+                        <a href="https://facebook.com" target="_blank" class="social-link" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" class="social-link" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" class="social-link" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="https://wa.me/22900000000" target="_blank" class="social-link" aria-label="WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="footer-copyright">
+                        &copy; 2026 Ministère Catholique Miséricorde. Tous droits réservés.
+                    </div>
+                    
+                    <div class="footer-legal">
+                        <a href="/politique-confidentialite" class="legal-link">Politique de confidentialité</a>
+                        <a href="/conditions-utilisation" class="legal-link">Conditions d'utilisation</a>
+                        <a href="/protection-donnees" class="legal-link">Protection des données</a>
+                        <a href="/mentions-legales" class="legal-link">Mentions légales</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

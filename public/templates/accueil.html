@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="../assets/images/logo/logomcm.svg">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>MCM - Ministère Catholique Miséricorde</title>
+</head>
+<body>
+    <!-- Curtain Transition -->
+    <div class="page-transition-curtain" id="transitionCurtain"></div>
+
+    <!-- Splash Screen -->
+    <div class="splash-container" id="splashContainer">
+        <video class="video-background" autoplay muted loop id="backgroundVideo" preload="metadata">
+            <source src="../assets/images/videos/la-croix.mp4" type="video/mp4">
+        </video>
+        
+        <div class="splash-content">
+            <div class="splash-logo">
+                <img src="../assets/images/logo/logomcm.svg" alt="MCM Logo" style="width: 100%; height: 100%;">
+            </div>
+            <button class="enter-button" id="enterButton">
+                Découvrir MCM
+            </button>
+            <p class="instruction-text">
+                Appuyez sur Entrée pour continuer
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Mobile Menu Overlay -->
+        <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+            <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Fermer">
+                <i class="fas fa-times"></i>
+            </button>
+            <ul class="mobile-menu-links">
+                <li><a href="#accueil" class="mobile-menu-link">Accueil</a></li>
+                <li><a href="#about" class="mobile-menu-link">Notre identité</a></li>
+                <li><a href="#galerie" class="mobile-menu-link">Galerie</a></li>
+                <li><a href="commission.html" class="mobile-menu-link">Commissions</a></li>
+                <li><a href="#contact" class="mobile-menu-link">Contact</a></li>
+            </ul>
+        </div>
+
+        <!-- Hero Section (Artpill Style) -->
+        <section class="hero-fullscreen" id="accueil" data-theme="light">
+            <div class="hero-overlay"></div>
+
+            <!-- Top Bar: Logo (Left), Slogan (Center), Connexion (Right) -->
+            <header class="hero-top-bar" id="heroTopBar">
+                <!-- Logo -->
+                <a href="#accueil" class="hero-logo">
+                    <img src="../assets/images/logo/logomcm.svg" alt="Logo MCM">
+                    <span class="logo-text">MCM</span>
+                </a>
+                
+                <!-- Slogan -->
+                <div class="hero-slogan">
+                    <span>Jésus j'ai confiance en toi</span>
+                </div>
+
+                <!-- Connexion Button -->
+                <div class="hero-login-container">
+                    <a href="login.html" class="hero-login-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Connexion</span>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Centered Brand Title (Global Design Studio Style) -->
+            <div class="hero-centered-brand">
+                <h1 class="brand-title" id="animatedBrandTitle">
+                    <div class="brand-line-wrapper">
+                        <span class="brand-line line-1">
+                            <span class="brand-word">Ministère</span>
+                            <span class="brand-icon-wrapper"><i class="fa-solid fa-asterisk brand-spinner"></i></span>
+                            <span class="brand-word">Catholique</span>
+                        </span>
+                    </div>
+                    <div class="brand-line-wrapper">
+                        <span class="brand-line line-2">
+                            <span class="brand-word">Miséricorde</span>
+                        </span>
+                    </div>
+                </h1>
+            </div>
+
+            <!-- Bottom Navigation Bar & Scroll Indicator (Morphing) -->
+            <nav class="hero-bottom-nav" id="heroBottomNav">
+                <div class="bottom-nav-container at-top" id="bottomNavContainer">
+                    <!-- Scroll Indicator (Visible when at the top) -->
+                    <div class="nav-scroll-indicator" id="navScrollIndicator">
+                        <div class="scroll-mouse">
+                            <div class="scroll-wheel"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pill Menu (Visible when scrolled) -->
+                    <div class="nav-pill-menu" id="navPillMenu">
+                        <!-- Desktop Menu -->
+                        <ul class="bottom-nav-menu">
+                            <li><a href="#accueil" class="bottom-nav-link active">Accueil</a></li>
+                            <li><a href="#about" class="bottom-nav-link">Notre identité</a></li>
+                            <li><a href="#galerie" class="bottom-nav-link">Galerie</a></li>
+                            <li><a href="commission.html" class="bottom-nav-link">Commissions</a></li>
+                            <li><a href="#contact" class="bottom-nav-link">Contact</a></li>
+                        </ul>
+                        
+                        <!-- Mobile Hamburger (Menu) -->
+                        <button class="bottom-nav-hamburger" id="bottomHamburger" aria-label="Ouvrir le menu">
+                            <span class="hamburger-text">Menu</span>
+                            <div class="hamburger-icon">
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </section>
+
+        <!-- Carousel Section -->
+        <section class="carousel-section" id="galerie" data-theme="light">
+            <div class="carousel-container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-badge">Galerie</span>
+                    <h2 class="section-title">Nos Moments de Foi</h2>
+                    <p class="section-subtitle">Découvrez les moments forts de notre communauté en images</p>
+                </div>
+                <div class="carousel-wrapper">
+                    <div class="carousel-track" id="carouselTrack">
+                        <div class="carousel-slide">
+                            <img src="../assets/images/holy-communion-concept-with-bible.jpg" alt="Moment de prière">
+                            <div class="carousel-overlay">
+                                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Célébration Eucharistique</h3>
+                                <p>Unis dans la foi et la prière</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="../assets/images/closeup-cross.jpg" alt="Louange">
+                            <div class="carousel-overlay">
+                                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Temps de Louange</h3>
+                                <p>Adoration et chants spirituels</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="../assets/images/close-up-priest-praying-with-cross.jpg" alt="Communauté">
+                            <div class="carousel-overlay">
+                                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Vie Communautaire</h3>
+                                <p>Partage fraternel et convivialité</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="carousel-btn" id="prevBtn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-btn" id="nextBtn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="carousel-dots" id="carouselDots"></div>
+            </div>
+        </section>
+
+        <!-- About Section (Light Carousel Redesign) -->
+        <section class="about-light" id="about" data-theme="light">
+            <div class="about-light-container">
+                <!-- Left: Text -->
+                <div class="about-light-text animate-on-scroll">
+                    <div class="contact-eyebrow">
+                        <span class="contact-eyebrow-line"></span>
+                        <span class="contact-eyebrow-text">Notre histoire</span>
+                    </div>
+                    <h2 class="about-light-heading">
+                        <span class="alh-top">Lumière sur notre</span>
+                        <span class="alh-bottom">mission</span>
+                    </h2>
+                    <p class="about-light-desc">
+                        Né d'une profonde volonté de servir, le Ministère Catholique Miséricorde (MCM) est une communauté vibrante où la foi se vit en actes. Nous œuvrons chaque jour pour répandre l'amour du Christ, soutenir les plus vulnérables et grandir ensemble dans la fraternité.
+                    </p>
+                </div>
+
+                <!-- Right: Carousel of cards -->
+                <div class="about-light-carousel-wrapper animate-on-scroll">
+                    <!-- Background pattern (union.svg) placed right behind the carousel -->
+                    <div class="about-bg-pattern">
+                        <img src="../assets/images/union.svg" alt="" aria-hidden="true">
+                    </div>
+
+                    <div class="about-carousel" id="aboutCarousel">
+                        <!-- Cards -->
+                        <div class="about-carousel-card" data-modal="mission">
+                            <div class="acc-icon"><i class="fa-solid fa-cross"></i></div>
+                            <h3 class="acc-title">Mission</h3>
+                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <div class="about-carousel-card" data-modal="communaute">
+                            <div class="acc-icon"><i class="fa-solid fa-users"></i></div>
+                            <h3 class="acc-title">Communauté</h3>
+                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <div class="about-carousel-card" data-modal="valeurs">
+                            <div class="acc-icon"><i class="fa-solid fa-hands-helping"></i></div>
+                            <h3 class="acc-title">Valeurs</h3>
+                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <div class="about-carousel-card" data-modal="vision">
+                            <div class="acc-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                            <h3 class="acc-title">Vision</h3>
+                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <div class="about-carousel-card" data-modal="impact">
+                            <div class="acc-icon"><i class="fa-solid fa-globe-africa"></i></div>
+                            <h3 class="acc-title">Impact</h3>
+                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <div class="about-carousel-card" data-modal="engagement">
+                            <div class="acc-icon"><i class="fa-solid fa-star"></i></div>
+                            <h3 class="acc-title">Engagement</h3>
+                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modals for About Cards -->
+        <div class="about-modal-overlay" id="aboutModalOverlay">
+            <div class="about-modal" id="aboutModal">
+                <button class="about-modal-close" id="aboutModalClose" aria-label="Fermer"><i class="fa-solid fa-xmark"></i></button>
+                <div class="about-modal-icon" id="aboutModalIcon"></div>
+                <h3 class="about-modal-title" id="aboutModalTitle">Titre</h3>
+                <p class="about-modal-text" id="aboutModalText">Texte de description...</p>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact" data-theme="dark">
+            <div class="contact-bg-accent contact-bg-accent--tl"></div>
+            <div class="contact-bg-accent contact-bg-accent--br"></div>
+
+            <div class="contact-container">
+
+                <!-- ── Left : édito + infos ── -->
+                <div class="contact-left animate-on-scroll">
+                    <div class="contact-eyebrow">
+                        <span class="contact-eyebrow-line"></span>
+                        <span class="contact-eyebrow-text">Nous contacter</span>
+                    </div>
+
+                    <h2 class="contact-heading">
+                        <span class="ch-solid">Rejoignez</span>
+                        <span class="ch-italic">notre</span>
+                        <span class="ch-outline">communauté</span>
+                    </h2>
+
+                    <p class="contact-desc">
+                        Nous sommes là pour vous accueillir avec amour et fraternité.
+                        Écrivez-nous pour toute question, pour rejoindre notre famille
+                        ou pour collaborer à notre mission.
+                    </p>
+
+                    <div class="contact-info-list">
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="contact-info-content">
+                                <span class="contact-info-label">Adresse</span>
+                                <span class="contact-info-value">Abomey-Calavi, Atlantique, Bénin</span>
+                            </div>
+                        </div>
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div class="contact-info-content">
+                                <span class="contact-info-label">Téléphone</span>
+                                <span class="contact-info-value">+229 XX XX XX XX XX</span>
+                            </div>
+                        </div>
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div class="contact-info-content">
+                                <span class="contact-info-label">Email</span>
+                                <span class="contact-info-value">contact@mcm-benin.org</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Right : formulaire ── -->
+                <div class="contact-right animate-on-scroll">
+                    <div class="contact-form-card">
+                        <div class="contact-form-header">
+                            <h3 class="contact-form-title">Envoyez-nous un message</h3>
+                            <p class="contact-form-subtitle">Réponse garantie sous 48 h</p>
+                        </div>
+
+                        <form class="contact-form" id="contactForm" novalidate>
+                            <div class="form-row-2">
+                                <div class="form-field">
+                                    <input type="text" id="cf-nom" class="form-input" placeholder=" " data-placeholders="Entrez votre nom complet...|Ex: Jean Dupont...|Comment vous appelez-vous ?" autocomplete="name">
+                                    <label for="cf-nom" class="form-label">Nom complet <span class="req">*</span></label>
+                                    <div class="form-line"></div>
+                                </div>
+                                <div class="form-field">
+                                    <input type="email" id="cf-email" class="form-input" placeholder=" " data-placeholders="Ex: jean.dupont@gmail.com...|Entrez votre adresse email..." autocomplete="email">
+                                    <label for="cf-email" class="form-label">Adresse email <span class="req">*</span></label>
+                                    <div class="form-line"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <select id="cf-sujet" class="form-input form-select">
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="adhesion">Adhésion à la communauté</option>
+                                    <option value="information">Demande d'information</option>
+                                    <option value="partenariat">Partenariat</option>
+                                    <option value="don">Don & soutien</option>
+                                    <option value="autre">Autre</option>
+                                </select>
+                                <label for="cf-sujet" class="form-label">Sujet <span class="req">*</span></label>
+                                <div class="form-line"></div>
+                            </div>
+
+                            <div class="form-field">
+                                <textarea id="cf-message" class="form-input form-textarea" placeholder=" " data-placeholders="Écrivez votre message ici...|Comment pouvons-nous vous aider ?...|Décrivez votre demande en quelques mots..." rows="4"></textarea>
+                                <label for="cf-message" class="form-label">Votre message <span class="req">*</span></label>
+                                <div class="form-line"></div>
+                            </div>
+
+                            <button type="submit" class="contact-submit-btn" id="contactSubmitBtn">
+                                <span class="submit-text">Envoyer le message</span>
+                                <span class="submit-icon"><i class="fas fa-paper-plane"></i></span>
+                            </button>
+
+                            <div class="contact-form-feedback" id="contactFormFeedback"></div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-large-brand">
+                    Ministère Catholique Miséricorde
+                </div>
+                
+                <hr class="footer-divider">
+                
+                <div class="footer-bottom">
+                    <div class="footer-socials">
+                        <a href="https://facebook.com" target="_blank" class="social-link" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" class="social-link" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" class="social-link" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="https://wa.me/22900000000" target="_blank" class="social-link" aria-label="WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="footer-copyright">
+                        &copy; 2026 Ministère Catholique Miséricorde. Tous droits réservés.
+                    </div>
+                    
+                    <div class="footer-legal">
+                        <a href="/politique-confidentialite" class="legal-link" data-save-scroll="true">Politique de confidentialité</a>
+                        <a href="/conditions-utilisation" class="legal-link" data-save-scroll="true">Conditions d'utilisation</a>
+                        <a href="/protection-donnees" class="legal-link" data-save-scroll="true">Protection des données</a>
+                        <a href="/mentions-legales" class="legal-link" data-save-scroll="true">Mentions légales</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../assets/js/placeholder-animation.js"></script>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

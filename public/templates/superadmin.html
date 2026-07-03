@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCM - Dashboard SuperAdmin</title>
+    <link rel="icon" type="image/svg" href="./assets/images/logo/logomcm.svg">
+    <link rel="stylesheet" href="../assets/css/superAdmin/superadmin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-church"></i>
+                </div>
+                <span>MCM Dashboard</span>
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div class="user-menu desktop-only" onclick="openUserProfile()">
+                <div class="user-avatar">
+                    <span id="userInitials">SA</span>
+                </div>
+                <span class="user-name" id="userName">Chargement...</span>
+                <i class="fas fa-chevron-down" style="color: var(--gray); font-size: 0.75rem;"></i>
+            </div>
+            <button class="logout-btn desktop-only" onclick="confirmLogout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <div class="sidebar-link active" onclick="showSection('dashboard')">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de Bord</span>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="showSection('members')">
+                    <i class="fas fa-users"></i>
+                    <span>Tous les Membres</span>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="showSection('addMember')">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Ajouter Membre</span>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="showSection('addAdmin')">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Ajouter Admin</span>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="showSection('stats'); loadStatistics();">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Statistiques</span>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="showSection('commissions')">
+                    <i class="fas fa-sitemap"></i>
+                    <span>Commissions</span>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="showSection('services')">
+                    <i class="fas fa-cogs"></i>
+                    <span>Services</span>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="showAdministrators()">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Administrateurs</span>
+                </div>
+            </li>
+            <li class="sidebar-item mobile-only">
+                <div class="sidebar-link" onclick="openUserProfile()">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Mon Profil</span>
+                </div>
+            </li>
+            <li class="sidebar-item mobile-only">
+                <div class="sidebar-link" onclick="confirmLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </div>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="content-section active">
+            <div class="page-header">
+                <h1 class="page-title">Tableau de Bord SuperAdmin</h1>
+                <p class="page-subtitle">Bienvenue sur votre espace d'administration MCM</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card" onclick="showSection('members')">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="totalMembers">0</div>
+                            <div class="stat-label">Total Membres</div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="showAdministrators()">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="totalAdmins">0</div>
+                            <div class="stat-label">Administrateurs</div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="totalSuperadmins">0</div>
+                            <div class="stat-label">SuperAdmins</div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="showSection('services')">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="totalServices">0</div>
+                            <div class="stat-label">Services</div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activités récentes -->
+            <div class="section-card">
+                <h3 class="section-title">
+                    <i class="fas fa-clock"></i>
+                    Activités Récentes
+                </h3>
+                <div id="recentActivities" class="activities-list">
+                    <p style="text-align: center; color: var(--gray); padding: 2rem;">Aucune activité récente</p>
+                </div>
+            </div>
+
+            <!-- Anniversaires du jour -->
+            <div class="section-card" id="birthdaysCard" style="display: none;">
+                <h3 class="section-title">
+                    <i class="fas fa-birthday-cake"></i>
+                    Anniversaires Aujourd'hui
+                </h3>
+                <div id="todayBirthdays" class="birthdays-list"></div>
+            </div>
+        </div>
+
+        <!-- Members Section -->
+        <div id="membersSection" class="content-section">
+            <div class="page-header">
+                <h1 class="page-title">Tous les Membres</h1>
+                <p class="page-subtitle">Gestion complète de tous les membres MCM</p>
+            </div>
+
+            <div class="section-card">
+                <div class="search-bar">
+                    <input type="text" id="memberSearch" class="form-control" placeholder="Rechercher un membre..." style="max-width: 400px;">
+                </div>
+                <div id="membersListContainer">
+                    <p style="text-align: center; color: var(--gray); padding: 2rem;">Chargement des membres...</p>
+                </div>
+                <div id="pagination" style="text-align: center; margin-top: 2rem;"></div>
+            </div>
+        </div>
+
+        <!-- Add Member Section -->
+        <div id="addMemberSection" class="content-section">
+            <div class="page-header">
+                <h1 class="page-title">Ajouter un Membre</h1>
+                <p class="page-subtitle">Remplissez le formulaire pour ajouter un nouveau membre</p>
+            </div>
+
+            <div class="section-card">
+                <form id="addMemberForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Service *</label>
+                            <select class="form-select" id="memberService" required>
+                                <option value="">Sélectionner un service</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nom *</label>
+                            <input type="text" class="form-control" id="memberNom" placeholder="Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Prénom *</label>
+                            <input type="text" class="form-control" id="memberPrenom" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sexe *</label>
+                            <select class="form-select" id="memberSexe" required>
+                                <option value="">Sélectionner</option>
+                                <option value="Homme">Homme</option>
+                                <option value="Femme">Femme</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date de naissance *</label>
+                            <input type="date" class="form-control" id="memberDateNaissance" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="memberEmail" placeholder="johndoe@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Téléphone *</label>
+                            <input type="tel" class="form-control" id="memberTelephone" placeholder="+229 XX XX XX XX" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" id="addMemberBtn">
+                        <i class="fas fa-plus"></i>
+                        <span>Ajouter le Membre</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Admin Section -->
+        <div id="addAdminSection" class="content-section">
+            <div class="page-header">
+                <h1 class="page-title">Ajouter un Administrateur</h1>
+                <p class="page-subtitle">Créez un nouvel compte administrateur</p>
+            </div>
+
+            <div class="section-card">
+                <form id="manageUserForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="userEmail" placeholder="admin@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nom *</label>
+                            <input type="text" class="form-control" id="userNom" placeholder="Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Prénom *</label>
+                            <input type="text" class="form-control" id="userPrenom" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Téléphone</label>
+                            <input type="tel" class="form-control" id="userTelephone" placeholder="+229 XX XX XX XX">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mot de passe *</label>
+                            <input type="password" class="form-control" id="userPassword" placeholder="••••••••" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Rôle *</label>
+                            <select class="form-select" id="userRole" required>
+                                <option value="">Sélectionner un rôle</option>
+                                <option value="admin">Admin de Service</option>
+                                <option value="adminCom">Admin de Commission</option>
+                                <option value="superadmin">SuperAdmin</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="commissionGroup" style="display: none;">
+                            <label class="form-label">Commission *</label>
+                            <select class="form-select" id="userCommission">
+                                <option value="">Sélectionner une commission</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="serviceGroup" style="display: none;">
+                            <label class="form-label">Service *</label>
+                            <select class="form-select" id="userService">
+                                <option value="">Sélectionner un service</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" id="createUserBtn">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Créer l'Utilisateur</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div id="statsSection" class="content-section">
+            <div class="page-header">
+                <h1 class="page-title">Statistiques par Service</h1>
+                <p class="page-subtitle">Analysez les données détaillées de vos services</p>
+            </div>
+
+            <div class="section-card">
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; align-items: flex-end;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <label class="form-label">Sélectionner un service</label>
+                        <select class="form-select" id="statsServiceSelect" required>
+                            <option value="">Choisir un service</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn-primary" onclick="displayServiceStatistics()" style="min-width: 200px; margin-bottom: 0;">
+                        <i class="fas fa-search"></i>
+                        <span>Afficher les Stats</span>
+                    </button>
+                </div>
+
+                <div id="statsContainer" style="margin-top: 2rem;">
+                    <p style="text-align: center; color: var(--gray); padding: 3rem;">
+                        <i class="fas fa-chart-bar" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; display: block;"></i>
+                        Sélectionnez un service et cliquez sur "Afficher les Stats"
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Section -->
+        <div id="servicesSection" class="content-section">
+            <div class="page-header">
+                <h1 class="page-title">Services par Commission</h1>
+                <p class="page-subtitle">Vue d'ensemble de tous les services</p>
+            </div>
+
+            <div class="section-card">
+                <div class="custom-grid" id="servicesGrid">
+                    <!-- Services dynamically loaded -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Commissions Section -->
+        <div id="commissionsSection" class="content-section">
+            <div class="page-header">
+                <h1 class="page-title">Commissions</h1>
+                <p class="page-subtitle">Gestion des commissions MCM</p>
+            </div>
+
+            <div class="section-card">
+                <div class="custom-grid" id="commissionsGrid">
+                    <!-- Commissions dynamically loaded -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Commission Details Section -->
+        <div id="commissionDetailsSection" class="content-section">
+            <div class="page-header">
+                <button onclick="goBackToCommissions()" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour aux Commissions</span>
+                </button>
+            </div>
+
+            <div class="section-card">
+                <div id="commissionDetailsContent">
+                    <!-- Commission details dynamically loaded -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Members Section -->
+        <div id="serviceMembersSection" class="content-section">
+            <div class="page-header">
+                <button onclick="goBackToServices()" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour aux Services</span>
+                </button>
+            </div>
+
+            <div class="section-card">
+                <div id="serviceMembersContent">
+                    <!-- Service members dynamically loaded -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Administrators Section -->
+        <div id="administratorsSection" class="content-section">
+            <div class="page-header">
+                <h1 class="page-title">Gestion des Administrateurs</h1>
+                <p class="page-subtitle">Tous les administrateurs et superadmins de la plateforme</p>
+            </div>
+
+            <div class="section-card">
+                <div class="search-bar">
+                    <input type="text" id="adminSearch" class="form-control" placeholder="Rechercher un administrateur..." style="max-width: 400px;">
+                </div>
+                <div id="administratorsListContainer">
+                    <p style="text-align: center; color: var(--gray); padding: 2rem;">Chargement des administrateurs...</p>
+                </div>
+                <div id="adminPagination" style="text-align: center; margin-top: 2rem;"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Member Modal -->
+    <div class="modal" id="editMemberModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Modifier le Membre</h2>
+                <button class="close-btn" onclick="closeEditMemberModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editMemberForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Service</label>
+                            <select class="form-select" id="editMemberService" required>
+                                <option value="">Sélectionner un service</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nom</label>
+                            <input type="text" class="form-control" id="editMemberNom" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Prénom</label>
+                            <input type="text" class="form-control" id="editMemberPrenom" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sexe</label>
+                            <select class="form-select" id="editMemberSexe" required>
+                                <option value="">Sélectionner</option>
+                                <option value="Homme">Homme</option>
+                                <option value="Femme">Femme</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date de naissance</label>
+                            <input type="date" class="form-control" id="editMemberDateNaissance" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editMemberEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Téléphone</label>
+                            <input type="tel" class="form-control" id="editMemberTelephone" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        <span>Sauvegarder</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div class="modal" id="userProfileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Mon Profil</h2>
+                <button class="close-btn" onclick="closeUserProfileModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="userProfileForm">
+                    <div class="form-group">
+                        <label class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="profileNom" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="profilePrenom" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="profileEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nouveau mot de passe (optionnel)</label>
+                        <input type="password" class="form-control" id="profilePassword" placeholder="Laisser vide pour ne pas changer">
+                    </div>
+                    <button type="submit" class="btn-primary" id="updateProfileBtn">
+                        <i class="fas fa-save"></i>
+                        <span>Mettre à jour mon profil</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Success Overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-icon-large">
+            <i class="fas fa-check"></i>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../assets/js/placeholder-animation.js"></script>
+    <script src="../assets/js/superAdmin/superAdmin.js"></script>
+</body>
+</html>

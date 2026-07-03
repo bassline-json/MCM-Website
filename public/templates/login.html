@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/logomcm.svg" />
+    <link rel="stylesheet" href="../assets/css/login/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Ajout Font Awesome pour les icônes œil / œil barré -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>MCM - Connexion</title>
+</head>
+<body>
+    <a href="accueil.html" class="back-to-home">
+        <i class="fas fa-arrow-left"></i> Retour à l'accueil
+    </a>
+
+    <div class="auth-container">
+        <!-- Left Side - Form -->
+        <div class="auth-form-side">
+            <!-- Auth header - visible uniquement sur mobile/tablette (géré via CSS) -->
+            <div class="auth-header">
+                <h1 class="auth-title">Ministère Catholique Miséricorde</h1>
+                <p class="auth-subtitle">Jésus j'ai confiance en toi</p>
+            </div>
+
+            <div class="auth-card">
+            <!-- Form Toggle -->
+            <div class="form-toggle">
+                <button class="toggle-btn active" id="loginToggle">
+                    Connexion
+                </button>
+                <button class="toggle-btn" id="registerToggle">
+                    Créer un compte
+                </button>
+            </div>
+
+            <!-- Messages -->
+            <div class="error-message message" id="errorMessage"></div>
+            <div class="success-message message" id="successMessage"></div>
+            <div class="info-message message" id="infoMessage"></div>
+
+            <!-- Loading Spinner -->
+            <div class="loading" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>Chargement...</p>
+            </div>
+
+            <!-- Login Form -->
+            <!-- Login Form -->
+            <form class="form-section active" id="loginForm">
+                <div class="form-field">
+                    <input type="email" class="form-input" id="loginEmail" 
+                        placeholder=" " required />
+                    <label for="loginEmail" class="form-label">Adresse email</label>
+                    <div class="form-line"></div>
+                </div>
+
+                <div class="form-field">
+                    <div class="password-group">
+                        <input type="password" class="form-input" id="loginPassword" 
+                            placeholder=" " required />
+                        <label for="loginPassword" class="form-label">Mot de passe</label>
+                        <button type="button" class="password-toggle" data-target="loginPassword" aria-label="Afficher/masquer le mot de passe">
+                            <i class="fas fa-eye eye-icon"></i>
+                            <i class="fas fa-eye-slash eye-off-icon" style="display:none;"></i>
+                        </button>
+                        <div class="form-line"></div>
+                    </div>
+                </div>
+
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe" />
+                    <label for="rememberMe">Se souvenir de moi</label>
+                </div>
+
+                <button type="submit" class="auth-btn">
+                    <span>Se connecter</span>
+                </button>
+
+                <div class="forgot-password" id="forgotPasswordLink">
+                    <a href="password-recovery.html">Mot de passe oublié ?</a>
+                </div>
+            </form>
+
+            <!-- Register Form -->
+            <form class="form-section" id="registerForm">
+                <div class="form-row">
+                    <div class="form-field">
+                        <input type="text" class="form-input" id="registerNom" 
+                            placeholder=" " required />
+                        <label for="registerNom" class="form-label">Nom</label>
+                        <div class="form-line"></div>
+                    </div>
+                    <div class="form-field">
+                        <input type="text" class="form-input" id="registerPrenom" 
+                            placeholder=" " required />
+                        <label for="registerPrenom" class="form-label">Prénom</label>
+                        <div class="form-line"></div>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <input type="email" class="form-input" id="registerEmail" 
+                        placeholder=" " required />
+                    <label for="registerEmail" class="form-label">Adresse email</label>
+                    <div class="form-line"></div>
+                </div>
+
+                <div class="form-field">
+                    <input type="tel" class="form-input" id="registerTelephone" 
+                        placeholder=" " required />
+                    <label for="registerTelephone" class="form-label">Numéro de téléphone</label>
+                    <div class="form-line"></div>
+                </div>
+
+                <div class="form-field">
+                    <div class="password-group">
+                        <input type="password" class="form-input" id="registerPassword" 
+                            placeholder=" " required />
+                        <label for="registerPassword" class="form-label">Mot de passe</label>
+                        <button type="button" class="password-toggle" data-target="registerPassword" aria-label="Afficher/masquer le mot de passe">
+                            <i class="fas fa-eye eye-icon"></i>
+                            <i class="fas fa-eye-slash eye-off-icon" style="display:none;"></i>
+                        </button>
+                        <div class="form-line"></div>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <div class="password-group">
+                        <input type="password" class="form-input" id="registerConfirmPassword" 
+                            placeholder=" " required />
+                        <label for="registerConfirmPassword" class="form-label">Confirmer le mot de passe</label>
+                        <button type="button" class="password-toggle" data-target="registerConfirmPassword" aria-label="Afficher/masquer le mot de passe">
+                            <i class="fas fa-eye eye-icon"></i>
+                            <i class="fas fa-eye-slash eye-off-icon" style="display:none;"></i>
+                        </button>
+                        <div class="form-line"></div>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <select class="form-select" id="registerRole" required>
+                        <option value="">Sélectionnez un rôle</option>
+                        <option value="admin">Chargé de service</option>
+                        <option value="adminCom">Admin de commission</option>
+                        <option value="superadmin">Super Admin</option>
+                    </select>
+                    <label for="registerRole" class="form-label">Rôle</label>
+                    <div class="form-line"></div>
+                </div>
+
+                <div class="form-field" id="commissionGroup" style="display:none;">
+                    <select class="form-select" id="registerCommission">
+                        <option value="">Sélectionnez une commission</option>
+                    </select>
+                    <label for="registerCommission" class="form-label">Commission</label>
+                    <div class="form-line"></div>
+                </div>
+
+                <div class="form-field" id="serviceGroup" style="display:none;">
+                    <select class="form-select" id="registerService">
+                        <option value="">Sélectionnez un service</option>
+                    </select>
+                    <label for="registerService" class="form-label">Service</label>
+                    <div class="form-line"></div>
+                </div>
+
+                <button type="submit" class="auth-btn">
+                    <span>Créer le compte</span>
+                </button>
+            </form>
+            </div>
+        </div>
+
+        <!-- Right Side - Video Background -->
+        <div class="auth-video-side">
+            <div class="video-wrapper">
+                <video autoplay muted loop playsinline class="background-video">
+                    <source src="../assets/images/videos/claude.mp4" type="video/mp4">
+                    <source src="./assets/videos/worship-background.webm" type="video/webm">
+                    <!-- Fallback image si la vidéo ne charge pas -->
+                    <img src="../assets/images/high-angle-wooden-cross-rosary.jpg" alt="MCM Worship">
+                </video>
+                <div class="video-overlay"></div>
+            </div>
+            
+            <div class="video-content">
+                <div class="video-text">
+                    <!-- Logo SVG centré -->
+                    <div class="video-logo-wrap">
+                        <img src="../assets/images/logo/logomcm.svg" alt="Logo MCM" class="video-logo-img">
+                    </div>
+                    <h2 class="video-title">Ministère Catholique<br>Miséricorde</h2>
+                    <p class="video-description">Jésus j'ai confiance en toi</p>
+                    <!-- Séparateur ornemental -->
+                    <div class="video-divider"><span></span><i class="fas fa-cross"></i><span></span></div>
+                    <p class="video-verse">« Je suis le chemin, la vérité et la vie. »<br><em>Jean 14:6</em></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="../assets/js/placeholder-animation.js"></script>
+    <script src="../assets/js/login/login.js"></script>
+</body>
+</html>

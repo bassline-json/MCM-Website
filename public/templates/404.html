@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Non Trouvée | MCM</title>
+    <link rel="icon" type="image/svg" href="../assets/images/logo/logomcm.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:italic,wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-red: #E60012;
+            --white: #FFFFFF;
+            --bg-light: #F8F9FA;
+            --text-dark: #1F2937;
+            --text-muted: #6B7280;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-light);
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            overflow-y: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Lueurs rouges douces sur fond clair */
+        .bg-accent {
+            position: absolute;
+            width: min(90vw, 600px);
+            height: min(90vw, 600px);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(230, 0, 18, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Conteneur sans boîte dépolie, directement sur la page */
+        .error-wrapper {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+            max-width: 650px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: auto;
+        }
+
+        /* En-tête avec logo */
+        .logo-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .header-logo {
+            width: 36px;
+            height: 36px;
+        }
+
+        .header-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dark);
+        }
+
+        /* 404 Visual containing 4 - grenade - 4 */
+        .error-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            user-select: none;
+        }
+
+        .error-digit {
+            font-size: clamp(8.5rem, 20vw, 14.5rem);
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1;
+            display: inline-block;
+            letter-spacing: -2px;
+        }
+
+        /* Alignement 3D des 4 */
+        .error-digit:first-child {
+            transform: rotate(-10deg) skewY(-5deg);
+        }
+
+        .error-digit:last-child {
+            transform: rotate(10deg) skewY(5deg);
+        }
+
+        /* Grenade plus grosse comme demandée */
+        .grenade-container {
+            width: clamp(140px, 26vw, 240px);
+            height: clamp(140px, 26vw, 240px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .grenade-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 30px rgba(230, 0, 18, 0.15));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        /* Error Message text */
+        .error-title {
+            font-size: clamp(1.6rem, 4.5vw, 2.5rem);
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .error-subtitle {
+            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+        }
+
+        /* Verset Biblique Réconfortant */
+        .bible-verse-container {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid var(--primary-red);
+            border-radius: 4px 16px 16px 4px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            text-align: left;
+        }
+
+        .verse-label {
+            font-size: 0.7rem;
+            color: var(--primary-red);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .verse-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .verse-reference {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        /* Liens rapides */
+        .quick-links {
+            margin-bottom: 2.5rem;
+            width: 100%;
+        }
+
+        .quick-links-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .links-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .quick-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            background: var(--white);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 0.6rem 1.4rem;
+            border-radius: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        .quick-link:hover {
+            color: var(--primary-red);
+            background: rgba(230, 0, 18, 0.04);
+            border-color: rgba(230, 0, 18, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(230, 0, 18, 0.08);
+        }
+
+        .support-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .support-email {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .support-email:hover {
+            text-decoration: underline;
+        }
+
+        /* Brand Badge in Bottom Right corner */
+        .brand-badge {
+            position: fixed;
+            bottom: 2.5rem;
+            right: 2.5rem;
+            display: flex;
+            align-items: center;
+            font-weight: 900;
+            font-size: 1.25rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .badge-red {
+            background: var(--primary-red);
+            color: var(--white);
+            padding: 0.4rem 0.6rem;
+        }
+
+        .badge-black {
+            background: #111111;
+            color: var(--white);
+            padding: 0.4rem 0.6rem;
+            border: 1px solid #222222;
+        }
+
+        @media (max-width: 480px) {
+            .brand-badge {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                font-size: 1rem;
+            }
+            .error-visual {
+                gap: 0.25rem;
+            }
+            .links-grid {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.75rem;
+            }
+            .quick-link {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-accent"></div>
+
+    <div class="error-wrapper">
+        <!-- Logo Header -->
+        <div class="logo-header">
+            <img src="../assets/images/logo/logomcm.svg" alt="Logo MCM" class="header-logo">
+            <span class="header-title">MCM</span>
+        </div>
+
+        <div class="error-visual">
+            <span class="error-digit">4</span>
+            <div class="grenade-container">
+                <img src="../assets/images/logo/Granade_1 1.svg" alt="0">
+            </div>
+            <span class="error-digit">4</span>
+        </div>
+
+        <h1 class="error-title">Oops! Page Non Trouvée</h1>
+        <p class="error-subtitle">La page demandée n'existe pas ou a été déplacée.</p>
+
+        <!-- Verset Biblique Aléatoire -->
+        <div class="bible-verse-container">
+            <p class="verse-label">Un mot pour vous fortifier</p>
+            <p class="verse-text" id="bible-verse">« Le Seigneur est mon berger, je ne manque de rien. »</p>
+            <p class="verse-reference" id="bible-reference">Psaume 23:1</p>
+        </div>
+
+        <!-- Liens rapides -->
+        <div class="quick-links">
+            <p class="quick-links-title">Liens utiles</p>
+            <div class="links-grid">
+                <a href="/" class="quick-link"><i class="fas fa-home"></i> Accueil</a>
+                <a href="/#about" class="quick-link"><i class="fas fa-info-circle"></i> À propos</a>
+                <a href="/#contact" class="quick-link"><i class="fas fa-envelope"></i> Contact</a>
+            </div>
+        </div>
+
+        <p class="support-text">Besoin d'aide ? Contactez-nous à <a href="mailto:contact@mcm-benin.org" class="support-email">contact@mcm-benin.org</a></p>
+    </div>
+
+    <!-- Brand Badge bottom right -->
+    <div class="brand-badge">
+        <span class="badge-red">MC</span>
+        <span class="badge-black">M</span>
+    </div>
+
+    <script>
+        const verses = [
+            { text: "« Le Seigneur est mon berger, je ne manque de rien. »", ref: "Psaume 23:1" },
+            { text: "« Ne crains rien, car je suis avec toi ; ne promène pas des regards inquiets, car je suis ton Dieu. »", ref: "Ésaïe 41:10" },
+            { text: "« Venez à moi, vous tous qui êtes fatigués et chargés, et je vous donnerai du repos. »", ref: "Matthieu 11:28" },
+            { text: "« Le Seigneur est ma lumière et mon salut ; de qui aurais-je crainte ? »", ref: "Psaume 27:1" },
+            { text: "« Je puis tout par celui qui me fortifie. »", ref: "Philippiens 4:13" },
+            { text: "« Que votre cœur ne se trouble point. Croyez en Dieu, et croyez en moi. »", ref: "Jean 14:1" },
+            { text: "« Ne vous inquiétez de rien ; mais en toute chose faites connaître vos besoins à Dieu par des prières. »", ref: "Philippiens 4:6" }
+        ];
+
+        // Choisir un verset aléatoire au chargement
+        const randomIndex = Math.floor(Math.random() * verses.length);
+        document.getElementById('bible-verse').textContent = verses[randomIndex].text;
+        document.getElementById('bible-reference').textContent = verses[randomIndex].ref;
+    </script>
+
+</body>
+</html>

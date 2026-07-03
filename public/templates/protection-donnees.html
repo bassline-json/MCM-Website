@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="../assets/images/logo/logomcm.svg">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>Protection des Données (Charte Personnel) - Ministère Catholique Miséricorde</title>
+    <style>
+        .legal-page {
+            padding-top: 140px;
+            background: var(--off-white);
+            min-height: 100vh;
+        }
+        .legal-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 3rem;
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 5rem;
+        }
+        .legal-header {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 2rem;
+        }
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+        .back-home:hover {
+            color: var(--primary-red);
+            transform: translateX(-4px);
+        }
+        .legal-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--black);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+        .legal-meta {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+        .legal-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--black);
+            margin: 2.5rem 0 1rem;
+            letter-spacing: -0.01em;
+        }
+        .legal-content p {
+            font-size: 1rem;
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        .legal-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        .legal-content li {
+            font-size: 1rem;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .legal-page {
+                padding-top: 100px;
+            }
+            .legal-container {
+                padding: 2.5rem 1.5rem;
+                margin-bottom: 3rem;
+            }
+            .legal-title {
+                font-size: 1.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content show">
+        <!-- Navigation -->
+        <header class="hero-top-bar on-light scrolled" id="heroTopBar">
+            <a href="/" class="hero-logo">
+                <img src="../assets/images/logo/logomcm.svg" alt="Logo MCM">
+                <span class="logo-text">MCM</span>
+            </a>
+            <div class="hero-slogan">
+                <span>Jésus j'ai confiance en toi</span>
+            </div>
+            <div class="hero-login-container">
+                <a href="/" class="hero-login-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour au site</span>
+                </a>
+            </div>
+        </header>
+
+        <section class="legal-page">
+            <div class="legal-container">
+                <div class="legal-header">
+                    <a href="/" class="back-home">
+                        <i class="fas fa-arrow-left"></i> Retour à l'accueil
+                    </a>
+                    <h1 class="legal-title">Protection des Données (Charte du Personnel)</h1>
+                    <div class="legal-meta">Dernière mise à jour : 26 mai 2026</div>
+                </div>
+                
+                <div class="legal-content">
+                    <p>Cette charte de protection des données définit les engagements et obligations imposés à l'ensemble du personnel administratif, aux coordinateurs de commissions et aux serviteurs du <strong>Ministère Catholique Miséricorde (MCM)</strong> qui accèdent et gèrent la base de données interne des membres (le système "Back-Office").</p>
+
+                    <h2>1. Principe de Secret Fraternel et de Sécurité</h2>
+                    <p>La base de données du MCM contient des informations sensibles sur les fidèles, les donateurs et les serviteurs engagés dans la mission évangélique. Tout personnel disposant d'un compte administrateur s'engage à respecter un "secret professionnel et fraternel" :</p>
+                    <ul>
+                        <li>Interdiction de copier, de transférer, d'imprimer ou d'exporter des données de membres pour un usage personnel ou en dehors des missions confiées par le ministère.</li>
+                        <li>Obligation de se déconnecter de l'interface d'administration après chaque session de travail pour empêcher des personnes non autorisées d'accéder au registre.</li>
+                    </ul>
+
+                    <h2>2. Responsabilités des Administrateurs de Commissions</h2>
+                    <p>Les administrateurs désignés pour une commission (rôle `adminCom`) ont des responsabilités accrues concernant le respect de la vie privée des membres de leur groupe :</p>
+                    <ul>
+                        <li>Ils veillent à ce que seules des informations exactes soient consignées dans les fiches des membres de leur commission.</li>
+                        <li>Ils s'assurent que les changements de statut, de service ou les radiations de membres sont traités promptement dans le système pour que les registres soient toujours à jour.</li>
+                        <li>Ils doivent sensibiliser les serviteurs de leur service respectif sur la confidentialité absolue des informations auxquelles ils pourraient avoir accès indirectement.</li>
+                    </ul>
+
+                    <h2>3. Droits d'Accès Strictement Limités (Moindre Privilège)</h2>
+                    <p>Pour assurer la sécurité optimale du système, le MCM applique le principe du moindre privilège :</p>
+                    <ul>
+                        <li><strong>Superadmin</strong> : Possède un accès total au système, aux statistiques globales, et gère les comptes des autres administrateurs.</li>
+                        <li><strong>Admin</strong> : Gère l'ensemble des membres et les structures administratives (commissions, services), sans la gestion des comptes admins.</li>
+                        <li><strong>AdminCom (Administrateur de Commission)</strong> : Accède uniquement aux données des membres affectés à sa commission et à ses services sous-jacents. Il ne peut ni voir ni modifier les données des autres commissions.</li>
+                    </ul>
+
+                    <h2>4. Protection contre le Phishing et Vol de Session</h2>
+                    <p>Pour éviter toute usurpation d'identité ou fuite de données :</p>
+                    <ul>
+                        <li>Ne partagez jamais vos identifiants d'accès administratifs avec d'autres serviteurs ou tierces personnes.</li>
+                        <li>L'équipe technique du MCM ne vous demandera jamais votre mot de passe par email ou par téléphone.</li>
+                        <li>En cas de doute sur la sécurité de votre session ou de suspicion de piratage de votre compte, informez immédiatement le Super-administrateur pour suspendre temporairement les accès et réinitialiser les identifiants.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-large-brand">
+                    Ministère Catholique Miséricorde
+                </div>
+                
+                <hr class="footer-divider">
+                
+                <div class="footer-bottom">
+                    <div class="footer-socials">
+                        <a href="https://facebook.com" target="_blank" class="social-link" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" class="social-link" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" class="social-link" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="https://wa.me/22900000000" target="_blank" class="social-link" aria-label="WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="footer-copyright">
+                        &copy; 2026 Ministère Catholique Miséricorde. Tous droits réservés.
+                    </div>
+                    
+                    <div class="footer-legal">
+                        <a href="/politique-confidentialite" class="legal-link">Politique de confidentialité</a>
+                        <a href="/conditions-utilisation" class="legal-link">Conditions d'utilisation</a>
+                        <a href="/protection-donnees" class="legal-link">Protection des données</a>
+                        <a href="/mentions-legales" class="legal-link">Mentions légales</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

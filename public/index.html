@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="./assets/images/logo/logomcm.svg">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <title>MCM - Ministère Catholique Miséricorde</title>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div class="splash-container" id="splashContainer">
+        <video class="video-background" autoplay muted loop id="backgroundVideo" preload="metadata">
+            <source src="./assets/images/videos/la-croix.mp4" type="video/mp4">
+        </video>
+        
+        <div class="splash-content">
+            <div class="splash-logo">
+                <img src="./assets/images/logo/logomcm.svg" alt="MCM Logo" style="width: 100%; height: 100%;">
+            </div>
+            <button class="enter-button" id="enterButton">
+                Découvrir MCM
+            </button>
+            <p class="instruction-text">
+                Appuyez sur Entrée pour continuer
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Navigation -->
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <a href="#accueil" class="nav-logo">
+                    <img src="./assets/images/logo/logomcm.svg" alt="MCM Logo">
+                    <span>MCM</span>
+                </a>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="#accueil" class="nav-link">Accueil</a></li>
+                    <li><a href="#about" class="nav-link">À Propos</a></li>
+                    <li><a href="#galerie" class="nav-link">Galerie</a></li>
+                    <li><a href="./templates/commission.html" class="nav-link">Nos commissions</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <li class="mobile-only">
+                        <a href="login.html" class="login-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Connexion</span>
+                        </a>
+                    </li>
+                </ul>
+                <a href="login.html" class="login-btn desktop-only">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Connexion</span>
+                </a>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero" id="accueil">
+            <div class="floating-bubbles">
+                <div class="bubble" style="width: 300px; height: 300px; top: 10%; left: 5%; animation-delay: 0s;"></div>
+                <div class="bubble" style="width: 200px; height: 200px; top: 60%; right: 10%; animation-delay: 5s;"></div>
+                <div class="bubble" style="width: 150px; height: 150px; bottom: 20%; left: 15%; animation-delay: 10s;"></div>
+            </div>
+            <div class="hero-pattern"></div>
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="fas fa-heart"></i>
+                        <span>Jésus j'ai confiance en toi</span>
+                    </div>
+                    <h1 class="hero-title">Ministère Catholique Miséricorde</h1>
+                    <p class="hero-subtitle">Unissons nos cœurs dans la foi, construisons ensemble un avenir radieux au service de Dieu et de notre communauté.</p>
+                    <div class="hero-buttons">
+                        <a href="#about" class="btn-primary">
+                            <span>Découvrir MCM</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="#contact" class="btn-secondary">
+                            <i class="fas fa-users"></i>
+                            <span>Nous Rejoindre</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="cards-grid">
+                        <div class="feature-card">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-praying-hands"></i>
+                            </div>
+                            <div class="card-title">Évangélisation</div>
+                            <div class="card-text">Annoncer la Parole, gagner les âmes et former des disciples</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-music"></i>
+                            </div>
+                            <div class="card-title">Louange</div>
+                            <div class="card-text">Adorer Dieu en musique et en chants</div>
+                        </div>
+                        <div class="feature-card" style="grid-column: 1 / -1;">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-heart"></i>
+                            </div>
+                            <div class="card-title">Communauté</div>
+                            <div class="card-text">Vivre ensemble dans l'amour fraternel</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carousel Section -->
+        <section class="carousel-section" id="galerie">
+            <div class="carousel-container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-badge">Galerie</span>
+                    <h2 class="section-title">Nos Moments de Foi</h2>
+                    <p class="section-subtitle">Découvrez les moments forts de notre communauté en images</p>
+                </div>
+                <div class="carousel-wrapper">
+                    <div class="carousel-track" id="carouselTrack">
+                        <div class="carousel-slide">
+                            <img src="./assets/images/holy-communion-concept-with-bible.jpg" alt="Moment de prière">
+                            <div class="carousel-overlay">
+                                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Célébration Eucharistique</h3>
+                                <p>Unis dans la foi et la prière</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="./assets/images/closeup-cross.jpg" alt="Louange">
+                            <div class="carousel-overlay">
+                                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Temps de Louange</h3>
+                                <p>Adoration et chants spirituels</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="./assets/images/close-up-priest-praying-with-cross.jpg" alt="Communauté">
+                            <div class="carousel-overlay">
+                                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Vie Communautaire</h3>
+                                <p>Partage fraternel et convivialité</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="carousel-btn" id="prevBtn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-btn" id="nextBtn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="carousel-dots" id="carouselDots"></div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about" id="about">
+            <div class="about-container">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-badge">Notre Mission</span>
+                    <h2 class="section-title">À Propos de MCM</h2>
+                    <p class="section-subtitle">Découvrez qui nous sommes et ce qui nous anime</p>
+                </div>
+                <div class="about-grid">
+                    <div class="about-card animate-on-scroll">
+                        <div class="about-icon">
+                            <i class="fa-solid fa-cross"></i>
+                        </div>
+                        <h3 class="about-card-title">Notre Mission</h3>
+                        <p class="about-card-text">Répandre l'amour du Christ à travers nos actions, nos paroles et notre témoignage quotidien dans la communauté.</p>
+                    </div>
+                    <div class="about-card animate-on-scroll">
+                        <div class="about-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h3 class="about-card-title">Notre Communauté</h3>
+                        <p class="about-card-text">Une famille unie dans la foi, composée de 8 commissions dédiées au service de Dieu et du prochain.</p>
+                    </div>
+                    <div class="about-card animate-on-scroll">
+                        <div class="about-icon">
+                            <i class="fa-solid fa-hands-helping"></i>
+                        </div>
+                        <h3 class="about-card-title">Nos Valeurs</h3>
+                        <p class="about-card-text">L'amour, la solidarité, le service, la compassion et l'excellence dans tout ce que nous entreprenons.</p>
+                    </div>
+                    <div class="about-card animate-on-scroll">
+                        <div class="about-icon">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h3 class="about-card-title">Notre Vision</h3>
+                        <p class="about-card-text">Être une lumière qui brille dans notre société, transformant les vies par l'amour du Christ.</p>
+                    </div>
+                    <div class="about-card animate-on-scroll">
+                        <div class="about-icon">
+                            <i class="fa-solid fa-globe-africa"></i>
+                        </div>
+                        <h3 class="about-card-title">Notre Impact</h3>
+                        <p class="about-card-text">Toucher les cœurs, transformer les vies et construire un monde meilleur une âme à la fois.</p>
+                    </div>
+                    <div class="about-card animate-on-scroll">
+                        <div class="about-icon">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <h3 class="about-card-title">Notre Engagement</h3>
+                        <p class="about-card-text">Servir avec excellence, grandir dans la foi et être des témoins authentiques de l'amour divin.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="floating-bubbles">
+                <div class="bubble" style="width: 250px; height: 250px; top: 5%; right: 5%; animation-delay: 2s;"></div>
+                <div class="bubble" style="width: 180px; height: 180px; bottom: 10%; left: 10%; animation-delay: 7s;"></div>
+            </div>
+            <div class="contact-container">
+                <div class="contact-content animate-on-scroll">
+                    <h2 class="contact-title">Contactez-Nous</h2>
+                    <p class="contact-text">
+                        Rejoignez notre communauté de foi et découvrez comment vous pouvez contribuer à notre mission. Nous sommes là pour vous accueillir avec amour.
+                    </p>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-item-icon">
+                                <i class="fa-solid fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-item-title">Adresse</div>
+                            <div class="contact-item-text">Abomey-Calavi, Atlantique, Bénin</div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-item-icon">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div class="contact-item-title">Téléphone</div>
+                            <div class="contact-item-text">+229 XX XX XX XX XX</div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-item-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div class="contact-item-title">Email</div>
+                            <div class="contact-item-text">contact@mcm-benin.org</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-large-brand">
+                    Ministère Catholique Miséricorde
+                </div>
+                
+                <hr class="footer-divider">
+                
+                <div class="footer-bottom">
+                    <div class="footer-socials">
+                        <a href="https://facebook.com" target="_blank" class="social-link" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" class="social-link" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" class="social-link" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="https://wa.me/22900000000" target="_blank" class="social-link" aria-label="WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="footer-copyright">
+                        &copy; 2026 Ministère Catholique Miséricorde. Tous droits réservés.
+                    </div>
+                    
+                    <div class="footer-legal">
+                        <a href="/politique-confidentialite" class="legal-link">Politique de confidentialité</a>
+                        <a href="/conditions-utilisation" class="legal-link">Conditions d'utilisation</a>
+                        <a href="/protection-donnees" class="legal-link">Protection des données</a>
+                        <a href="/mentions-legales" class="legal-link">Mentions légales</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="./assets/js/main.js"></script>
+</body>
+</html>

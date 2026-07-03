@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - MCM</title>
+    <link rel="icon" type="image/svg" href="../assets/images/logo/logomcm.svg">
+    <link rel="stylesheet" href="../assets/css/admin/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-church"></i></div>
+                <span>MCM Admin</span>
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div class="user-menu" onclick="app.openProfileModal()">
+                <div class="user-avatar" id="userAvatar">AD</div>
+                <span class="user-name" id="userName">Admin</span>
+                <i class="fas fa-chevron-down" style="color: var(--gray); font-size: 0.75rem;"></i>
+            </div>
+            <!-- Bouton déconnexion caché en responsive -->
+            <button class="logout-btn" onclick="app.logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </nav>
+
+    <aside class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <div class="sidebar-link active" onclick="app.showSection('dashboard')">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de Bord</span>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="app.showSection('addMember')">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Ajouter Membre</span>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="app.showSection('members')">
+                    <i class="fas fa-users"></i>
+                    <span>Mes Membres</span>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="app.showSection('reports')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Rapports</span>
+                </div>
+            </li>
+            <li class="sidebar-item mobile-only">
+                <div class="sidebar-link" onclick="app.openProfileModal()">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Mon Profil</span>
+                </div>
+            </li>
+            <!-- Bouton déconnexion visible uniquement en mobile -->
+            <li class="sidebar-item mobile-only">
+                <div class="sidebar-link" onclick="app.logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </div>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <!-- DASHBOARD -->
+        <section id="dashboardSection" class="content-section active">
+            <div class="welcome-section">
+                <h1 id="welcomeMessage">Bienvenue</h1>
+                <p id="welcomeSubtext">Gérez vos membres efficacement</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="totalMembers">0</div>
+                            <div class="stat-label">Total Membres</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="maleCount">0</div>
+                            <div class="stat-label">Hommes</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-male"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="femaleCount">0</div>
+                            <div class="stat-label">Femmes</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-female"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="thisMonth">0</div>
+                            <div class="stat-label">Ce Mois-ci</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-calendar-plus"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADD MEMBER -->
+        <section id="addMemberSection" class="content-section">
+            <h1 class="page-title">Ajouter un Membre</h1>
+            <p class="page-subtitle">Remplissez le formulaire ci-dessous</p>
+            <div class="section-card">
+                <form id="addMemberForm" onsubmit="app.addMember(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Nom *</label>
+                            <input type="text" class="form-control" id="addNom" required placeholder="Doe">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Prénom *</label>
+                            <input type="text" class="form-control" id="addPrenom" required placeholder="John">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sexe *</label>
+                            <select class="form-select" id="addSexe" required>
+                                <option value="">-- Sélectionner --</option>
+                                <option value="Homme">Homme</option>
+                                <option value="Femme">Femme</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date de Naissance *</label>
+                            <input type="date" class="form-control" id="addDateNaissance" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="addEmail" placeholder="johndoe@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Téléphone</label>
+                            <input type="tel" class="form-control" id="addTelephone" placeholder="+229 XX XX XX XX XX">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        <span>Ajouter</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- MEMBERS -->
+        <section id="membersSection" class="content-section">
+            <h1 class="page-title">Mes Membres</h1>
+            <p class="page-subtitle">Gestion de tous vos membres</p>
+            <div class="section-card">
+                <div id="bulkActionsDiv"></div>
+                <div class="search-bar">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Rechercher un membre..." onkeyup="app.filterMembers()">
+                </div>
+                <div id="membersDiv"></div>
+                <div class="pagination" id="paginationDiv"></div>
+            </div>
+        </section>
+
+        <!-- REPORTS -->
+        <section id="reportsSection" class="content-section">
+            <h1 class="page-title">Rapports & Statistiques</h1>
+            <p class="page-subtitle">Analyse détaillée de votre service</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="reportTotal">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="reportMale">0%</div>
+                            <div class="stat-label">Hommes</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-male"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="reportFemale">0%</div>
+                            <div class="stat-label">Femmes</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-female"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="reportAge">0</div>
+                            <div class="stat-label">Âge Moyen</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-birthday-cake"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3 class="section-title"><i class="fas fa-chart-pie"></i> Informations</h3>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <strong><i class="fas fa-envelope"></i> Emails</strong>
+                        <div class="info-value" id="emailCount">0</div>
+                    </div>
+                    <div class="info-card">
+                        <strong><i class="fas fa-phone"></i> Téléphones</strong>
+                        <div class="info-value" id="phoneCount">0</div>
+                    </div>
+                    <div class="info-card" style="border-left-color: var(--success);">
+                        <strong style="color: var(--success);"><i class="fas fa-check-circle"></i> Complétion</strong>
+                        <div class="info-value" id="completionRate" style="color: var(--success);">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3 class="section-title"><i class="fas fa-birthday-cake"></i> Anniversaires à Venir</h3>
+                <div class="birthdays-grid" id="birthdaysDiv">
+                    <p style="color: var(--gray); grid-column: 1/-1; text-align: center;">Aucun anniversaire ce mois</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PROFILE MODAL -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-user-cog"></i> Mon Profil</h3>
+                <button class="close-btn" onclick="app.closeModal('profileModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm" onsubmit="app.updateProfile(event)">
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="profNom" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="profPrenom" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="profEmail" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label class="form-label">Nouveau Mot de Passe (optionnel)</label>
+                        <input type="password" class="form-control" id="profPassword" placeholder="Laisser vide pour ne pas changer">
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="submit" class="btn-primary" style="flex: 1;">
+                            <i class="fas fa-save"></i> Enregistrer
+                        </button>
+                        <button type="button" class="btn-primary" onclick="app.closeModal('profileModal')" style="flex: 1; background: var(--gray);">
+                            <i class="fas fa-times"></i> Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-edit"></i> Modifier</h3>
+                <button class="close-btn" onclick="app.closeModal('editModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" onsubmit="app.updateMember(event)">
+                    <input type="hidden" id="editId">
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="editNom" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="editPrenom" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">Sexe</label>
+                        <select class="form-select" id="editSexe" required>
+                            <option value="Homme">Homme</option>
+                            <option value="Femme">Femme</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">Date de Naissance</label>
+                        <input type="date" class="form-control" id="editDateNaissance" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editEmail">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label class="form-label">Téléphone</label>
+                        <input type="tel" class="form-control" id="editTelephone">
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="submit" class="btn-primary" style="flex: 1;">
+                            <i class="fas fa-save"></i> Enregistrer
+                        </button>
+                        <button type="button" class="btn-primary" onclick="app.closeModal('editModal')" style="flex: 1; background: var(--gray);">
+                            <i class="fas fa-times"></i> Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../assets/js/placeholder-animation.js"></script>
+    <script src="../assets/js/admin/admin.js"></script>
+</body>
+</html>

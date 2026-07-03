@@ -1,0 +1,8 @@
+{
+  "verbose": false,
+  "quiet": false,
+  "watch": ["server.js", "server/"],
+  "ext": "js,mjs,json",
+  "ignore": ["node_modules/", "public/", "*.log"],
+  "delay": 500
+}
