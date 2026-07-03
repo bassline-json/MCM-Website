@@ -271,7 +271,7 @@ const startBirthdayChecker = () => {
 // =============================
 // 🚀 Lancement du serveur
 // =============================
-httpServer.listen(PORT, () => {
+httpServer.listen(PORT, "0.0.0.0", () => {
     console.log(`\n🎯 MCM Management System démarré !`);
     console.log(`🔗 URL locale: http://localhost:${PORT}`);
     console.log(`📝 Environnement: ${NODE_ENV}`);

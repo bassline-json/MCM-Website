@@ -15,9 +15,10 @@ if (process.env.DATABASE_URL) {
         ssl: {
             rejectUnauthorized: false
         },
-        max: 20,
+        max: 10,
         idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 5000,
+        connectionTimeoutMillis: 15000,  // Supabase peut être lent au 1er démarrage
+        keepAlive: true,
     };
 } else {
     // ✅ Développement local : PostgreSQL sur le PC

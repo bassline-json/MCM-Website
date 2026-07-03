@@ -7,7 +7,7 @@
     <link rel="icon" type="image/svg" href="../assets/images/logo/logomcm.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:italic,wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,109 +16,121 @@
         }
 
         :root {
-            --primary-red: #E60012;
+            --red: #E60012;
+            --red-deep: #9A000D;
             --white: #FFFFFF;
-            --bg-light: #F8F9FA;
-            --text-dark: #1F2937;
-            --text-muted: #6B7280;
+            --text-light: #F1F5F9;
+            --text-muted: #94A3B8;
         }
 
         html, body {
             width: 100%;
-            height: 100%;
-            background-color: var(--bg-light);
+            min-height: 100vh;
             font-family: 'Inter', -apple-system, sans-serif;
-            color: var(--text-dark);
+            color: var(--text-light);
             overflow-x: hidden;
-            overflow-y: auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            position: relative;
+
+            /* Background premium sombre */
+            background-color: #0D0D0F;
+            background-image:
+                radial-gradient(ellipse 80% 60% at 50% 0%, rgba(180, 0, 18, 0.18) 0%, transparent 65%),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(120, 0, 10, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 50% at 10% 80%, rgba(100, 0, 8, 0.08) 0%, transparent 60%);
         }
 
-        /* Lueurs rouges douces sur fond clair */
-        .bg-accent {
-            position: absolute;
-            width: min(90vw, 600px);
-            height: min(90vw, 600px);
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(230, 0, 18, 0.05) 0%, transparent 70%);
+        /* Grille de fond subtile */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 60px 60px;
             pointer-events: none;
             z-index: 0;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
         }
 
-        /* Conteneur sans boîte dépolie, directement sur la page */
+        /* Wrapper principal */
         .error-wrapper {
             position: relative;
             z-index: 1;
             text-align: center;
-            padding: 2rem;
-            max-width: 650px;
+            padding: 2rem 1.5rem;
+            max-width: 620px;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: auto;
         }
 
-        /* En-tête avec logo */
+        /* ── Logo en haut ── */
         .logo-header {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 2.5rem;
+            gap: 0.6rem;
+            margin-bottom: 3rem;
+            opacity: 0.85;
         }
 
         .header-logo {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
+            filter: brightness(0) invert(1);
         }
 
         .header-title {
-            font-size: 1.15rem;
+            font-size: 1rem;
             font-weight: 800;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
-            color: var(--text-dark);
+            color: var(--white);
         }
 
-        /* 404 Visual containing 4 - grenade - 4 */
+        /* ── Visuel 4 🔴 4 ── */
         .error-visual {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
+            /* Gap négatif : les 4 se rapprochent de la grenade */
+            gap: -0.4rem;
+            margin-bottom: 2.5rem;
             user-select: none;
         }
 
         .error-digit {
-            font-size: clamp(8.5rem, 20vw, 14.5rem);
-            font-weight: 800;
-            color: var(--text-dark);
+            font-size: clamp(9rem, 22vw, 15rem);
+            font-weight: 900;
             line-height: 1;
             display: inline-block;
-            letter-spacing: -2px;
+            /* Couleur en dégradé rouge → blanc */
+            background: linear-gradient(160deg, #FFFFFF 20%, #E60012 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -4px;
+            filter: drop-shadow(0 0 30px rgba(230, 0, 18, 0.25));
         }
 
-        /* Alignement 3D des 4 */
+        /* Inclinaisons 3D opposées des deux 4 */
         .error-digit:first-child {
-            transform: rotate(-10deg) skewY(-5deg);
+            transform: rotate(-8deg) skewY(-4deg);
+            margin-right: -0.6rem;
         }
 
         .error-digit:last-child {
-            transform: rotate(10deg) skewY(5deg);
+            transform: rotate(8deg) skewY(4deg);
+            margin-left: -0.6rem;
         }
 
-        /* Grenade plus grosse comme demandée */
+        /* Grenade */
         .grenade-container {
-            width: clamp(140px, 26vw, 240px);
-            height: clamp(140px, 26vw, 240px);
+            width: clamp(130px, 24vw, 220px);
+            height: clamp(130px, 24vw, 220px);
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -129,188 +141,224 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 15px 30px rgba(230, 0, 18, 0.15));
+            filter:
+                drop-shadow(0 0 18px rgba(230, 0, 18, 0.35))
+                drop-shadow(0 12px 28px rgba(0, 0, 0, 0.6));
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
+            50%       { transform: translateY(-12px) rotate(3deg); }
         }
 
-        /* Error Message text */
+        /* ── Titre + sous-titre ── */
         .error-title {
-            font-size: clamp(1.6rem, 4.5vw, 2.5rem);
+            font-size: clamp(1.7rem, 4.5vw, 2.6rem);
             font-weight: 800;
-            color: var(--text-dark);
+            color: var(--white);
             margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
         }
 
         .error-subtitle {
-            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+            font-size: clamp(0.9rem, 2.5vw, 1.05rem);
             color: var(--text-muted);
             margin-bottom: 2.5rem;
             font-weight: 400;
+            line-height: 1.6;
         }
 
-        /* Verset Biblique Réconfortant */
-        .bible-verse-container {
+        /* ── Carte de statut animée ── */
+        .status-card {
             width: 100%;
-            max-width: 500px;
-            margin-bottom: 3rem;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.7);
-            border-left: 3px solid var(--primary-red);
-            border-radius: 4px 16px 16px 4px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            max-width: 460px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
             text-align: left;
         }
 
-        .verse-label {
+        .status-icon-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(230, 0, 18, 0.12);
+            border: 1px solid rgba(230, 0, 18, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--red);
+            font-size: 1.2rem;
+            animation: pulse-ring 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-ring {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(230, 0, 18, 0.3); }
+            50%       { box-shadow: 0 0 0 8px rgba(230, 0, 18, 0); }
+        }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .status-label {
             font-size: 0.7rem;
-            color: var(--primary-red);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--red);
+            margin-bottom: 0.3rem;
         }
 
-        .verse-text {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 1.1rem;
-            color: var(--text-dark);
-            line-height: 1.6;
-            margin-bottom: 0.5rem;
+        .status-message {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            font-weight: 500;
         }
 
-        .verse-reference {
+        .status-countdown {
             font-size: 0.8rem;
             color: var(--text-muted);
-            font-weight: 600;
-            text-align: right;
+            margin-top: 0.25rem;
         }
 
-        /* Liens rapides */
+        /* ── Liens rapides ── */
         .quick-links {
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             width: 100%;
+            max-width: 460px;
         }
 
-        .quick-links-title {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 1rem;
+        .quick-links-label {
+            font-size: 0.7rem;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
         }
 
         .links-grid {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
 
         .quick-link {
-            color: var(--text-dark);
+            color: var(--text-light);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-            background: var(--white);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 0.6rem 1.4rem;
+            gap: 0.45rem;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.6rem 1.25rem;
             border-radius: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            transition: all 0.25s ease;
         }
 
         .quick-link:hover {
-            color: var(--primary-red);
-            background: rgba(230, 0, 18, 0.04);
-            border-color: rgba(230, 0, 18, 0.15);
+            color: var(--white);
+            background: rgba(230, 0, 18, 0.12);
+            border-color: rgba(230, 0, 18, 0.35);
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(230, 0, 18, 0.08);
         }
 
+        /* ── Bouton retour principal ── */
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--red);
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 0.85rem 2.2rem;
+            border-radius: 50px;
+            margin-bottom: 2.5rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 20px rgba(230, 0, 18, 0.35);
+            letter-spacing: 0.02em;
+        }
+
+        .btn-home:hover {
+            background: #c50010;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(230, 0, 18, 0.45);
+        }
+
+        /* ── Support ── */
         .support-text {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
         }
 
         .support-email {
-            color: var(--primary-red);
+            color: rgba(230, 0, 18, 0.85);
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.2s;
         }
 
         .support-email:hover {
+            color: var(--red);
             text-decoration: underline;
         }
 
-        /* Brand Badge in Bottom Right corner */
+        /* ── Badge MCM coin ── */
         .brand-badge {
             position: fixed;
-            bottom: 2.5rem;
-            right: 2.5rem;
+            bottom: 2rem;
+            right: 2rem;
             display: flex;
             align-items: center;
             font-weight: 900;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             letter-spacing: 0.05em;
             text-transform: uppercase;
             z-index: 10;
+            border-radius: 4px;
+            overflow: hidden;
+            opacity: 0.8;
         }
 
-        .badge-red {
-            background: var(--primary-red);
-            color: var(--white);
-            padding: 0.4rem 0.6rem;
-        }
+        .badge-red  { background: var(--red); color: var(--white); padding: 0.35rem 0.55rem; }
+        .badge-dark { background: #1a1a1a;   color: var(--white); padding: 0.35rem 0.55rem; }
 
-        .badge-black {
-            background: #111111;
-            color: var(--white);
-            padding: 0.4rem 0.6rem;
-            border: 1px solid #222222;
-        }
-
+        /* ── Responsive ── */
         @media (max-width: 480px) {
-            .brand-badge {
-                bottom: 1.5rem;
-                right: 1.5rem;
-                font-size: 1rem;
-            }
-            .error-visual {
-                gap: 0.25rem;
-            }
-            .links-grid {
-                flex-direction: column;
-                align-items: center;
-                gap: 0.75rem;
-            }
-            .quick-link {
-                width: 100%;
-                justify-content: center;
-            }
+            .error-digit { letter-spacing: -2px; }
+            .error-digit:first-child { margin-right: -0.3rem; }
+            .error-digit:last-child  { margin-left: -0.3rem; }
+            .brand-badge { bottom: 1rem; right: 1rem; font-size: 0.9rem; }
+            .links-grid { flex-direction: column; align-items: center; }
+            .quick-link { width: 100%; justify-content: center; }
+            .status-card { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-accent"></div>
-
     <div class="error-wrapper">
-        <!-- Logo Header -->
+
+        <!-- Logo -->
         <div class="logo-header">
             <img src="../assets/images/logo/logomcm.svg" alt="Logo MCM" class="header-logo">
             <span class="header-title">MCM</span>
         </div>
 
+        <!-- Visuel 4-grenade-4 -->
         <div class="error-visual">
             <span class="error-digit">4</span>
             <div class="grenade-container">
@@ -319,19 +367,29 @@
             <span class="error-digit">4</span>
         </div>
 
-        <h1 class="error-title">Oops! Page Non Trouvée</h1>
-        <p class="error-subtitle">La page demandée n'existe pas ou a été déplacée.</p>
+        <h1 class="error-title">Page introuvable</h1>
+        <p class="error-subtitle">Cette page n'existe pas ou a été déplacée.<br>Pas de panique, on vous ramène à bon port.</p>
 
-        <!-- Verset Biblique Aléatoire -->
-        <div class="bible-verse-container">
-            <p class="verse-label">Un mot pour vous fortifier</p>
-            <p class="verse-text" id="bible-verse">« Le Seigneur est mon berger, je ne manque de rien. »</p>
-            <p class="verse-reference" id="bible-reference">Psaume 23:1</p>
+        <!-- Bouton retour principal -->
+        <a href="/" class="btn-home">
+            <i class="fas fa-arrow-left"></i> Retour à l'accueil
+        </a>
+
+        <!-- Carte de statut animée -->
+        <div class="status-card">
+            <div class="status-icon-wrap">
+                <i class="fas fa-satellite-dish"></i>
+            </div>
+            <div class="status-text">
+                <p class="status-label">Statut</p>
+                <p class="status-message">Nos serveurs fonctionnent normalement</p>
+                <p class="status-countdown" id="countdown-msg">Redirection automatique dans <strong id="timer">10</strong>s</p>
+            </div>
         </div>
 
         <!-- Liens rapides -->
         <div class="quick-links">
-            <p class="quick-links-title">Liens utiles</p>
+            <p class="quick-links-label">Où voulez-vous aller ?</p>
             <div class="links-grid">
                 <a href="/" class="quick-link"><i class="fas fa-home"></i> Accueil</a>
                 <a href="/#about" class="quick-link"><i class="fas fa-info-circle"></i> À propos</a>
@@ -339,30 +397,27 @@
             </div>
         </div>
 
-        <p class="support-text">Besoin d'aide ? Contactez-nous à <a href="mailto:contact@mcm-benin.org" class="support-email">contact@mcm-benin.org</a></p>
+        <p class="support-text">Un problème persistant ? <a href="mailto:contact@mcm-benin.org" class="support-email">contact@mcm-benin.org</a></p>
     </div>
 
-    <!-- Brand Badge bottom right -->
+    <!-- Badge MCM -->
     <div class="brand-badge">
         <span class="badge-red">MC</span>
-        <span class="badge-black">M</span>
+        <span class="badge-dark">M</span>
     </div>
 
     <script>
-        const verses = [
-            { text: "« Le Seigneur est mon berger, je ne manque de rien. »", ref: "Psaume 23:1" },
-            { text: "« Ne crains rien, car je suis avec toi ; ne promène pas des regards inquiets, car je suis ton Dieu. »", ref: "Ésaïe 41:10" },
-            { text: "« Venez à moi, vous tous qui êtes fatigués et chargés, et je vous donnerai du repos. »", ref: "Matthieu 11:28" },
-            { text: "« Le Seigneur est ma lumière et mon salut ; de qui aurais-je crainte ? »", ref: "Psaume 27:1" },
-            { text: "« Je puis tout par celui qui me fortifie. »", ref: "Philippiens 4:13" },
-            { text: "« Que votre cœur ne se trouble point. Croyez en Dieu, et croyez en moi. »", ref: "Jean 14:1" },
-            { text: "« Ne vous inquiétez de rien ; mais en toute chose faites connaître vos besoins à Dieu par des prières. »", ref: "Philippiens 4:6" }
-        ];
-
-        // Choisir un verset aléatoire au chargement
-        const randomIndex = Math.floor(Math.random() * verses.length);
-        document.getElementById('bible-verse').textContent = verses[randomIndex].text;
-        document.getElementById('bible-reference').textContent = verses[randomIndex].ref;
+        // Compte à rebours + redirection automatique vers l'accueil
+        let seconds = 10;
+        const timerEl = document.getElementById('timer');
+        const interval = setInterval(() => {
+            seconds--;
+            if (timerEl) timerEl.textContent = seconds;
+            if (seconds <= 0) {
+                clearInterval(interval);
+                window.location.href = '/';
+            }
+        }, 1000);
     </script>
 
 </body>
