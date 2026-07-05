@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <meta name="description" content="Ministère Catholique Miséricorde (MCM) — Une communauté de foi à Abomey-Calavi, Bénin, unie dans l'amour du Christ à travers 8 commissions dédiées au service de Dieu et du prochain.">
+    <!-- Preconnect pour les ressources critiques -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg" href="../assets/images/logo/logomcm.svg">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
+    <!-- Google Fonts: Inter uniquement -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/logomcm.svg">
     <link rel="stylesheet" href="../assets/css/style.css">
     <title>MCM - Ministère Catholique Miséricorde</title>
 </head>
@@ -23,7 +29,7 @@
         
         <div class="splash-content">
             <div class="splash-logo">
-                <img src="../assets/images/logo/logomcm.svg" alt="MCM Logo" style="width: 100%; height: 100%;">
+                <img src="../assets/images/logo/logomcm.svg" alt="MCM Logo" style="width: 100%; height: 100%;" fetchpriority="high" loading="eager">
             </div>
             <button class="enter-button" id="enterButton">
                 Découvrir MCM
@@ -43,31 +49,50 @@
             </button>
             <ul class="mobile-menu-links">
                 <li><a href="#accueil" class="mobile-menu-link">Accueil</a></li>
-                <li><a href="#about" class="mobile-menu-link">Notre identité</a></li>
-                <li><a href="#galerie" class="mobile-menu-link">Galerie</a></li>
-                <li><a href="commission.html" class="mobile-menu-link">Commissions</a></li>
+                <li><a href="#about" class="mobile-menu-link">À propos</a></li>
+                <li><a href="#excellence" class="mobile-menu-link">Excellence</a></li>
+                <li><a href="#poles" class="mobile-menu-link">Départements</a></li>
+                <li><a href="#realisations" class="mobile-menu-link">Réalisations</a></li>
+                <li><a href="#agenda" class="mobile-menu-link">Événements</a></li>
                 <li><a href="#contact" class="mobile-menu-link">Contact</a></li>
             </ul>
         </div>
 
-        <!-- Hero Section (Artpill Style) -->
-        <section class="hero-fullscreen" id="accueil" data-theme="light">
-            <div class="hero-overlay"></div>
+        <!-- ========== HERO SECTION — Carrousel 3 slides ========== -->
+        <section class="hero-fullscreen" id="accueil" data-theme="dark">
 
-            <!-- Top Bar: Logo (Left), Slogan (Center), Connexion (Right) -->
+            <!-- Background Carousel (slides) -->
+            <div class="hero-bg-carousel" id="heroBgCarousel">
+                <!-- Slide 1: Vidéo -->
+                <div class="hero-bg-slide active" data-type="video" data-index="0">
+                    <video class="hero-bg-video" autoplay muted loop playsinline preload="metadata">
+                        <source src="../assets/images/videos/Pierre.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <!-- Slide 2: Image -->
+                <div class="hero-bg-slide" data-type="image" data-index="1">
+                    <img class="hero-bg-image" src="../assets/images/holy-communion-concept-with-wine.webp" alt="Communion" loading="lazy">
+                </div>
+                <!-- Slide 3: Image -->
+                <div class="hero-bg-slide" data-type="image" data-index="2">
+                    <img class="hero-bg-image" src="../assets/images/spirituality-religion-women-religious-concepts-hands-praying-god-while-holding-cross-symbol-nun-caught-cross-his-hand.webp" alt="Prière" loading="lazy">
+                </div>
+            </div>
+            
+            <!-- Dynamic overlay: changes with slide -->
+            <div class="hero-overlay-dynamic" id="heroOverlayDynamic"></div>
+
+            <!-- Top Bar -->
             <header class="hero-top-bar" id="heroTopBar">
-                <!-- Logo -->
                 <a href="#accueil" class="hero-logo">
                     <img src="../assets/images/logo/logomcm.svg" alt="Logo MCM">
                     <span class="logo-text">MCM</span>
                 </a>
                 
-                <!-- Slogan -->
                 <div class="hero-slogan">
                     <span>Jésus j'ai confiance en toi</span>
                 </div>
 
-                <!-- Connexion Button -->
                 <div class="hero-login-container">
                     <a href="login.html" class="hero-login-btn">
                         <i class="fas fa-sign-in-alt"></i>
@@ -76,46 +101,103 @@
                 </div>
             </header>
 
-            <!-- Centered Brand Title (Global Design Studio Style) -->
-            <div class="hero-centered-brand">
-                <h1 class="brand-title" id="animatedBrandTitle">
-                    <div class="brand-line-wrapper">
-                        <span class="brand-line line-1">
-                            <span class="brand-word">Ministère</span>
-                            <span class="brand-icon-wrapper"><i class="fa-solid fa-asterisk brand-spinner"></i></span>
-                            <span class="brand-word">Catholique</span>
-                        </span>
+            <!-- Slide-specific content (changes with each slide) -->
+            <div class="hero-slides-content" id="heroSlidesContent">
+                <!-- Contenu Slide 1 -->
+                <div class="hero-slide-content active" data-slide="0">
+                    <div class="hero-premium-badge animate-on-scroll">
+                        <span class="cross-sparkle"><i class="fa-solid fa-cross"></i></span>
+                        <span class="badge-text">Mission Catholique MCM</span>
                     </div>
-                    <div class="brand-line-wrapper">
-                        <span class="brand-line line-2">
-                            <span class="brand-word">Miséricorde</span>
-                        </span>
+                    <h1 class="hero-slide-title">
+                        <span>Ministère Catholique</span>
+                        <span class="hero-title-highlight">Miséricorde</span>
+                    </h1>
+                    <p class="hero-slide-subtitle">Former des disciples. Servir avec excellence. Impacter les nations.</p>
+                    <div class="hero-cta-buttons">
+                        <a href="#about" class="hero-cta-btn hero-cta-btn--primary">
+                            <span>Découvrir la Mission</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="commission.html" class="hero-cta-btn hero-cta-btn--ghost">
+                            <i class="fas fa-users"></i>
+                            <span>Rejoindre une Commission</span>
+                        </a>
                     </div>
-                </h1>
+                </div>
+                <!-- Contenu Slide 2 -->
+                <div class="hero-slide-content" data-slide="1">
+                    <div class="hero-premium-badge">
+                        <span class="cross-sparkle"><i class="fa-solid fa-graduation-cap"></i></span>
+                        <span class="badge-text">Formation & Excellence</span>
+                    </div>
+                    <h1 class="hero-slide-title">
+                        <span>Grandis dans</span>
+                        <span class="hero-title-highlight">la Foi et le Service</span>
+                    </h1>
+                    <p class="hero-slide-subtitle">Des cycles de formation doctrinale et de leadership pour fortifier chaque disciple.</p>
+                    <div class="hero-cta-buttons">
+                        <a href="#excellence" class="hero-cta-btn hero-cta-btn--primary">
+                            <span>Notre Excellence</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="#poles" class="hero-cta-btn hero-cta-btn--ghost">
+                            <i class="fas fa-sitemap"></i>
+                            <span>Nos Départements</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Contenu Slide 3 -->
+                <div class="hero-slide-content" data-slide="2">
+                    <div class="hero-premium-badge">
+                        <span class="cross-sparkle"><i class="fa-solid fa-hands-holding-heart"></i></span>
+                        <span class="badge-text">Service & Fraternité</span>
+                    </div>
+                    <h1 class="hero-slide-title">
+                        <span>Servir le Christ</span>
+                        <span class="hero-title-highlight">avec Amour</span>
+                    </h1>
+                    <p class="hero-slide-subtitle">Une communauté soudée qui rayonne l'amour de Dieu dans chaque sphère de la société.</p>
+                    <div class="hero-cta-buttons">
+                        <a href="#realisations" class="hero-cta-btn hero-cta-btn--primary">
+                            <span>Nos Réalisations</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="#contact" class="hero-cta-btn hero-cta-btn--ghost">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>Nous contacter</span>
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <!-- Bottom Navigation Bar & Scroll Indicator (Morphing) -->
+            <!-- Hero Carousel Controls -->
+            <div class="hero-carousel-controls" id="heroCarouselControls">
+                <button class="hero-dot active" data-target="0" aria-label="Slide 1"></button>
+                <button class="hero-dot" data-target="1" aria-label="Slide 2"></button>
+                <button class="hero-dot" data-target="2" aria-label="Slide 3"></button>
+            </div>
+
+            <!-- Bottom Navigation Bar & Scroll Indicator -->
             <nav class="hero-bottom-nav" id="heroBottomNav">
                 <div class="bottom-nav-container at-top" id="bottomNavContainer">
-                    <!-- Scroll Indicator (Visible when at the top) -->
                     <div class="nav-scroll-indicator" id="navScrollIndicator">
                         <div class="scroll-mouse">
                             <div class="scroll-wheel"></div>
                         </div>
                     </div>
                     
-                    <!-- Pill Menu (Visible when scrolled) -->
                     <div class="nav-pill-menu" id="navPillMenu">
-                        <!-- Desktop Menu -->
                         <ul class="bottom-nav-menu">
                             <li><a href="#accueil" class="bottom-nav-link active">Accueil</a></li>
-                            <li><a href="#about" class="bottom-nav-link">Notre identité</a></li>
-                            <li><a href="#galerie" class="bottom-nav-link">Galerie</a></li>
-                            <li><a href="commission.html" class="bottom-nav-link">Commissions</a></li>
+                            <li><a href="#about" class="bottom-nav-link">À propos</a></li>
+                            <li><a href="#excellence" class="bottom-nav-link">Excellence</a></li>
+                            <li><a href="#poles" class="bottom-nav-link">Départements</a></li>
+                            <li><a href="#realisations" class="bottom-nav-link">Réalisations</a></li>
+                            <li><a href="#agenda" class="bottom-nav-link">Événements</a></li>
                             <li><a href="#contact" class="bottom-nav-link">Contact</a></li>
                         </ul>
                         
-                        <!-- Mobile Hamburger (Menu) -->
                         <button class="bottom-nav-hamburger" id="bottomHamburger" aria-label="Ouvrir le menu">
                             <span class="hamburger-text">Menu</span>
                             <div class="hamburger-icon">
@@ -128,131 +210,564 @@
             </nav>
         </section>
 
-        <!-- Carousel Section -->
-        <section class="carousel-section" id="galerie" data-theme="light">
-            <div class="carousel-container">
-                <div class="section-header animate-on-scroll">
-                    <span class="section-badge">Galerie</span>
-                    <h2 class="section-title">Nos Moments de Foi</h2>
-                    <p class="section-subtitle">Découvrez les moments forts de notre communauté en images</p>
-                </div>
-                <div class="carousel-wrapper">
-                    <div class="carousel-track" id="carouselTrack">
-                        <div class="carousel-slide">
-                            <img src="../assets/images/holy-communion-concept-with-bible.jpg" alt="Moment de prière">
-                            <div class="carousel-overlay">
-                                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Célébration Eucharistique</h3>
-                                <p>Unis dans la foi et la prière</p>
-                            </div>
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="../assets/images/closeup-cross.jpg" alt="Louange">
-                            <div class="carousel-overlay">
-                                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Temps de Louange</h3>
-                                <p>Adoration et chants spirituels</p>
-                            </div>
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="../assets/images/close-up-priest-praying-with-cross.jpg" alt="Communauté">
-                            <div class="carousel-overlay">
-                                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Vie Communautaire</h3>
-                                <p>Partage fraternel et convivialité</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-controls">
-                        <button class="carousel-btn" id="prevBtn">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="carousel-btn" id="nextBtn">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="carousel-dots" id="carouselDots"></div>
-            </div>
-        </section>
-
-        <!-- About Section (Light Carousel Redesign) -->
-        <section class="about-light" id="about" data-theme="light">
-            <div class="about-light-container">
-                <!-- Left: Text -->
-                <div class="about-light-text animate-on-scroll">
+        <!-- ========== 1. NOTRE IDENTITÉ (Style "Mes Solutions Phares") ========== -->
+        <section class="identity-section" id="about" data-theme="light">
+            <div class="identity-container">
+                <!-- Colonne gauche : titre + grille de 4 cards -->
+                <div class="identity-left animate-on-scroll">
                     <div class="contact-eyebrow">
                         <span class="contact-eyebrow-line"></span>
-                        <span class="contact-eyebrow-text">Notre histoire</span>
+                        <span class="contact-eyebrow-text">Qui sommes-nous ?</span>
                     </div>
-                    <h2 class="about-light-heading">
-                        <span class="alh-top">Lumière sur notre</span>
-                        <span class="alh-bottom">mission</span>
-                    </h2>
-                    <p class="about-light-desc">
-                        Né d'une profonde volonté de servir, le Ministère Catholique Miséricorde (MCM) est une communauté vibrante où la foi se vit en actes. Nous œuvrons chaque jour pour répandre l'amour du Christ, soutenir les plus vulnérables et grandir ensemble dans la fraternité.
-                    </p>
+                    <h2 class="identity-main-title">Notre <span>Identité</span></h2>
+                    <p class="identity-desc">Une institution catholique enracinée dans la foi, la miséricorde et l'excellence du service au Christ et aux hommes.</p>
+                    
+                    <!-- Grille 2×2 de cards "Solutions Phares" -->
+                    <div class="identity-cards-container">
+                        <div class="identity-cards-column">
+                            <div class="identity-sp-card">
+                                <div class="identity-sp-card-inner">
+                                    <div class="identity-sp-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                                    <h3 class="identity-sp-title">Notre Vision</h3>
+                                    <p class="identity-sp-text">Être un phare spirituel et d'excellence, inspirant chaque âme à s'engager pour le Christ.</p>
+                                    <div class="identity-sp-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                                </div>
+                            </div>
+                            <div class="identity-sp-card">
+                                <div class="identity-sp-card-inner">
+                                    <div class="identity-sp-icon"><i class="fa-solid fa-hands-holding"></i></div>
+                                    <h3 class="identity-sp-title">Nos Valeurs</h3>
+                                    <p class="identity-sp-text">Miséricorde, Sainteté, Excellence du Service, Fraternité et Intégrité au quotidien.</p>
+                                    <div class="identity-sp-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="identity-cards-column">
+                            <div class="identity-sp-card">
+                                <div class="identity-sp-card-inner">
+                                    <div class="identity-sp-icon"><i class="fa-solid fa-cross"></i></div>
+                                    <h3 class="identity-sp-title">Notre Mission</h3>
+                                    <p class="identity-sp-text">Former des disciples fervents et bâtir une communauté unie pour servir avec excellence.</p>
+                                    <div class="identity-sp-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                                </div>
+                            </div>
+                            <div class="identity-sp-card">
+                                <div class="identity-sp-card-inner">
+                                    <div class="identity-sp-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                                    <h3 class="identity-sp-title">Accompagnement</h3>
+                                    <p class="identity-sp-text">Un suivi spirituel et humain personnalisé pour grandir sereinement dans la foi.</p>
+                                    <div class="identity-sp-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Right: Carousel of cards -->
-                <div class="about-light-carousel-wrapper animate-on-scroll">
-                    <!-- Background pattern (union.svg) placed right behind the carousel -->
-                    <div class="about-bg-pattern">
-                        <img src="../assets/images/union.svg" alt="" aria-hidden="true">
+                <!-- Colonne droite : image stylisée -->
+                <div class="identity-right animate-on-scroll">
+                    <div class="identity-image-wrapper">
+                        <div class="identity-image-deco"></div>
+                        <img src="../assets/images/Man.webp" alt="Membre de la communauté MCM" class="identity-main-img" loading="lazy">
                     </div>
+                </div>
+            </div>
+        </section>
 
-                    <div class="about-carousel" id="aboutCarousel">
-                        <!-- Cards -->
-                        <div class="about-carousel-card" data-modal="mission">
-                            <div class="acc-icon"><i class="fa-solid fa-cross"></i></div>
-                            <h3 class="acc-title">Mission</h3>
-                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+        <!-- ========== 2. CE QUI NOUS DISTINGUE (Style "Mes Académies") ========== -->
+        <section class="excellence-section" id="excellence" data-theme="light">
+            <div class="premium-section-header animate-on-scroll">
+                <span class="premium-badge"><i class="fa-solid fa-star"></i> Notre excellence</span>
+                <h2 class="premium-title">Ce qui nous <span>distingue</span></h2>
+                <p class="premium-subtitle">La Mission Catholique MCM s'engage à offrir une dimension institutionnelle et professionnelle au service du Seigneur.</p>
+            </div>
+            
+            <div class="excellence-cards-row animate-on-scroll">
+                <!-- Card 1 -->
+                <div class="exc-ac-card">
+                    <div class="exc-ac-img">
+                        <img src="../assets/images/close-up-priest-praying-with-cross.webp" alt="Accompagnement" loading="lazy">
+                    </div>
+                    <div class="exc-ac-body">
+                        <div class="exc-ac-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                        <h3 class="exc-ac-title">Accompagnement Spirituel</h3>
+                        <p class="exc-ac-text">Chaque membre bénéficie d'un suivi spirituel et humain personnalisé pour grandir dans sa foi et sa vocation.</p>
+                        <a href="#contact" class="exc-ac-btn">En savoir plus</a>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="exc-ac-card">
+                    <div class="exc-ac-img">
+                        <img src="../assets/images/holy-communion-concept-with-bible.webp" alt="Formation" loading="lazy">
+                    </div>
+                    <div class="exc-ac-body">
+                        <div class="exc-ac-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <h3 class="exc-ac-title">Formation Continue</h3>
+                        <p class="exc-ac-text">Des cycles de formation doctrinale et de leadership pour outiller nos responsables et éveiller le leadership spirituel.</p>
+                        <a href="#contact" class="exc-ac-btn">En savoir plus</a>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="exc-ac-card">
+                    <div class="exc-ac-img">
+                        <img src="../assets/images/closeup-cross.webp" alt="Innovation" loading="lazy">
+                    </div>
+                    <div class="exc-ac-body">
+                        <div class="exc-ac-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                        <h3 class="exc-ac-title">Innovation & Digital</h3>
+                        <p class="exc-ac-text">L'utilisation des technologies modernes pour propager l'Évangile efficacement et rester connectés au monde.</p>
+                        <a href="#contact" class="exc-ac-btn">En savoir plus</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dots de pagination pour le responsive mobile -->
+            <div class="excellence-dots-mobile mobile-only" id="excellenceDotsMobile">
+                <span class="exc-dot active"></span>
+                <span class="exc-dot"></span>
+                <span class="exc-dot"></span>
+            </div>
+        </section>
+
+        <!-- ========== 3. NOTRE IMPACT (Counters) ========== -->
+        <section class="impact-section" id="impact" data-theme="dark">
+            <div class="impact-bg-pattern"></div>
+            <div class="impact-container">
+                <div class="premium-section-header impact-section-header animate-on-scroll">
+                    <span class="premium-badge"><i class="fa-solid fa-chart-line"></i> Notre impact</span>
+                    <h2 class="premium-title impact-white-title">La mission en <span>chiffres</span></h2>
+                    <p class="premium-subtitle impact-white-subtitle">Des actions concrètes et une croissance spirituelle visible au fil des années.</p>
+                </div>
+                
+                <div class="impact-grid animate-on-scroll">
+                    <div class="impact-card">
+                        <span class="impact-number" data-target="650">0</span>
+                        <span class="impact-suffix">+</span>
+                        <span class="impact-label">Membres</span>
+                        <p class="impact-text">Disciples engagés dans la communauté</p>
+                    </div>
+                    <div class="impact-card">
+                        <span class="impact-number" data-target="8">0</span>
+                        <span class="impact-suffix"></span>
+                        <span class="impact-label">Commissions</span>
+                        <p class="impact-text">Pôles d'actions pastorales et administratives</p>
+                    </div>
+                    <div class="impact-card">
+                        <span class="impact-number" data-target="25">0</span>
+                        <span class="impact-suffix">+</span>
+                        <span class="impact-label">Services</span>
+                        <p class="impact-text">Ministères intérieurs actifs et dévoués</p>
+                    </div>
+                    <div class="impact-card">
+                        <span class="impact-number" data-target="12">0</span>
+                        <span class="impact-suffix"></span>
+                        <span class="impact-label">Années de mission</span>
+                        <p class="impact-text">De grâce, de service et d'évangélisation</p>
+                    </div>
+                    <div class="impact-card">
+                        <span class="impact-number" data-target="200">0</span>
+                        <span class="impact-suffix">+</span>
+                        <span class="impact-label">Actions réalisées</span>
+                        <p class="impact-text">Œuvres sociales, retraites et conférences</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== 4. NOS PÔLES D'ACTION (Style "Blog" sans images) ========== -->
+        <section class="poles-section" id="poles" data-theme="light">
+            <div class="poles-header-row animate-on-scroll">
+                <div class="poles-header-left">
+                    <span class="premium-badge"><i class="fa-solid fa-sitemap"></i> Structure institutionnelle</span>
+                    <h2 class="premium-title poles-title-align">Nos pôles <span>d'action</span></h2>
+                </div>
+                <div class="poles-header-right">
+                    <p class="premium-subtitle">Découvrez les grands domaines d'activité à travers lesquels nous servons le Christ et notre prochain.</p>
+                    <div class="poles-nav-arrows">
+                        <button class="poles-arrow-btn" id="polesScrollLeft" aria-label="Précédent">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button class="poles-arrow-btn" id="polesScrollRight" aria-label="Suivant">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="poles-track-wrapper">
+                <div class="poles-track" id="polesTrack">
+                    <a href="commission.html" class="poles-blog-card">
+                        <div class="poles-blog-number">01</div>
+                        <div class="poles-blog-icon"><i class="fa-solid fa-book-open"></i></div>
+                        <h3 class="poles-blog-title">Formation</h3>
+                        <p class="poles-blog-text">Études bibliques, catéchèse supérieure et parcours doctrinal pour fortifier l'esprit et la foi.</p>
+                        <span class="poles-blog-link">Découvrir <i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                    <a href="commission.html" class="poles-blog-card">
+                        <div class="poles-blog-number">02</div>
+                        <div class="poles-blog-icon"><i class="fa-solid fa-hands-helping"></i></div>
+                        <h3 class="poles-blog-title">Service</h3>
+                        <p class="poles-blog-text">Entraide sociale, charité de proximité et logistique des célébrations liturgiques.</p>
+                        <span class="poles-blog-link">Découvrir <i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                    <a href="commission.html" class="poles-blog-card">
+                        <div class="poles-blog-number">03</div>
+                        <div class="poles-blog-icon"><i class="fa-solid fa-music"></i></div>
+                        <h3 class="poles-blog-title">Louange</h3>
+                        <p class="poles-blog-text">Chants sacrés, adoration instrumentale et conduite musicale de la prière communautaire.</p>
+                        <span class="poles-blog-link">Découvrir <i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                    <a href="commission.html" class="poles-blog-card">
+                        <div class="poles-blog-number">04</div>
+                        <div class="poles-blog-icon"><i class="fa-solid fa-globe"></i></div>
+                        <h3 class="poles-blog-title">Évangélisation</h3>
+                        <p class="poles-blog-text">Annonce active de l'Évangile, missions extérieures et accueil des nouveaux fidèles.</p>
+                        <span class="poles-blog-link">Découvrir <i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                    <a href="commission.html" class="poles-blog-card">
+                        <div class="poles-blog-number">05</div>
+                        <div class="poles-blog-icon"><i class="fa-solid fa-video"></i></div>
+                        <h3 class="poles-blog-title">Communication</h3>
+                        <p class="poles-blog-text">Créations multimédia, retransmissions en direct et gestion de notre présence digitale.</p>
+                        <span class="poles-blog-link">Découvrir <i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                    <a href="commission.html" class="poles-blog-card">
+                        <div class="poles-blog-number">06</div>
+                        <div class="poles-blog-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3 class="poles-blog-title">Administration</h3>
+                        <p class="poles-blog-text">Gestion institutionnelle, coordination des commissions et pilotage de la vision globale.</p>
+                        <span class="poles-blog-link">Découvrir <i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                </div>
+            </div>
+            <div class="poles-footer-btn animate-on-scroll">
+                <a href="commission.html" class="poles-see-more-btn">
+                    <span>Voir tous nos départements</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- ========== 5. NOTRE FONCTIONNEMENT (Timeline horizontale) ========== -->
+        <section class="timeline-section" id="fonctionnement" data-theme="light">
+            <div class="premium-section-header animate-on-scroll">
+                <span class="premium-badge"><i class="fa-solid fa-route"></i> Parcours d'évolution</span>
+                <h2 class="premium-title">Notre <span>fonctionnement</span></h2>
+                <p class="premium-subtitle">Découvrez les différentes étapes pour vous intégrer et grandir au sein de notre structure.</p>
+            </div>
+            
+            <div class="timeline-vertical animate-on-scroll">
+                <div class="timeline-v-line"></div>
+
+                <!-- Step 1 -->
+                <div class="timeline-v-item">
+                    <div class="timeline-v-node"></div>
+                    <div class="timeline-v-content">
+                        <span class="timeline-v-num">01</span>
+                        <h3 class="timeline-v-title">Visiteur</h3>
+                        <p class="timeline-v-desc">Vous découvrez nos assemblées et notre atmosphère de prière en toute liberté.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="timeline-v-item">
+                    <div class="timeline-v-node"></div>
+                    <div class="timeline-v-content">
+                        <span class="timeline-v-num">02</span>
+                        <h3 class="timeline-v-title">Membre</h3>
+                        <p class="timeline-v-desc">Vous vous engagez régulièrement dans la vie de foi et la fraternité communautaire.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="timeline-v-item">
+                    <div class="timeline-v-node"></div>
+                    <div class="timeline-v-content">
+                        <span class="timeline-v-num">03</span>
+                        <h3 class="timeline-v-title">Commission</h3>
+                        <p class="timeline-v-desc">Vous intégrez l'une des 8 commissions spécialisées de la MCM selon vos dons.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="timeline-v-item">
+                    <div class="timeline-v-node"></div>
+                    <div class="timeline-v-content">
+                        <span class="timeline-v-num">04</span>
+                        <h3 class="timeline-v-title">Service</h3>
+                        <p class="timeline-v-desc">Vous mettez vos compétences au service d'actions concrètes et transformatrices.</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="timeline-v-item">
+                    <div class="timeline-v-node"></div>
+                    <div class="timeline-v-content">
+                        <span class="timeline-v-num">05</span>
+                        <h3 class="timeline-v-title">Responsabilité</h3>
+                        <p class="timeline-v-desc">Vous prenez la tête de projets ou de sous-groupes dans votre domaine d'action.</p>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="timeline-v-item">
+                    <div class="timeline-v-node"></div>
+                    <div class="timeline-v-content">
+                        <span class="timeline-v-num">06</span>
+                        <h3 class="timeline-v-title">Leadership</h3>
+                        <p class="timeline-v-desc">Vous guidez et inspirez la communauté dans sa vision globale et son rayonnement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== 6. NOS RÉALISATIONS (Mosaïque "Finance Académie") ========== -->
+        <section class="portfolio-section" id="realisations" data-theme="light">
+            <div class="premium-section-header animate-on-scroll">
+                <span class="premium-badge"><i class="fa-solid fa-images"></i> Nos actions</span>
+                <h2 class="premium-title">Nos <span>Réalisations</span></h2>
+                <p class="premium-subtitle">Retour en images sur les réalisations marquantes et la vie de notre communauté.</p>
+            </div>
+            
+            <!-- Grille Mosaïque Météore/Finance Académie -->
+            <div class="finance-gallery-grid animate-on-scroll">
+                <!-- Item 1 (Vertical) -->
+                <div class="fg-item fg-item--vertical">
+                    <img src="../assets/images/holy-communion-concept-with-wine.webp" alt="Camp Biblique Annuel" loading="lazy">
+                    <div class="fg-overlay">
+                        <div class="fg-info">
+                            <span class="fg-category">Formation</span>
+                            <h3 class="fg-title">Camp Biblique Annuel</h3>
+                            <p class="fg-desc">Ressourcement intensif de plus de 300 disciples.</p>
                         </div>
-                        <div class="about-carousel-card" data-modal="communaute">
-                            <div class="acc-icon"><i class="fa-solid fa-users"></i></div>
-                            <h3 class="acc-title">Communauté</h3>
-                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <!-- Item 2 (Carré) -->
+                <div class="fg-item fg-item--square">
+                    <img src="../assets/images/high-angle-wooden-cross-rosary.webp" alt="Mission Diocésaine" loading="lazy">
+                    <div class="fg-overlay">
+                        <div class="fg-info">
+                            <span class="fg-category">Évangélisation</span>
+                            <h3 class="fg-title">Mission Diocésaine</h3>
+                            <p class="fg-desc">Annonce de la Parole dans les quartiers.</p>
                         </div>
-                        <div class="about-carousel-card" data-modal="valeurs">
-                            <div class="acc-icon"><i class="fa-solid fa-hands-helping"></i></div>
-                            <h3 class="acc-title">Valeurs</h3>
-                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <!-- Item 3 (Carré) -->
+                <div class="fg-item fg-item--square">
+                    <img src="../assets/images/bread-wine-arrangement-still-life.webp" alt="Conférence de Grâce" loading="lazy">
+                    <div class="fg-overlay">
+                        <div class="fg-info">
+                            <span class="fg-category">Enseignement</span>
+                            <h3 class="fg-title">Conférence de Grâce</h3>
+                            <p class="fg-desc">Enseignements pour impacter la société.</p>
                         </div>
-                        <div class="about-carousel-card" data-modal="vision">
-                            <div class="acc-icon"><i class="fa-solid fa-lightbulb"></i></div>
-                            <h3 class="acc-title">Vision</h3>
-                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <!-- Item 4 (Carré) -->
+                <div class="fg-item fg-item--square">
+                    <img src="../assets/images/closeup-cross.webp" alt="Oeuvres de Charité" loading="lazy">
+                    <div class="fg-overlay">
+                        <div class="fg-info">
+                            <span class="fg-category">Social</span>
+                            <h3 class="fg-title">Œuvres de Charité</h3>
+                            <p class="fg-desc">Soutien matériel aux familles nécessiteuses.</p>
                         </div>
-                        <div class="about-carousel-card" data-modal="impact">
-                            <div class="acc-icon"><i class="fa-solid fa-globe-africa"></i></div>
-                            <h3 class="acc-title">Impact</h3>
-                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <!-- Item 5 (Carré) -->
+                <div class="fg-item fg-item--square">
+                    <img src="../assets/images/close-up-priest-praying-with-cross.webp" alt="Retraite des Couples" loading="lazy">
+                    <div class="fg-overlay">
+                        <div class="fg-info">
+                            <span class="fg-category">Famille</span>
+                            <h3 class="fg-title">Retraite des Couples</h3>
+                            <p class="fg-desc">Fortifier les foyers dans la foi chrétienne.</p>
                         </div>
-                        <div class="about-carousel-card" data-modal="engagement">
-                            <div class="acc-icon"><i class="fa-solid fa-star"></i></div>
-                            <h3 class="acc-title">Engagement</h3>
-                            <button class="acc-btn" aria-label="Lire la suite">Découvrir <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <!-- Item 6 (Vertical) -->
+                <div class="fg-item fg-item--vertical">
+                    <img src="../assets/images/holy-communion-concept-with-bible.webp" alt="École de Foi" loading="lazy">
+                    <div class="fg-overlay">
+                        <div class="fg-info">
+                            <span class="fg-category">Académie</span>
+                            <h3 class="fg-title">École de Foi</h3>
+                            <p class="fg-desc">Parcours doctrinal pour les nouveaux membres.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 7 (Vertical) -->
+                <div class="fg-item fg-item--vertical">
+                    <img src="../assets/images/Worship.webp" alt="Nuit d'Adoration" loading="lazy">
+                    <div class="fg-overlay">
+                        <div class="fg-info">
+                            <span class="fg-category">Liturgie</span>
+                            <h3 class="fg-title">Nuit d'Adoration</h3>
+                            <p class="fg-desc">Louange fervente et intercession commune.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 8 (Carré) -->
+                <div class="fg-item fg-item--square">
+                    <img src="../assets/images/Man.webp" alt="Leadership Chrétien" loading="lazy">
+                    <div class="fg-overlay">
+                        <div class="fg-info">
+                            <span class="fg-category">Leadership</span>
+                            <h3 class="fg-title">Leadership Chrétien</h3>
+                            <p class="fg-desc">Former les cadres aux valeurs évangéliques.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Modals for About Cards -->
-        <div class="about-modal-overlay" id="aboutModalOverlay">
-            <div class="about-modal" id="aboutModal">
-                <button class="about-modal-close" id="aboutModalClose" aria-label="Fermer"><i class="fa-solid fa-xmark"></i></button>
-                <div class="about-modal-icon" id="aboutModalIcon"></div>
-                <h3 class="about-modal-title" id="aboutModalTitle">Titre</h3>
-                <p class="about-modal-text" id="aboutModalText">Texte de description...</p>
+        <!-- ========== 7. CE QUI SE PASSE ACTUELLEMENT (Événements) ========== -->
+        <section class="events-section" id="agenda" data-theme="light">
+            <div class="premium-section-header animate-on-scroll">
+                <span class="premium-badge"><i class="fa-solid fa-calendar-days"></i> Restez connectés</span>
+                <h2 class="premium-title">Ce qui se passe <span>actuellement</span></h2>
+                <p class="premium-subtitle">Participez à nos prochains moments forts et fortifiez votre cheminement spirituel.</p>
             </div>
-        </div>
+            
+            <div class="events-new-grid animate-on-scroll">
+                <!-- Événement principal (large) -->
+                <div class="event-new-card event-new-card--featured">
+                    <div class="event-new-img">
+                        <img src="../assets/images/Worship.webp" alt="Forum d'Excellence" loading="lazy">
+                        <div class="event-new-date-badge">
+                            <span class="event-new-day">12</span>
+                            <span class="event-new-month">Août</span>
+                        </div>
+                        <span class="event-new-type">Conférence</span>
+                    </div>
+                    <div class="event-new-body">
+                        <h3 class="event-new-title">Forum d'Excellence MCM 2025</h3>
+                        <div class="event-new-meta">
+                            <span><i class="fa-solid fa-clock"></i> 09:00 – 17:00</span>
+                            <span><i class="fa-solid fa-location-dot"></i> Grande Chapelle, Calavi</span>
+                        </div>
+                        <p class="event-new-desc">Une journée de réflexion, d'enseignements et de prière pour outiller les disciples à briller dans la société.</p>
+                        <a href="#contact" class="event-new-btn">S'inscrire <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
 
-        <!-- Contact Section -->
+                <!-- Colonne latérale avec 2 événements secondaires -->
+                <div class="event-new-side">
+                    <div class="event-new-card event-new-card--small">
+                        <div class="event-new-side-date">
+                            <span class="event-new-day">04</span>
+                            <span class="event-new-month">Sept</span>
+                        </div>
+                        <div class="event-new-side-body">
+                            <span class="event-new-type-inline" style="color: var(--gold);">Retraite</span>
+                            <h3 class="event-new-small-title">Retraite de ressourcement</h3>
+                            <div class="event-new-meta event-new-meta--small">
+                                <span><i class="fa-solid fa-clock"></i> 3 jours complets</span>
+                                <span><i class="fa-solid fa-location-dot"></i> Foyer Marial, Calavi</span>
+                            </div>
+                            <p class="event-new-desc event-new-desc--small">Un temps privilégié d'intimité avec Dieu et de confessions pour se régénérer spirituellement.</p>
+                        </div>
+                    </div>
+
+                    <div class="event-new-card event-new-card--small">
+                        <div class="event-new-side-date" style="background: var(--black);">
+                            <span class="event-new-day">28</span>
+                            <span class="event-new-month">Juill</span>
+                        </div>
+                        <div class="event-new-side-body">
+                            <span class="event-new-type-inline" style="color: var(--gray);">Réunion</span>
+                            <h3 class="event-new-small-title">Assemblée Générale des Commissions</h3>
+                            <div class="event-new-meta event-new-meta--small">
+                                <span><i class="fa-solid fa-clock"></i> 15:00 – 18:00</span>
+                                <span><i class="fa-solid fa-location-dot"></i> Salle Saint-Augustin</span>
+                            </div>
+                            <p class="event-new-desc event-new-desc--small">Rencontre de bilan et de planification pour le prochain trimestre avec tous les responsables.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dots de pagination pour le responsive mobile -->
+            <div class="events-dots-mobile mobile-only" id="eventsDotsMobile">
+                <span class="event-dot active"></span>
+                <span class="event-dot"></span>
+                <span class="event-dot"></span>
+            </div>
+        </section>
+
+        <!-- ========== 8. LES TÉMOIGNAGES ========== -->
+        <section class="testimonials-section" id="temoignages" data-theme="light">
+            <div class="premium-section-header animate-on-scroll">
+                <span class="premium-badge"><i class="fa-solid fa-quote-left"></i> Voix fraternelles</span>
+                <h2 class="premium-title">Les <span>témoignages</span></h2>
+                <p class="premium-subtitle">Découvrez l'impact de la communauté à travers l'expérience vécue par nos membres.</p>
+            </div>
+            
+            <div class="testimonials-new-grid animate-on-scroll">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-new-card">
+                    <div class="testimonial-new-quote-mark">"</div>
+                    <p class="testimonial-new-text">Depuis que j'ai rejoint la MCM, mon cheminement de foi a pris une tout autre dimension. L'esprit d'excellence dans le service m'a poussé à me dépasser, tant spirituellement que professionnellement.</p>
+                    <div class="testimonial-new-footer">
+                        <div class="testimonial-new-avatar">
+                            <img src="../assets/images/Man.webp" alt="Christian K." loading="lazy">
+                        </div>
+                        <div class="testimonial-new-info">
+                            <span class="testimonial-new-name">Christian K.</span>
+                            <span class="testimonial-new-role">Membre de la Commission Multimédia</span>
+                        </div>
+                        <div class="testimonial-new-stars">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-new-card">
+                    <div class="testimonial-new-quote-mark">"</div>
+                    <p class="testimonial-new-text">L'accueil fraternel et l'accompagnement personnalisé m'ont aidé à traverser des périodes de doute. Je me sens soutenu et pleinement intégré dans ce grand corps institutionnel.</p>
+                    <div class="testimonial-new-footer">
+                        <div class="testimonial-new-avatar testimonial-new-avatar--initials" style="background: rgba(184,0,14,0.08); color: var(--primary-red);">
+                            MD
+                        </div>
+                        <div class="testimonial-new-info">
+                            <span class="testimonial-new-name">Marie-Dominique G.</span>
+                            <span class="testimonial-new-role">Responsable adjointe — Accueil</span>
+                        </div>
+                        <div class="testimonial-new-stars">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-new-card">
+                    <div class="testimonial-new-quote-mark">"</div>
+                    <p class="testimonial-new-text">Les formations doctrinales et de leadership dispensées à la MCM m'ont permis de mieux comprendre ma vocation chrétienne et de l'assumer fièrement dans mon quotidien professionnel.</p>
+                    <div class="testimonial-new-footer">
+                        <div class="testimonial-new-avatar testimonial-new-avatar--initials" style="background: rgba(212,175,55,0.1); color: var(--gold);">
+                            JM
+                        </div>
+                        <div class="testimonial-new-info">
+                            <span class="testimonial-new-name">Jean-Marie A.</span>
+                            <span class="testimonial-new-role">Coordinateur — Évangélisation</span>
+                        </div>
+                        <div class="testimonial-new-stars">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== CONTACT SECTION ========== -->
         <section class="contact" id="contact" data-theme="dark">
             <div class="contact-bg-accent contact-bg-accent--tl"></div>
             <div class="contact-bg-accent contact-bg-accent--br"></div>
 
             <div class="contact-container">
 
-                <!-- ── Left : édito + infos ── -->
+                <!-- Left : édito + infos -->
                 <div class="contact-left animate-on-scroll">
                     <div class="contact-eyebrow">
                         <span class="contact-eyebrow-line"></span>
@@ -302,7 +817,7 @@
                     </div>
                 </div>
 
-                <!-- ── Right : formulaire ── -->
+                <!-- Right : formulaire -->
                 <div class="contact-right animate-on-scroll">
                     <div class="contact-form-card">
                         <div class="contact-form-header">
@@ -359,13 +874,10 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-container">
-                <div class="footer-large-brand">
-                    Ministère Catholique Miséricorde
-                </div>
-                
-                <hr class="footer-divider">
-                
-                <div class="footer-bottom">
+                <div class="footer-brand-row">
+                    <div class="footer-large-brand">
+                        Ministère Catholique Miséricorde
+                    </div>
                     <div class="footer-socials">
                         <a href="https://facebook.com" target="_blank" class="social-link" aria-label="Facebook">
                             <i class="fa-brands fa-facebook-f"></i>
@@ -380,13 +892,17 @@
                             <i class="fa-brands fa-whatsapp"></i>
                         </a>
                     </div>
-                    
+                </div>
+                
+                <hr class="footer-divider">
+                
+                <div class="footer-bottom">
                     <div class="footer-copyright">
                         &copy; 2026 Ministère Catholique Miséricorde. Tous droits réservés.
                     </div>
                     
                     <div class="footer-legal">
-                        <a href="/politique-confidentialite" class="legal-link" data-save-scroll="true">Politique de confidentialité</a>
+                        <a href="/politique-confidentialite" class="legal-link" data-save-scroll="true">Confidentialité</a>
                         <a href="/conditions-utilisation" class="legal-link" data-save-scroll="true">Conditions d'utilisation</a>
                         <a href="/protection-donnees" class="legal-link" data-save-scroll="true">Protection des données</a>
                         <a href="/mentions-legales" class="legal-link" data-save-scroll="true">Mentions légales</a>
@@ -396,7 +912,7 @@
         </footer>
     </div>
 
-    <script src="../assets/js/placeholder-animation.js"></script>
-    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/placeholder-animation.js" defer></script>
+    <script src="../assets/js/main.js" defer></script>
 </body>
 </html>

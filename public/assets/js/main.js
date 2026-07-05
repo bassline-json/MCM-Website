@@ -14,6 +14,7 @@ function enterSite() {
         if (typeof animateHeroText === 'function') {
             animateHeroText();
         }
+        startHeroStats();
     }, 800);
     if (backgroundVideo) backgroundVideo.pause();
 }
@@ -50,6 +51,7 @@ if (splashContainer) {
         if (mainContent) mainContent.classList.add('show');
         setTimeout(() => {
             if (typeof animateHeroText === 'function') animateHeroText();
+            startHeroStats();
         }, 100);
     }
 }
@@ -74,6 +76,39 @@ function checkNavbarState() {
     }
 }
 checkNavbarState(); // Run once immediately on load
+
+// ===== HERO STATS COUNTER ANIMATION =====
+function animateCounter(el) {
+    const target = parseInt(el.getAttribute('data-target'), 10);
+    if (isNaN(target)) return;
+    const duration = 1600;
+    const step = Math.ceil(duration / target);
+    let current = 0;
+    const timer = setInterval(() => {
+        current += Math.ceil(target / (duration / 16));
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        el.textContent = current;
+    }, 16);
+}
+
+function startHeroStats() {
+    const statNumbers = document.querySelectorAll('.hero-stat-number, .impact-number');
+    if (!statNumbers.length) return;
+    // Use IntersectionObserver to trigger when visible
+    const statsObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                statNumbers.forEach(el => animateCounter(el));
+                statsObs.disconnect();
+            }
+        });
+    }, { threshold: 0.15 });
+    const statsEl = document.querySelector('.hero-stats, .impact-section');
+    if (statsEl) statsObs.observe(statsEl);
+}
 
 window.addEventListener('scroll', () => {
     const scrollPos = window.pageYOffset || window.scrollY;
@@ -269,52 +304,55 @@ document.querySelectorAll('a[data-save-scroll]').forEach(link => {
     });
 });
 
-// ===== CAROUSEL =====
-const track = document.getElementById('carouselTrack');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const dotsContainer = document.getElementById('carouselDots');
-const slides = document.querySelectorAll('.carousel-slide');
-let currentSlide = 0;
+// ===== CAROUSEL (legacy — guard pour éviter crash si éléments absents) =====
+(function initLegacyCarousel() {
+    const track = document.getElementById('carouselTrack');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dotsContainer = document.getElementById('carouselDots');
+    const slides = document.querySelectorAll('.carousel-slide');
 
-// Create dots
-slides.forEach((_, index) => {
-    const dot = document.createElement('div');
-    dot.classList.add('carousel-dot');
-    if (index === 0) dot.classList.add('active');
-    dot.addEventListener('click', () => goToSlide(index));
-    dotsContainer.appendChild(dot);
-});
+    if (!track || !prevBtn || !nextBtn || !dotsContainer || slides.length === 0) return;
 
-const dots = document.querySelectorAll('.carousel-dot');
+    let currentSlide = 0;
 
-function updateCarousel() {
-    track.style.transform = `translateX(-${currentSlide * 100}%)`;
-    dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentSlide);
+    // Create dots
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('carousel-dot');
+        if (index === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(index));
+        dotsContainer.appendChild(dot);
     });
-}
 
-function goToSlide(index) {
-    currentSlide = index;
-    updateCarousel();
-}
+    const dots = document.querySelectorAll('.carousel-dot');
 
-function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    updateCarousel();
-}
+    function updateCarousel() {
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
 
-function prevSlide() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    updateCarousel();
-}
+    function goToSlide(index) {
+        currentSlide = index;
+        updateCarousel();
+    }
 
-nextBtn.addEventListener('click', nextSlide);
-prevBtn.addEventListener('click', prevSlide);
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateCarousel();
+    }
 
-// Auto-play carousel
-setInterval(nextSlide, 5000);
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        updateCarousel();
+    }
+
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    setInterval(nextSlide, 5000);
+})();
 
 // ===== ABOUT MODAL =====
 const aboutCards = document.querySelectorAll('.about-carousel-card');
@@ -502,3 +540,133 @@ function showContactFeedback(message, type) {
         if (contactSubmitBtn) contactSubmitBtn.disabled = false;
     }, 5000);
 }
+
+// ===== HERO BACKGROUND CAROUSEL TRANSITIONS (3 slides avec contenu) =====
+document.addEventListener("DOMContentLoaded", () => {
+    const bgSlides = document.querySelectorAll('#heroBgCarousel .hero-bg-slide');
+    const slideContents = document.querySelectorAll('#heroSlidesContent .hero-slide-content');
+    const heroDots = document.querySelectorAll('.hero-carousel-controls .hero-dot');
+
+    if (!bgSlides.length) return;
+
+    let currentBgSlide = 0;
+    const bgSlideInterval = 6500; // 6.5s per slide
+    let autoSlideTimer = null;
+
+    function goToHeroSlide(index) {
+        // Remove active from all
+        bgSlides[currentBgSlide]?.classList.remove('active');
+        slideContents[currentBgSlide]?.classList.remove('active');
+        heroDots[currentBgSlide]?.classList.remove('active');
+
+        // Pause video if leaving a video slide
+        if (bgSlides[currentBgSlide]?.getAttribute('data-type') === 'video') {
+            const video = bgSlides[currentBgSlide].querySelector('video');
+            if (video) video.pause();
+        }
+
+        currentBgSlide = index;
+
+        // Activate next slide
+        bgSlides[currentBgSlide]?.classList.add('active');
+        slideContents[currentBgSlide]?.classList.add('active');
+        heroDots[currentBgSlide]?.classList.add('active');
+
+        // Play video if entering video slide
+        if (bgSlides[currentBgSlide]?.getAttribute('data-type') === 'video') {
+            const video = bgSlides[currentBgSlide].querySelector('video');
+            if (video) {
+                video.currentTime = 0;
+                video.play().catch(err => console.log('Autoplay blocked:', err));
+            }
+        }
+    }
+
+    function nextHeroSlide() {
+        const next = (currentBgSlide + 1) % bgSlides.length;
+        goToHeroSlide(next);
+    }
+
+    // Dot click handlers
+    heroDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            clearInterval(autoSlideTimer);
+            goToHeroSlide(index);
+            // Restart timer
+            autoSlideTimer = setInterval(nextHeroSlide, bgSlideInterval);
+        });
+    });
+
+    // Auto-cycle slides
+    if (bgSlides.length > 1) {
+        autoSlideTimer = setInterval(nextHeroSlide, bgSlideInterval);
+    }
+});
+
+// ===== PÔLES D'ACTION — Horizontal scroll buttons =====
+document.addEventListener("DOMContentLoaded", () => {
+    const polesTrack = document.getElementById('polesTrack');
+    const scrollLeftBtn = document.getElementById('polesScrollLeft');
+    const scrollRightBtn = document.getElementById('polesScrollRight');
+
+    if (!polesTrack) return;
+
+    const scrollAmount = 320; // pixels to scroll per click
+
+    if (scrollLeftBtn) {
+        scrollLeftBtn.addEventListener('click', () => {
+            polesTrack.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+    }
+
+    if (scrollRightBtn) {
+        scrollRightBtn.addEventListener('click', () => {
+            polesTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+    }
+});
+
+// ===== MOBILE SCROLL DOTS DETECTOR (Excellence & Événements) =====
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Excellence / Académies
+    const excTrack = document.querySelector('.excellence-cards-row');
+    const excDots = document.querySelectorAll('#excellenceDotsMobile .exc-dot');
+    
+    if (excTrack && excDots.length) {
+        excTrack.addEventListener('scroll', () => {
+            const index = Math.round(excTrack.scrollLeft / (excTrack.clientWidth * 0.85)); // 0.85 est la largeur relative d'une carte
+            excDots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === index);
+            });
+        });
+        
+        // Clic sur un dot pour défiler
+        excDots.forEach((dot, idx) => {
+            dot.addEventListener('click', () => {
+                const targetScroll = idx * (excTrack.clientWidth * 0.85);
+                excTrack.scrollTo({ left: targetScroll, behavior: 'smooth' });
+            });
+        });
+    }
+
+    // 2. Événements / Agenda
+    const envTrack = document.querySelector('.events-new-grid');
+    const envDots = document.querySelectorAll('#eventsDotsMobile .event-dot');
+    
+    if (envTrack && envDots.length) {
+        envTrack.addEventListener('scroll', () => {
+            const index = Math.round(envTrack.scrollLeft / 290); // 290px est la largeur fixe d'une carte mobile
+            envDots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === index);
+            });
+        });
+        
+        // Clic sur un dot pour défiler
+        envDots.forEach((dot, idx) => {
+            dot.addEventListener('click', () => {
+                const targetScroll = idx * 290;
+                envTrack.scrollTo({ left: targetScroll, behavior: 'smooth' });
+            });
+        });
+    }
+});
