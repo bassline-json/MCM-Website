@@ -3555,28 +3555,29 @@ body .legal-container {
 }
 
 .identity-cards-column:nth-child(2) {
-    margin-top: 35px; /* Décalage vertical comme sur la capture */
+    margin-top: 60px; /* Décalage vertical augmenté */
 }
 
 .identity-sp-card {
     background: var(--white);
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Transition plus douce */
     cursor: pointer;
     overflow: hidden;
     position: relative;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    transform-origin: top center;
 }
 
 .identity-sp-card-inner {
-    padding: 2rem 1.75rem;
+    padding: 1.9rem 0.85rem; /* Moins large, légèrement plus haute */
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     height: 100%;
     position: relative;
-    min-height: 190px;
+    min-height: 200px;
 }
 
 /* Rounded corner on hover (top-left circle) */
@@ -3585,12 +3586,12 @@ body .legal-container {
     position: absolute;
     top: 0;
     left: 0;
-    width: 65px;
-    height: 65px;
+    width: 90px;
+    height: 90px;
     background: var(--primary-red);
     border-bottom-right-radius: 100%;
     transform: translate(-100%, -100%);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Apparition plus douce */
     z-index: 1;
 }
 
@@ -3599,15 +3600,15 @@ body .legal-container {
 }
 
 .identity-sp-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
-    border-color: rgba(184, 0, 14, 0.12);
+    transform: scale(1.015); /* Scale plus subtil et progressif */
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.07);
+    border-color: rgba(184, 0, 14, 0.10);
 }
 
 .identity-sp-icon {
     font-size: 1.4rem;
     color: var(--primary-red);
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     z-index: 2;
     margin-bottom: 0.5rem;
@@ -3615,6 +3616,7 @@ body .legal-container {
 
 .identity-sp-card:hover .identity-sp-icon {
     color: var(--white);
+    transform: translate(-3px, -3px); /* Ajustement pour être bien au centre du coin agrandi */
 }
 
 .identity-sp-title {
@@ -4114,6 +4116,7 @@ body .legal-container {
     letter-spacing: 0.1em;
     margin-top: 0.5rem;
     transition: gap 0.3s ease;
+    align-self: flex-end; /* Aligner à droite */
 }
 
 .poles-blog-card:hover .poles-blog-link {
@@ -4185,139 +4188,148 @@ body .legal-container {
     border-bottom: 1px solid var(--light-gray);
 }
 
-.timeline-vertical {
-    position: relative;
-    max-width: 800px;
+.timeline-h-container {
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 2rem 0;
+    overflow-x: auto;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+    padding: 3rem 0;
 }
 
-/* Ligne centrale verticale */
-.timeline-v-line {
+.timeline-h-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+}
+
+.timeline-h-track {
+    display: flex;
+    position: relative;
+    min-width: max-content;
+    padding: 0 3rem;
+}
+
+/* Ligne pointillée horizontale principale */
+.timeline-h-line {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 2px;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
     background: repeating-linear-gradient(
-        to bottom,
+        to right,
         var(--light-gray) 0px,
         var(--light-gray) 8px,
         transparent 8px,
         transparent 16px
     );
-    transform: translateX(-50%);
+    transform: translateY(-50%);
     z-index: 1;
 }
 
-.timeline-v-item {
+.timeline-h-step {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: center;
+    width: 260px;
     position: relative;
-    width: 50%;
-    padding: 2rem 3rem;
-    box-sizing: border-box;
     z-index: 2;
+    cursor: pointer;
 }
 
-.timeline-v-item:nth-child(even) {
-    left: 50%;
-    justify-content: flex-start;
+/* Zone supérieure : chiffre et titre */
+.timeline-h-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding-bottom: 2rem;
+    height: 90px;
+    justify-content: flex-end;
+    text-align: center;
+    box-sizing: border-box;
 }
 
-/* Node (cercle) sur la ligne */
-.timeline-v-node {
-    position: absolute;
-    top: 50%;
-    right: -10px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--white);
-    border: 3px solid #ccc;
-    transform: translateY(-50%);
-    transition: all 0.35s ease;
-    z-index: 3;
-}
-
-.timeline-v-item:nth-child(even) .timeline-v-node {
-    left: -10px;
-    right: auto;
-}
-
-/* Effet d'illumination rouge au survol */
-.timeline-v-item:hover .timeline-v-node {
-    border-color: var(--primary-red);
-    background: var(--primary-red);
-    box-shadow: 0 0 0 6px rgba(184, 0, 14, 0.12);
-    transform: translateY(-50%) scale(1.25);
-}
-
-/* Boîte de contenu */
-.timeline-v-content {
-    background: var(--white);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 8px;
-    padding: 1.75rem 2rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-    width: 100%;
-    max-width: 380px;
-    transition: all 0.35s ease;
-    position: relative;
-}
-
-.timeline-v-item:hover .timeline-v-content {
-    border-color: rgba(184, 0, 14, 0.12);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-    transform: translateY(-2px);
-}
-
-.timeline-v-num {
+.timeline-h-num {
     font-size: 0.7rem;
     font-weight: 800;
     letter-spacing: 0.15em;
     color: var(--primary-red);
     text-transform: uppercase;
-    display: block;
-    margin-bottom: 0.5rem;
 }
 
-.timeline-v-title {
+.timeline-h-title {
     font-family: 'Inter', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
     color: var(--black);
-    margin: 0 0 0.5rem 0;
+    margin: 0;
+    transition: color 0.3s ease;
 }
 
-.timeline-v-desc {
-    font-size: 0.85rem;
+/* Zone intermédiaire : tige verticale + nœud */
+.timeline-h-middle {
+    height: 60px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tige verticale fine de 1px */
+.timeline-h-tige {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    transform: translateX(-50%);
+    z-index: 1;
+    transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), width 0.35s ease;
+}
+
+/* Nœud circulaire sur la ligne */
+.timeline-h-node {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 3px solid #ccc;
+    z-index: 2;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Effets Hover */
+.timeline-h-step:hover .timeline-h-node {
+    border-color: var(--primary-red);
+    background: var(--primary-red);
+    box-shadow: 0 0 0 6px rgba(184, 0, 14, 0.12);
+    transform: scale(1.25);
+}
+
+.timeline-h-step:hover .timeline-h-tige {
+    background-color: var(--primary-red);
+    width: 1.5px;
+}
+
+.timeline-h-step:hover .timeline-h-title {
+    color: var(--primary-red);
+}
+
+/* Zone inférieure : description */
+.timeline-h-bottom {
+    padding-top: 2rem;
+    height: 100px;
+    text-align: center;
+    box-sizing: border-box;
+    max-width: 220px;
+}
+
+.timeline-h-desc {
+    font-size: 0.82rem;
     color: var(--gray);
     line-height: 1.6;
     margin: 0;
-}
-
-@media (max-width: 768px) {
-    .timeline-vertical {
-        padding-left: 2rem;
-    }
-    .timeline-v-line {
-        left: 20px;
-        transform: none;
-    }
-    .timeline-v-item {
-        width: 100%;
-        left: 0 !important;
-        justify-content: flex-start !important;
-        padding: 1.5rem 1.5rem 1.5rem 2.5rem;
-    }
-    .timeline-v-node {
-        left: 10px !important;
-        right: auto !important;
-    }
-    .timeline-v-content {
-        max-width: 100%;
-    }
 }
 
 /* ===== PORTFOLIO SECTION — Style Finance Académie ===== */
@@ -4919,4 +4931,93 @@ body .legal-container {
     .premium-section-header {
         margin-bottom: 2.5rem;
     }
+}
+
+/* ============================================
+   SKELETON LOADER — Section Événements
+   ============================================ */
+@keyframes skeleton-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.event-skeleton {
+    animation: skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+.event-skeleton--featured {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.event-skeleton--featured .skeleton-img {
+    width: 100%;
+    height: 220px;
+    background: #e0e0e0;
+}
+
+.event-skeleton--featured .skeleton-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.event-skeleton--small {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    border-radius: 12px;
+    background: #f5f5f5;
+}
+
+.event-skeleton--small .skeleton-date {
+    width: 54px;
+    height: 66px;
+    border-radius: 10px;
+    background: #e0e0e0;
+    flex-shrink: 0;
+}
+
+.skeleton-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.skeleton-line {
+    height: 14px;
+    border-radius: 6px;
+    background: #e0e0e0;
+    width: 100%;
+}
+
+.skeleton-line--short { width: 45%; }
+.skeleton-line--medium { width: 70%; }
+
+/* ============================================
+   ÉTAT VIDE — Section Événements
+   ============================================ */
+.events-empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--gray);
+}
+
+.events-empty-state i {
+    font-size: 3.5rem;
+    color: #d0d0d0;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.events-empty-state p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #aaa;
 }

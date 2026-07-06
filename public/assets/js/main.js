@@ -649,24 +649,154 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 2. Événements / Agenda
-    const envTrack = document.querySelector('.events-new-grid');
-    const envDots = document.querySelectorAll('#eventsDotsMobile .event-dot');
-    
-    if (envTrack && envDots.length) {
-        envTrack.addEventListener('scroll', () => {
-            const index = Math.round(envTrack.scrollLeft / 290); // 290px est la largeur fixe d'une carte mobile
-            envDots.forEach((dot, idx) => {
-                dot.classList.toggle('active', idx === index);
-            });
-        });
-        
-        // Clic sur un dot pour défiler
-        envDots.forEach((dot, idx) => {
-            dot.addEventListener('click', () => {
-                const targetScroll = idx * 290;
-                envTrack.scrollTo({ left: targetScroll, behavior: 'smooth' });
-            });
-        });
+    // ============================
+    // 2. Section Événements — Chargement dynamique depuis /api/evenements
+    // ============================
+    const eventsGrid = document.getElementById('eventsGrid');
+    const eventsEmpty = document.getElementById('eventsEmpty');
+    const eventsDotsMobile = document.getElementById('eventsDotsMobile');
+
+    const MONTHS_FR = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juill', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'];
+    const TYPE_COLORS = {
+        'Culte': 'var(--primary-red)',
+        'Conférence': 'var(--primary-red)',
+        'Retraite': 'var(--gold)',
+        'Formation': '#4a90e2',
+        'Réunion': 'var(--gray)',
+        'Sortie': '#27ae60',
+        'Autre': 'var(--gray)'
+    };
+
+    function formatEventDate(dateStr) {
+        const d = new Date(dateStr);
+        return {
+            day: String(d.getUTCDate()).padStart(2, '0'),
+            month: MONTHS_FR[d.getUTCMonth()]
+        };
     }
+
+    function getTypeColor(type) {
+        return TYPE_COLORS[type] || 'var(--primary-red)';
+    }
+
+    function buildFeaturedCard(ev) {
+        const { day, month } = formatEventDate(ev.date_evenement);
+        const heures = ev.heure_fin
+            ? `${ev.heure_debut} – ${ev.heure_fin}`
+            : `${ev.heure_debut}`;
+        const imgHtml = ev.image_url
+            ? `<img src="${ev.image_url}" alt="${ev.titre}" loading="lazy">`
+            : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#16213e);display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-calendar-star" style="font-size:3rem;color:rgba(255,255,255,0.3);"></i></div>`;
+
+        return `
+            <div class="event-new-card event-new-card--featured">
+                <div class="event-new-img">
+                    ${imgHtml}
+                    <div class="event-new-date-badge">
+                        <span class="event-new-day">${day}</span>
+                        <span class="event-new-month">${month}</span>
+                    </div>
+                    <span class="event-new-type">${ev.type_evenement}</span>
+                </div>
+                <div class="event-new-body">
+                    <h3 class="event-new-title">${ev.titre}</h3>
+                    <div class="event-new-meta">
+                        <span><i class="fa-solid fa-clock"></i> ${heures}</span>
+                        <span><i class="fa-solid fa-location-dot"></i> ${ev.lieu}</span>
+                    </div>
+                    ${ev.description ? `<p class="event-new-desc">${ev.description}</p>` : ''}
+                    <a href="#contact" class="event-new-btn">En savoir plus <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        `;
+    }
+
+    function buildSmallCard(ev, isFirst) {
+        const { day, month } = formatEventDate(ev.date_evenement);
+        const heures = ev.heure_fin ? `${ev.heure_debut} – ${ev.heure_fin}` : ev.heure_debut;
+        const badgeBg = isFirst ? 'var(--primary-red)' : 'var(--black)';
+        const typeColor = getTypeColor(ev.type_evenement);
+
+        return `
+            <div class="event-new-card event-new-card--small">
+                <div class="event-new-side-date" style="background:${badgeBg};">
+                    <span class="event-new-day">${day}</span>
+                    <span class="event-new-month">${month}</span>
+                </div>
+                <div class="event-new-side-body">
+                    <span class="event-new-type-inline" style="color:${typeColor};">${ev.type_evenement}</span>
+                    <h3 class="event-new-small-title">${ev.titre}</h3>
+                    <div class="event-new-meta event-new-meta--small">
+                        <span><i class="fa-solid fa-clock"></i> ${heures}</span>
+                        <span><i class="fa-solid fa-location-dot"></i> ${ev.lieu}</span>
+                    </div>
+                    ${ev.description ? `<p class="event-new-desc event-new-desc--small">${ev.description}</p>` : ''}
+                </div>
+            </div>
+        `;
+    }
+
+    function setupMobileDots(count) {
+        if (!eventsDotsMobile) return;
+        const clamped = Math.min(count, 5);
+        eventsDotsMobile.innerHTML = Array.from({ length: clamped }, (_, i) =>
+            `<span class="event-dot${i === 0 ? ' active' : ''}"></span>`
+        ).join('');
+
+        const dots = eventsDotsMobile.querySelectorAll('.event-dot');
+        if (eventsGrid) {
+            eventsGrid.addEventListener('scroll', () => {
+                const index = Math.round(eventsGrid.scrollLeft / 290);
+                dots.forEach((d, i) => d.classList.toggle('active', i === index));
+            });
+            dots.forEach((dot, idx) => {
+                dot.addEventListener('click', () => {
+                    eventsGrid.scrollTo({ left: idx * 290, behavior: 'smooth' });
+                });
+            });
+        }
+    }
+
+    async function loadEvents() {
+        if (!eventsGrid) return;
+
+        try {
+            const res = await fetch('/api/evenements');
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const events = await res.json();
+
+            if (!events || events.length === 0) {
+                eventsGrid.style.display = 'none';
+                if (eventsEmpty) eventsEmpty.style.display = 'block';
+                return;
+            }
+
+            // Premier événement = carte principale (featured)
+            const featured = events[0];
+            // Les suivants (max 2) = cartes secondaires dans la colonne latérale
+            const sideEvents = events.slice(1, 3);
+
+            let sideHtml = sideEvents.map((ev, i) => buildSmallCard(ev, i === 0)).join('');
+
+            // S'il n'y a qu'1 événement ou 0 événement côté, on adapte
+            if (sideEvents.length === 0) {
+                sideHtml = `<div class="event-new-side-empty" style="color:#ccc;font-size:0.9rem;padding:1rem;">Aucun autre événement</div>`;
+            }
+
+            eventsGrid.innerHTML = `
+                ${buildFeaturedCard(featured)}
+                <div class="event-new-side">${sideHtml}</div>
+            `;
+
+            setupMobileDots(events.length);
+
+        } catch (err) {
+            console.warn('Impossible de charger les événements:', err.message);
+            // En cas d'erreur réseau, on cache le skeleton et on affiche l'état vide
+            if (eventsGrid) eventsGrid.style.display = 'none';
+            if (eventsEmpty) eventsEmpty.style.display = 'block';
+        }
+    }
+
+    loadEvents();
 });

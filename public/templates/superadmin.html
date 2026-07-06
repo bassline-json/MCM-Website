@@ -3,478 +3,604 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCM - Dashboard SuperAdmin</title>
-    <link rel="icon" type="image/svg" href="./assets/images/logo/logomcm.svg">
+    <title>MCM — SuperAdmin Dashboard</title>
+    <meta name="description" content="Tableau de bord SuperAdmin — Mouvement Chrétien pour les Managers">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/logomcm.svg">
     <link rel="stylesheet" href="../assets/css/superAdmin/superadmin.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="navbar-left">
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-church"></i>
-                </div>
-                <span>MCM Dashboard</span>
-            </div>
-        </div>
-        <div class="navbar-right">
-            <div class="user-menu desktop-only" onclick="openUserProfile()">
-                <div class="user-avatar">
-                    <span id="userInitials">SA</span>
-                </div>
-                <span class="user-name" id="userName">Chargement...</span>
-                <i class="fas fa-chevron-down" style="color: var(--gray); font-size: 0.75rem;"></i>
-            </div>
-            <button class="logout-btn desktop-only" onclick="confirmLogout()">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Déconnexion</span>
-            </button>
-        </div>
-    </nav>
 
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <ul class="sidebar-menu">
-            <li class="sidebar-item">
-                <div class="sidebar-link active" onclick="showSection('dashboard')">
-                    <i class="fas fa-home"></i>
-                    <span>Tableau de Bord</span>
-                </div>
-            </li>
-            <li class="sidebar-item">
-                <div class="sidebar-link" onclick="showSection('members')">
-                    <i class="fas fa-users"></i>
-                    <span>Tous les Membres</span>
-                </div>
-            </li>
-            <li class="sidebar-item">
-                <div class="sidebar-link" onclick="showSection('addMember')">
-                    <i class="fas fa-user-plus"></i>
-                    <span>Ajouter Membre</span>
-                </div>
-            </li>
-            <li class="sidebar-item">
-                <div class="sidebar-link" onclick="showSection('addAdmin')">
-                    <i class="fas fa-user-shield"></i>
-                    <span>Ajouter Admin</span>
-                </div>
-            </li>
-            <li class="sidebar-item">
-                <div class="sidebar-link" onclick="showSection('stats'); loadStatistics();">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Statistiques</span>
-                </div>
-            </li>
-            <li class="sidebar-item">
-                <div class="sidebar-link" onclick="showSection('commissions')">
-                    <i class="fas fa-sitemap"></i>
-                    <span>Commissions</span>
-                </div>
-            </li>
-            <li class="sidebar-item">
-                <div class="sidebar-link" onclick="showSection('services')">
-                    <i class="fas fa-cogs"></i>
-                    <span>Services</span>
-                </div>
-            </li>
-            <li class="sidebar-item">
-                <div class="sidebar-link" onclick="showAdministrators()">
-                    <i class="fas fa-user-shield"></i>
-                    <span>Administrateurs</span>
-                </div>
-            </li>
-            <li class="sidebar-item mobile-only">
-                <div class="sidebar-link" onclick="openUserProfile()">
-                    <i class="fas fa-user-cog"></i>
-                    <span>Mon Profil</span>
-                </div>
-            </li>
-            <li class="sidebar-item mobile-only">
-                <div class="sidebar-link" onclick="confirmLogout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Déconnexion</span>
-                </div>
-            </li>
-        </ul>
+    <!-- Sidebar overlay (mobile) -->
+    <div class="sa-overlay" id="saOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sa-sidebar" id="saSidebar">
+        <!-- Profile block directly in the top-left corner of sidebar -->
+        <div class="sa-sidebar-profile" onclick="openUserProfile()" title="Mon Profil">
+            <div class="sa-profile-avatar-wrapper">
+                <div class="sa-user-avatar" id="sidebarAvatar">SA</div>
+                <div class="sa-avatar-glow"></div>
+            </div>
+            <div class="sa-user-info">
+                <div class="sa-user-name" id="sidebarName">SuperAdmin</div>
+                <div class="sa-user-role">Super Administrateur</div>
+            </div>
+            <div class="sa-profile-edit-btn"><i class="fas fa-pen"></i></div>
+        </div>
+
+        <nav class="sa-nav">
+            <a class="sa-nav-item active" data-section="dashboard" onclick="showSection('dashboard')">
+                <i class="fas fa-home"></i><span>Tableau de bord</span>
+            </a>
+            <a class="sa-nav-item" data-section="members" onclick="showSection('members')">
+                <i class="fas fa-users"></i><span>Membres</span>
+            </a>
+            <a class="sa-nav-item" data-section="addMember" onclick="showSection('addMember')">
+                <i class="fas fa-user-plus"></i><span>Ajouter membre</span>
+            </a>
+            <a class="sa-nav-item" data-section="administrators" onclick="showSection('administrators')">
+                <i class="fas fa-user-shield"></i><span>Utilisateurs</span>
+            </a>
+            <a class="sa-nav-item" data-section="addAdmin" onclick="showSection('addAdmin')">
+                <i class="fas fa-user-cog"></i><span>Créer admin</span>
+            </a>
+            <a class="sa-nav-item" data-section="commissions" onclick="showSection('commissions')">
+                <i class="fas fa-sitemap"></i><span>Commissions</span>
+            </a>
+            <a class="sa-nav-item" data-section="services" onclick="showSection('services')">
+                <i class="fas fa-cogs"></i><span>Services</span>
+            </a>
+            <a class="sa-nav-item" data-section="evenements" onclick="showSection('evenements')">
+                <i class="fas fa-calendar-days"></i><span>Événements</span>
+            </a>
+            <a class="sa-nav-item" data-section="stats" onclick="showSection('stats'); loadStatistics();">
+                <i class="fas fa-chart-bar"></i><span>Statistiques</span>
+            </a>
+        </nav>
+
+        <div class="sa-sidebar-footer">
+            <a class="sa-nav-item sa-nav-logout" onclick="confirmLogout()">
+                <i class="fas fa-sign-out-alt"></i><span>Déconnexion</span>
+            </a>
+        </div>
     </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Dashboard Section -->
-        <div id="dashboardSection" class="content-section active">
-            <div class="page-header">
-                <h1 class="page-title">Tableau de Bord SuperAdmin</h1>
-                <p class="page-subtitle">Bienvenue sur votre espace d'administration MCM</p>
-            </div>
+    <!-- ===== MAIN WRAPPER ===== -->
+    <div class="sa-main">
 
-            <div class="stats-grid">
-                <div class="stat-card" onclick="showSection('members')">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-number" id="totalMembers">0</div>
-                            <div class="stat-label">Total Membres</div>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
+        <!-- Top Bar -->
+        <header class="sa-topbar">
+            <button class="sa-hamburger" id="saHamburger" onclick="toggleSidebar()">
+                <div class="sa-hamburger-line"></div>
+                <div class="sa-hamburger-line"></div>
+                <div class="sa-hamburger-line"></div>
+            </button>
+            <div class="sa-topbar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Rechercher..." id="globalSearch" autocomplete="off">
+            </div>
+            <div class="sa-topbar-right">
+                <div class="sa-topbar-user" onclick="openUserProfile()" title="Mon profil">
+                    <div class="sa-topbar-avatar" id="topbarAvatar">SA</div>
+                    <span id="topbarName">Admin</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== CONTENT ===== -->
+        <main class="sa-content">
+
+            <!-- ── DASHBOARD ── -->
+            <div id="dashboardSection" class="sa-section active">
+                <div class="sa-page-header">
+                    <h1 class="sa-page-title" id="dashWelcomeTitle">Tableau de bord</h1>
+                    <p class="sa-page-subtitle" id="dashWelcomeSubtitle">Bienvenue sur votre espace d'administration MCM</p>
+                </div>
+
+                <div class="sa-stats-row">
+                    <div class="sa-stat-card clickable" onclick="showSection('members')">
+                        <div class="sa-stat-icon sa-icon-blue"><i class="fas fa-users"></i></div>
+                        <div class="sa-stat-dot sa-dot-blue"></div>
+                        <div class="sa-stat-num" id="totalMembers">0</div>
+                        <div class="sa-stat-lbl">Total Membres</div>
+                    </div>
+                    <div class="sa-stat-card clickable" onclick="showSection('administrators')">
+                        <div class="sa-stat-icon sa-icon-red"><i class="fas fa-user-shield"></i></div>
+                        <div class="sa-stat-dot sa-dot-red"></div>
+                        <div class="sa-stat-num" id="totalAdmins">0</div>
+                        <div class="sa-stat-lbl">Administrateurs</div>
+                    </div>
+                    <div class="sa-stat-card">
+                        <div class="sa-stat-icon sa-icon-gold"><i class="fas fa-crown"></i></div>
+                        <div class="sa-stat-dot sa-dot-gold"></div>
+                        <div class="sa-stat-num" id="totalSuperadmins">0</div>
+                        <div class="sa-stat-lbl">SuperAdmins</div>
+                    </div>
+                    <div class="sa-stat-card clickable" onclick="showSection('services')">
+                        <div class="sa-stat-icon sa-icon-gray"><i class="fas fa-cogs"></i></div>
+                        <button class="sa-add-btn" onclick="event.stopPropagation(); showSection('addMember')" title="Ajouter membre"><i class="fas fa-plus"></i></button>
+                        <div class="sa-stat-num" id="totalServices">0</div>
+                        <div class="sa-stat-lbl">Services</div>
                     </div>
                 </div>
-                <div class="stat-card" onclick="showAdministrators()">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-number" id="totalAdmins">0</div>
-                            <div class="stat-label">Administrateurs</div>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-user-tie"></i>
-                        </div>
+
+                <div class="sa-card">
+                    <div class="sa-card-head">
+                        <h3 class="sa-card-title"><i class="fas fa-clock"></i> Activités Récentes</h3>
+                    </div>
+                    <div id="recentActivities" class="sa-activities-wrap">
+                        <p class="sa-empty-msg">Aucune activité récente</p>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-number" id="totalSuperadmins">0</div>
-                            <div class="stat-label">SuperAdmins</div>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-crown"></i>
-                        </div>
+
+                <div class="sa-card" id="birthdaysCard" style="display:none;">
+                    <div class="sa-card-head">
+                        <h3 class="sa-card-title"><i class="fas fa-birthday-cake"></i> Anniversaires Aujourd'hui</h3>
+                    </div>
+                    <div id="todayBirthdays" class="sa-activities-wrap"></div>
+                </div>
+            </div>
+
+            <!-- ── MEMBRES ── -->
+            <div id="membersSection" class="sa-section">
+                <div class="sa-page-header">
+                    <h1 class="sa-page-title">Membres</h1>
+                    <p class="sa-page-subtitle">Gestion complète de tous les membres MCM</p>
+                </div>
+
+                <div class="sa-stats-row">
+                    <div class="sa-stat-card">
+                        <div class="sa-stat-icon sa-icon-blue"><i class="fas fa-users"></i></div>
+                        <div class="sa-stat-dot sa-dot-blue"></div>
+                        <div class="sa-stat-num" id="membersTotal">0</div>
+                        <div class="sa-stat-lbl">Total Membres</div>
+                    </div>
+                    <div class="sa-stat-card">
+                        <div class="sa-stat-icon sa-icon-blue2"><i class="fas fa-mars"></i></div>
+                        <div class="sa-stat-dot sa-dot-blue2"></div>
+                        <div class="sa-stat-num" id="membersHommes">0</div>
+                        <div class="sa-stat-lbl">Hommes</div>
+                    </div>
+                    <div class="sa-stat-card">
+                        <div class="sa-stat-icon sa-icon-pink"><i class="fas fa-venus"></i></div>
+                        <div class="sa-stat-dot sa-dot-pink"></div>
+                        <div class="sa-stat-num" id="membersFemmes">0</div>
+                        <div class="sa-stat-lbl">Femmes</div>
+                    </div>
+                    <div class="sa-stat-card clickable" onclick="showSection('addMember')">
+                        <button class="sa-add-btn"><i class="fas fa-plus"></i></button>
+                        <div class="sa-stat-num" style="margin-top:auto;">&nbsp;</div>
+                        <div class="sa-stat-lbl">Ajouter membre</div>
                     </div>
                 </div>
-                <div class="stat-card" onclick="showSection('services')">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-number" id="totalServices">0</div>
-                            <div class="stat-label">Services</div>
+
+                <div class="sa-card">
+                    <div class="sa-card-head">
+                        <div class="sa-filters">
+                            <div class="sa-filter-search">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="memberSearch" placeholder="Rechercher par nom...">
+                            </div>
                         </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-cogs"></i>
-                        </div>
+                        <div id="membersSelActions"></div>
+                    </div>
+                    <div class="sa-table-wrap">
+                        <table class="sa-table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="selectAllMembers" onchange="toggleSelectAllMembers()"></th>
+                                    <th>Nom & Prénom</th>
+                                    <th>Email</th>
+                                    <th>Téléphone</th>
+                                    <th>Sexe</th>
+                                    <th>Service</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="membersTableBody">
+                                <tr><td colspan="7" class="sa-table-empty"><i class="fas fa-spinner fa-spin"></i> Chargement...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="sa-pagination" id="membersPagination"></div>
+                </div>
+            </div>
+
+            <!-- ── AJOUTER MEMBRE ── -->
+            <div id="addMemberSection" class="sa-section">
+                <div class="sa-page-header">
+                    <h1 class="sa-page-title">Ajouter un Membre</h1>
+                    <p class="sa-page-subtitle">Remplissez le formulaire pour inscrire un nouveau membre MCM</p>
+                </div>
+                <div class="sa-card">
+                    <div class="sa-card-head">
+                        <h3 class="sa-card-title"><i class="fas fa-user-plus"></i> Informations du membre</h3>
+                    </div>
+                    <div class="sa-card-body">
+                        <form id="addMemberForm">
+                            <div class="sa-form-grid">
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Service *</label>
+                                    <select class="sa-select form-select" id="memberService" required>
+                                        <option value="">Sélectionner un service</option>
+                                    </select>
+                                </div>
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Nom *</label>
+                                    <input type="text" class="sa-input form-control" id="memberNom" placeholder="Doe" required>
+                                </div>
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Prénom *</label>
+                                    <input type="text" class="sa-input form-control" id="memberPrenom" placeholder="John" required>
+                                </div>
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Sexe *</label>
+                                    <select class="sa-select form-select" id="memberSexe" required>
+                                        <option value="">Sélectionner</option>
+                                        <option value="Homme">Homme</option>
+                                        <option value="Femme">Femme</option>
+                                    </select>
+                                </div>
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Date de naissance *</label>
+                                    <input type="date" class="sa-input form-control" id="memberDateNaissance" required>
+                                </div>
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Email *</label>
+                                    <input type="email" class="sa-input form-control" id="memberEmail" placeholder="john@example.com" required>
+                                </div>
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Téléphone *</label>
+                                    <input type="tel" class="sa-input form-control" id="memberTelephone" placeholder="+229 XX XX XX XX" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="sa-btn sa-btn-primary" id="addMemberBtn">
+                                <i class="fas fa-plus"></i> Ajouter le Membre
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
 
-            <!-- Activités récentes -->
-            <div class="section-card">
-                <h3 class="section-title">
-                    <i class="fas fa-clock"></i>
-                    Activités Récentes
-                </h3>
-                <div id="recentActivities" class="activities-list">
-                    <p style="text-align: center; color: var(--gray); padding: 2rem;">Aucune activité récente</p>
+            <!-- ── UTILISATEURS / ADMINS ── -->
+            <div id="administratorsSection" class="sa-section">
+                <div class="sa-page-header">
+                    <h1 class="sa-page-title">Utilisateurs</h1>
+                    <p class="sa-page-subtitle">Tous les administrateurs de la plateforme MCM</p>
                 </div>
-            </div>
 
-            <!-- Anniversaires du jour -->
-            <div class="section-card" id="birthdaysCard" style="display: none;">
-                <h3 class="section-title">
-                    <i class="fas fa-birthday-cake"></i>
-                    Anniversaires Aujourd'hui
-                </h3>
-                <div id="todayBirthdays" class="birthdays-list"></div>
-            </div>
-        </div>
-
-        <!-- Members Section -->
-        <div id="membersSection" class="content-section">
-            <div class="page-header">
-                <h1 class="page-title">Tous les Membres</h1>
-                <p class="page-subtitle">Gestion complète de tous les membres MCM</p>
-            </div>
-
-            <div class="section-card">
-                <div class="search-bar">
-                    <input type="text" id="memberSearch" class="form-control" placeholder="Rechercher un membre..." style="max-width: 400px;">
-                </div>
-                <div id="membersListContainer">
-                    <p style="text-align: center; color: var(--gray); padding: 2rem;">Chargement des membres...</p>
-                </div>
-                <div id="pagination" style="text-align: center; margin-top: 2rem;"></div>
-            </div>
-        </div>
-
-        <!-- Add Member Section -->
-        <div id="addMemberSection" class="content-section">
-            <div class="page-header">
-                <h1 class="page-title">Ajouter un Membre</h1>
-                <p class="page-subtitle">Remplissez le formulaire pour ajouter un nouveau membre</p>
-            </div>
-
-            <div class="section-card">
-                <form id="addMemberForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Service *</label>
-                            <select class="form-select" id="memberService" required>
-                                <option value="">Sélectionner un service</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Nom *</label>
-                            <input type="text" class="form-control" id="memberNom" placeholder="Doe" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Prénom *</label>
-                            <input type="text" class="form-control" id="memberPrenom" placeholder="John" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Sexe *</label>
-                            <select class="form-select" id="memberSexe" required>
-                                <option value="">Sélectionner</option>
-                                <option value="Homme">Homme</option>
-                                <option value="Femme">Femme</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Date de naissance *</label>
-                            <input type="date" class="form-control" id="memberDateNaissance" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Email *</label>
-                            <input type="email" class="form-control" id="memberEmail" placeholder="johndoe@example.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Téléphone *</label>
-                            <input type="tel" class="form-control" id="memberTelephone" placeholder="+229 XX XX XX XX" required>
-                        </div>
+                <div class="sa-stats-row">
+                    <div class="sa-stat-card">
+                        <div class="sa-stat-icon sa-icon-blue"><i class="fas fa-user-shield"></i></div>
+                        <div class="sa-stat-dot sa-dot-blue"></div>
+                        <div class="sa-stat-num" id="adminsTotal">0</div>
+                        <div class="sa-stat-lbl">Total Utilisateurs</div>
                     </div>
-                    <button type="submit" class="btn-primary" id="addMemberBtn">
-                        <i class="fas fa-plus"></i>
-                        <span>Ajouter le Membre</span>
-                    </button>
-                </form>
-            </div>
-        </div>
+                    <div class="sa-stat-card">
+                        <div class="sa-stat-icon sa-icon-red"><i class="fas fa-crown"></i></div>
+                        <div class="sa-stat-dot sa-dot-red"></div>
+                        <div class="sa-stat-num" id="adminsSuper">0</div>
+                        <div class="sa-stat-lbl">SuperAdmins</div>
+                    </div>
+                    <div class="sa-stat-card">
+                        <div class="sa-stat-icon sa-icon-gold"><i class="fas fa-sitemap"></i></div>
+                        <div class="sa-stat-dot sa-dot-gold"></div>
+                        <div class="sa-stat-num" id="adminsAdminCom">0</div>
+                        <div class="sa-stat-lbl">Admins Commission</div>
+                    </div>
+                    <div class="sa-stat-card clickable" onclick="showSection('addAdmin')">
+                        <button class="sa-add-btn"><i class="fas fa-plus"></i></button>
+                        <div class="sa-stat-num" style="margin-top:auto;">&nbsp;</div>
+                        <div class="sa-stat-lbl">Créer admin</div>
+                    </div>
+                </div>
 
-        <!-- Add Admin Section -->
-        <div id="addAdminSection" class="content-section">
-            <div class="page-header">
-                <h1 class="page-title">Ajouter un Administrateur</h1>
-                <p class="page-subtitle">Créez un nouvel compte administrateur</p>
-            </div>
-
-            <div class="section-card">
-                <form id="manageUserForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Email *</label>
-                            <input type="email" class="form-control" id="userEmail" placeholder="admin@example.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Nom *</label>
-                            <input type="text" class="form-control" id="userNom" placeholder="Doe" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Prénom *</label>
-                            <input type="text" class="form-control" id="userPrenom" placeholder="John" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Téléphone</label>
-                            <input type="tel" class="form-control" id="userTelephone" placeholder="+229 XX XX XX XX">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Mot de passe *</label>
-                            <input type="password" class="form-control" id="userPassword" placeholder="••••••••" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Rôle *</label>
-                            <select class="form-select" id="userRole" required>
-                                <option value="">Sélectionner un rôle</option>
-                                <option value="admin">Admin de Service</option>
-                                <option value="adminCom">Admin de Commission</option>
+                <div class="sa-card">
+                    <div class="sa-card-head">
+                        <div class="sa-filters">
+                            <div class="sa-filter-search">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="adminSearch" placeholder="Rechercher par nom...">
+                            </div>
+                            <select class="sa-filter-sel" id="adminRoleFilter" onchange="filterAdminsByRole()">
+                                <option value="">Tous les rôles</option>
                                 <option value="superadmin">SuperAdmin</option>
+                                <option value="adminCom">Admin Commission</option>
+                                <option value="admin">Admin Service</option>
                             </select>
                         </div>
-                        <div class="form-group" id="commissionGroup" style="display: none;">
-                            <label class="form-label">Commission *</label>
-                            <select class="form-select" id="userCommission">
-                                <option value="">Sélectionner une commission</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="serviceGroup" style="display: none;">
-                            <label class="form-label">Service *</label>
-                            <select class="form-select" id="userService">
-                                <option value="">Sélectionner un service</option>
-                            </select>
+                        <div id="adminsSelActions"></div>
+                    </div>
+                    
+                    <!-- Premium Admin Cards Grid instead of simple table -->
+                    <div class="sa-card-body">
+                        <div id="adminsGridContainer" class="sa-admins-grid">
+                            <p class="sa-empty-msg"><i class="fas fa-spinner fa-spin"></i> Chargement...</p>
                         </div>
                     </div>
-                    <button type="submit" class="btn-primary" id="createUserBtn">
-                        <i class="fas fa-user-plus"></i>
-                        <span>Créer l'Utilisateur</span>
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Statistics Section -->
-        <div id="statsSection" class="content-section">
-            <div class="page-header">
-                <h1 class="page-title">Statistiques par Service</h1>
-                <p class="page-subtitle">Analysez les données détaillées de vos services</p>
+                    
+                    <div class="sa-pagination" id="adminsPagination"></div>
+                </div>
             </div>
 
-            <div class="section-card">
-                <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; align-items: flex-end;">
-                    <div style="flex: 1; min-width: 250px;">
-                        <label class="form-label">Sélectionner un service</label>
-                        <select class="form-select" id="statsServiceSelect" required>
-                            <option value="">Choisir un service</option>
-                        </select>
+            <!-- ── CRÉER ADMIN ── -->
+            <div id="addAdminSection" class="sa-section">
+                <div class="sa-page-header">
+                    <h1 class="sa-page-title">Créer un Administrateur</h1>
+                    <p class="sa-page-subtitle">Créez un nouveau compte administrateur pour la plateforme</p>
+                </div>
+                <div class="sa-card">
+                    <div class="sa-card-head">
+                        <h3 class="sa-card-title"><i class="fas fa-user-shield"></i> Informations du compte</h3>
                     </div>
-                    <button type="button" class="btn-primary" onclick="displayServiceStatistics()" style="min-width: 200px; margin-bottom: 0;">
-                        <i class="fas fa-search"></i>
-                        <span>Afficher les Stats</span>
+                    <div class="sa-card-body">
+                        <form id="manageUserForm">
+                            <div class="sa-form-grid">
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Email *</label>
+                                    <input type="email" class="sa-input form-control" id="userEmail" placeholder="admin@example.com" required>
+                                </div>
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Nom *</label>
+                                    <input type="text" class="sa-input form-control" id="userNom" placeholder="Doe" required>
+                                </div>
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Prénom *</label>
+                                    <input type="text" class="sa-input form-control" id="userPrenom" placeholder="John" required>
+                                </div>
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Téléphone</label>
+                                    <input type="tel" class="sa-input form-control" id="userTelephone" placeholder="+229 XX XX XX XX">
+                                </div>
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Mot de passe *</label>
+                                    <input type="password" class="sa-input form-control" id="userPassword" placeholder="••••••••" required>
+                                </div>
+                                <div class="sa-form-group">
+                                    <label class="sa-label">Rôle *</label>
+                                    <select class="sa-select form-select" id="userRole" required>
+                                        <option value="">Sélectionner un rôle</option>
+                                        <option value="admin">Admin de Service</option>
+                                        <option value="adminCom">Admin de Commission</option>
+                                        <option value="superadmin">SuperAdmin</option>
+                                    </select>
+                                </div>
+                                <div class="sa-form-group" id="commissionGroup" style="display:none;">
+                                    <label class="sa-label">Commission *</label>
+                                    <select class="sa-select form-select" id="userCommission">
+                                        <option value="">Sélectionner une commission</option>
+                                    </select>
+                                </div>
+                                <div class="sa-form-group" id="serviceGroup" style="display:none;">
+                                    <label class="sa-label">Service *</label>
+                                    <select class="sa-select form-select" id="userService">
+                                        <option value="">Sélectionner un service</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="sa-btn sa-btn-primary" id="createUserBtn">
+                                <i class="fas fa-user-plus"></i> Créer l'Administrateur
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── COMMISSIONS ── -->
+            <div id="commissionsSection" class="sa-section">
+                <div class="sa-page-header">
+                    <h1 class="sa-page-title">Commissions</h1>
+                    <p class="sa-page-subtitle">Gestion des commissions MCM</p>
+                </div>
+                <div class="sa-card">
+                    <div class="sa-grid-cards" id="commissionsGrid">
+                        <p class="sa-empty-msg"><i class="fas fa-spinner fa-spin"></i> Chargement...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── COMMISSION DETAILS ── -->
+            <div id="commissionDetailsSection" class="sa-section">
+                <div class="sa-page-header">
+                    <button class="sa-btn-back" onclick="goBackToCommissions()">
+                        <i class="fas fa-arrow-left"></i> Retour aux Commissions
                     </button>
                 </div>
-
-                <div id="statsContainer" style="margin-top: 2rem;">
-                    <p style="text-align: center; color: var(--gray); padding: 3rem;">
-                        <i class="fas fa-chart-bar" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; display: block;"></i>
-                        Sélectionnez un service et cliquez sur "Afficher les Stats"
-                    </p>
+                <div class="sa-card">
+                    <div id="commissionDetailsContent"></div>
                 </div>
             </div>
-        </div>
 
-        <!-- Services Section -->
-        <div id="servicesSection" class="content-section">
-            <div class="page-header">
-                <h1 class="page-title">Services par Commission</h1>
-                <p class="page-subtitle">Vue d'ensemble de tous les services</p>
-            </div>
-
-            <div class="section-card">
-                <div class="custom-grid" id="servicesGrid">
-                    <!-- Services dynamically loaded -->
+            <!-- ── SERVICES ── -->
+            <div id="servicesSection" class="sa-section">
+                <div class="sa-page-header">
+                    <h1 class="sa-page-title">Services</h1>
+                    <p class="sa-page-subtitle">Vue d'ensemble de tous les services par commission</p>
+                </div>
+                <div class="sa-card">
+                    <div class="sa-grid-cards" id="servicesGrid">
+                        <p class="sa-empty-msg"><i class="fas fa-spinner fa-spin"></i> Chargement...</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Commissions Section -->
-        <div id="commissionsSection" class="content-section">
-            <div class="page-header">
-                <h1 class="page-title">Commissions</h1>
-                <p class="page-subtitle">Gestion des commissions MCM</p>
-            </div>
-
-            <div class="section-card">
-                <div class="custom-grid" id="commissionsGrid">
-                    <!-- Commissions dynamically loaded -->
+            <!-- ── SERVICE MEMBERS ── -->
+            <div id="serviceMembersSection" class="sa-section">
+                <div class="sa-page-header">
+                    <button class="sa-btn-back" onclick="goBackToServices()">
+                        <i class="fas fa-arrow-left"></i> Retour
+                    </button>
+                </div>
+                <div class="sa-card">
+                    <div id="serviceMembersContent"></div>
                 </div>
             </div>
-        </div>
 
-        <!-- Commission Details Section -->
-        <div id="commissionDetailsSection" class="content-section">
-            <div class="page-header">
-                <button onclick="goBackToCommissions()" class="btn-back">
-                    <i class="fas fa-arrow-left"></i>
-                    <span>Retour aux Commissions</span>
-                </button>
-            </div>
+            <!-- ── ÉVÉNEMENTS ── -->
+            <div id="eventsSection" class="sa-section">
+                <div class="sa-page-header">
+                    <h1 class="sa-page-title">Événements</h1>
+                    <p class="sa-page-subtitle">Publication et gestion des actualités MCM</p>
+                </div>
 
-            <div class="section-card">
-                <div id="commissionDetailsContent">
-                    <!-- Commission details dynamically loaded -->
+                <div class="sa-stats-row">
+                    <div class="sa-stat-card">
+                        <div class="sa-stat-icon sa-icon-blue"><i class="fas fa-calendar-days"></i></div>
+                        <div class="sa-stat-dot sa-dot-blue"></div>
+                        <div class="sa-stat-num" id="eventsTotal">0</div>
+                        <div class="sa-stat-lbl">Total Événements</div>
+                    </div>
+                    <div class="sa-stat-card">
+                        <div class="sa-stat-icon sa-icon-green"><i class="fas fa-eye"></i></div>
+                        <div class="sa-stat-dot sa-dot-green"></div>
+                        <div class="sa-stat-num" id="eventsPublished">0</div>
+                        <div class="sa-stat-lbl">Publiés</div>
+                    </div>
+                    <div class="sa-stat-card">
+                        <div class="sa-stat-icon sa-icon-gray"><i class="fas fa-eye-slash"></i></div>
+                        <div class="sa-stat-dot sa-dot-gray"></div>
+                        <div class="sa-stat-num" id="eventsDraft">0</div>
+                        <div class="sa-stat-lbl">Brouillons</div>
+                    </div>
+                    <div class="sa-stat-card clickable" onclick="openAddEventModal()">
+                        <button class="sa-add-btn"><i class="fas fa-plus"></i></button>
+                        <div class="sa-stat-num" style="margin-top:auto;">&nbsp;</div>
+                        <div class="sa-stat-lbl">Nouvel événement</div>
+                    </div>
+                </div>
+
+                <div class="sa-card">
+                    <div class="sa-card-head">
+                        <div class="sa-filters">
+                            <div class="sa-filter-search">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="eventSearch" placeholder="Rechercher un événement..." oninput="filterEventsTable()">
+                            </div>
+                            <select class="sa-filter-sel" id="eventStatusFilter" onchange="filterEventsTable()">
+                                <option value="">Tous les statuts</option>
+                                <option value="published">Publiés</option>
+                                <option value="draft">Brouillons</option>
+                            </select>
+                            <select class="sa-filter-sel" id="eventTypeFilter" onchange="filterEventsTable()">
+                                <option value="">Tous les types</option>
+                                <option value="Culte">Culte</option>
+                                <option value="Conférence">Conférence</option>
+                                <option value="Retraite">Retraite</option>
+                                <option value="Formation">Formation</option>
+                                <option value="Réunion">Réunion</option>
+                                <option value="Sortie">Sortie</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        <button class="sa-btn sa-btn-primary" onclick="openAddEventModal()">
+                            <i class="fas fa-plus"></i> Nouvel événement
+                        </button>
+                    </div>
+                    <div class="sa-table-wrap">
+                        <table class="sa-table">
+                            <thead>
+                                <tr>
+                                    <th>Événement</th>
+                                    <th>Date & Heure</th>
+                                    <th>Lieu</th>
+                                    <th>Type</th>
+                                    <th>Statut</th>
+                                    <th>Créé par</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventsTableBody">
+                                <tr><td colspan="7" class="sa-table-empty"><i class="fas fa-spinner fa-spin"></i> Chargement...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="sa-pagination" id="eventsPagination"></div>
                 </div>
             </div>
-        </div>
 
-        <!-- Service Members Section -->
-        <div id="serviceMembersSection" class="content-section">
-            <div class="page-header">
-                <button onclick="goBackToServices()" class="btn-back">
-                    <i class="fas fa-arrow-left"></i>
-                    <span>Retour aux Services</span>
-                </button>
-            </div>
-
-            <div class="section-card">
-                <div id="serviceMembersContent">
-                    <!-- Service members dynamically loaded -->
+            <!-- ── STATISTIQUES ── -->
+            <div id="statsSection" class="sa-section">
+                <div class="sa-page-header">
+                    <h1 class="sa-page-title">Statistiques</h1>
+                    <p class="sa-page-subtitle">Analysez les données détaillées de vos services</p>
+                </div>
+                <div class="sa-card">
+                    <div class="sa-card-head">
+                        <h3 class="sa-card-title"><i class="fas fa-filter"></i> Sélectionner un service</h3>
+                    </div>
+                    <div class="sa-card-body">
+                        <div class="sa-filters" style="margin-bottom:1.5rem;">
+                            <div style="flex:1;">
+                                <select class="sa-select form-select" id="statsServiceSelect">
+                                    <option value="">Choisir un service</option>
+                                </select>
+                            </div>
+                            <button class="sa-btn sa-btn-primary" onclick="displayServiceStatistics()">
+                                <i class="fas fa-search"></i> Afficher les stats
+                            </button>
+                        </div>
+                        <div id="statsContainer"></div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Administrators Section -->
-        <div id="administratorsSection" class="content-section">
-            <div class="page-header">
-                <h1 class="page-title">Gestion des Administrateurs</h1>
-                <p class="page-subtitle">Tous les administrateurs et superadmins de la plateforme</p>
-            </div>
+        </main>
+    </div>
 
-            <div class="section-card">
-                <div class="search-bar">
-                    <input type="text" id="adminSearch" class="form-control" placeholder="Rechercher un administrateur..." style="max-width: 400px;">
-                </div>
-                <div id="administratorsListContainer">
-                    <p style="text-align: center; color: var(--gray); padding: 2rem;">Chargement des administrateurs...</p>
-                </div>
-                <div id="adminPagination" style="text-align: center; margin-top: 2rem;"></div>
-            </div>
-        </div>
-    </main>
+    <!-- ===== MODALS ===== -->
 
     <!-- Edit Member Modal -->
-    <div class="modal" id="editMemberModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Modifier le Membre</h2>
-                <button class="close-btn" onclick="closeEditMemberModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+    <div class="sa-modal" id="editMemberModal">
+        <div class="sa-modal-box">
+            <div class="sa-modal-hd">
+                <h2>Modifier le Membre</h2>
+                <button class="sa-modal-close" onclick="closeEditMemberModal()"><i class="fas fa-times"></i></button>
             </div>
-            <div class="modal-body">
+            <div class="sa-modal-bd">
                 <form id="editMemberForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Service</label>
-                            <select class="form-select" id="editMemberService" required>
+                    <div class="sa-form-grid">
+                        <div class="sa-form-group">
+                            <label class="sa-label">Service</label>
+                            <select class="sa-select form-select" id="editMemberService" required>
                                 <option value="">Sélectionner un service</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Nom</label>
-                            <input type="text" class="form-control" id="editMemberNom" required>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Nom</label>
+                            <input type="text" class="sa-input form-control" id="editMemberNom" required>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Prénom</label>
-                            <input type="text" class="form-control" id="editMemberPrenom" required>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Prénom</label>
+                            <input type="text" class="sa-input form-control" id="editMemberPrenom" required>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Sexe</label>
-                            <select class="form-select" id="editMemberSexe" required>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Sexe</label>
+                            <select class="sa-select form-select" id="editMemberSexe" required>
                                 <option value="">Sélectionner</option>
                                 <option value="Homme">Homme</option>
                                 <option value="Femme">Femme</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Date de naissance</label>
-                            <input type="date" class="form-control" id="editMemberDateNaissance" required>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Date de naissance</label>
+                            <input type="date" class="sa-input form-control" id="editMemberDateNaissance" required>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" id="editMemberEmail" required>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Email</label>
+                            <input type="email" class="sa-input form-control" id="editMemberEmail" required>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Téléphone</label>
-                            <input type="tel" class="form-control" id="editMemberTelephone" required>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Téléphone</label>
+                            <input type="tel" class="sa-input form-control" id="editMemberTelephone" required>
                         </div>
                     </div>
-                    <button type="submit" class="btn-primary">
-                        <i class="fas fa-save"></i>
-                        <span>Sauvegarder</span>
+                    <button type="submit" class="sa-btn sa-btn-primary">
+                        <i class="fas fa-save"></i> Sauvegarder
                     </button>
                 </form>
             </div>
@@ -482,54 +608,137 @@
     </div>
 
     <!-- User Profile Modal -->
-    <div class="modal" id="userProfileModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Mon Profil</h2>
-                <button class="close-btn" onclick="closeUserProfileModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+    <div class="sa-modal" id="userProfileModal">
+        <div class="sa-modal-box">
+            <div class="sa-modal-hd">
+                <h2>Mon Profil</h2>
+                <button class="sa-modal-close" onclick="closeUserProfileModal()"><i class="fas fa-times"></i></button>
             </div>
-            <div class="modal-body">
+            <div class="sa-modal-bd">
                 <form id="userProfileForm">
-                    <div class="form-group">
-                        <label class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="profileNom" required>
+                    <div class="sa-form-group" style="margin-bottom:1rem;">
+                        <label class="sa-label">Nom</label>
+                        <input type="text" class="sa-input form-control" id="profileNom" required>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Prénom</label>
-                        <input type="text" class="form-control" id="profilePrenom" required>
+                    <div class="sa-form-group" style="margin-bottom:1rem;">
+                        <label class="sa-label">Prénom</label>
+                        <input type="text" class="sa-input form-control" id="profilePrenom" required>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" id="profileEmail" required>
+                    <div class="sa-form-group" style="margin-bottom:1rem;">
+                        <label class="sa-label">Email</label>
+                        <input type="email" class="sa-input form-control" id="profileEmail" required>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Nouveau mot de passe (optionnel)</label>
-                        <input type="password" class="form-control" id="profilePassword" placeholder="Laisser vide pour ne pas changer">
+                    <div class="sa-form-group" style="margin-bottom:1.5rem;">
+                        <label class="sa-label">Nouveau mot de passe (optionnel)</label>
+                        <input type="password" class="sa-input form-control" id="profilePassword" placeholder="Laisser vide pour ne pas changer">
                     </div>
-                    <button type="submit" class="btn-primary" id="updateProfileBtn">
-                        <i class="fas fa-save"></i>
-                        <span>Mettre à jour mon profil</span>
+                    <button type="submit" class="sa-btn sa-btn-primary" id="updateProfileBtn">
+                        <i class="fas fa-save"></i> Mettre à jour
                     </button>
                 </form>
             </div>
         </div>
     </div>
 
+    <!-- Event Modal (Add/Edit) -->
+    <div class="sa-modal" id="eventModal">
+        <div class="sa-modal-box sa-modal-wide">
+            <div class="sa-modal-hd">
+                <h2 id="eventModalTitle">Nouvel Événement</h2>
+                <button class="sa-modal-close" onclick="closeEventModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="sa-modal-bd">
+                <form id="eventForm">
+                    <input type="hidden" id="eventId">
+                    <div class="sa-form-grid">
+                        <div class="sa-form-group sa-form-full">
+                            <label class="sa-label">Titre *</label>
+                            <input type="text" class="sa-input" id="eventTitre" placeholder="Titre de l'événement" required>
+                        </div>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Date *</label>
+                            <input type="date" class="sa-input" id="eventDate" required>
+                        </div>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Heure de début *</label>
+                            <input type="time" class="sa-input" id="eventHeureDebut" required>
+                        </div>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Heure de fin</label>
+                            <input type="time" class="sa-input" id="eventHeureFin">
+                        </div>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Lieu *</label>
+                            <input type="text" class="sa-input" id="eventLieu" placeholder="Grande Chapelle, Calavi" required>
+                        </div>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Type *</label>
+                            <select class="sa-select" id="eventType" required>
+                                <option value="">Sélectionner un type</option>
+                                <option value="Culte">Culte</option>
+                                <option value="Conférence">Conférence</option>
+                                <option value="Retraite">Retraite</option>
+                                <option value="Formation">Formation</option>
+                                <option value="Réunion">Réunion</option>
+                                <option value="Sortie">Sortie</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        
+                        <!-- File Upload Zone for Event Image -->
+                        <div class="sa-form-group sa-form-full">
+                            <label class="sa-label">Image de l'événement *</label>
+                            <div class="sa-file-upload-zone" id="eventUploadZone" onclick="document.getElementById('eventFile').click()">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Cliquez pour choisir une image sur votre appareil</p>
+                                <span class="sa-upload-hint">Formats : PNG, JPG, WEBP (Max 5Mo)</span>
+                                <input type="file" id="eventFile" accept="image/*" style="display:none;" onchange="handleEventFileSelect(this)">
+                            </div>
+                            <div class="sa-upload-preview" id="eventUploadPreview" style="display:none;">
+                                <img src="" id="eventPreviewImg" alt="Aperçu">
+                                <button type="button" class="sa-btn-remove-img" onclick="removeEventImage(event)" title="Supprimer l'image"><i class="fas fa-times"></i></button>
+                            </div>
+                            <input type="hidden" id="eventImageUrl">
+                        </div>
+                        
+                        <div class="sa-form-group sa-form-full">
+                            <label class="sa-label">Description</label>
+                            <textarea class="sa-input sa-textarea" id="eventDescription" rows="4" placeholder="Décrivez l'événement..."></textarea>
+                        </div>
+                        <div class="sa-form-group">
+                            <label class="sa-label">Publication</label>
+                            <div class="sa-toggle-row">
+                                <label class="sa-toggle">
+                                    <input type="checkbox" id="eventPublie" checked>
+                                    <span class="sa-toggle-track"></span>
+                                </label>
+                                <span id="eventPublieLabel">Publié immédiatement</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sa-modal-actions">
+                        <button type="submit" class="sa-btn sa-btn-primary" id="submitEventBtn">
+                            <i class="fas fa-save"></i> Enregistrer
+                        </button>
+                        <button type="button" class="sa-btn sa-btn-secondary" onclick="closeEventModal()">
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
+    <div class="sa-toasts" id="toastContainer"></div>
 
     <!-- Success Overlay -->
     <div class="success-overlay" id="successOverlay">
-        <div class="success-icon-large">
-            <i class="fas fa-check"></i>
-        </div>
+        <div class="success-icon-large"><i class="fas fa-check"></i></div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="../assets/js/placeholder-animation.js"></script>
     <script src="../assets/js/superAdmin/superAdmin.js"></script>
 </body>
 </html>

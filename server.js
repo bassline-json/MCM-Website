@@ -23,6 +23,7 @@ import serviceRoutes from './server/routes/serviceRoutes.js';
 import membreRoutes from './server/routes/membreRoutes.js';
 import userRoutes from './server/routes/userRoutes.js';
 import contactRoutes from './server/routes/contactRoutes.js';
+import evenementRoutes from './server/routes/evenementRoutes.js';
 import { appMiddleware } from './server/middlewares/appMiddleware.js';
 import { checkForgotPasswordToken, updatePassword } from './server/controllers/authController.js';
 import { checkAndSendBirthdayEmails } from './server/controllers/membreController.js';
@@ -124,6 +125,9 @@ app.use('/api/users', userRoutes);
 
 // Routes de contact
 app.use('/api/contact', contactRoutes);
+
+// Routes des événements
+app.use('/api/evenements', evenementRoutes);
 
 // =============================
 // 🧭 ROUTES FRONTEND

@@ -189,18 +189,27 @@ function showToast(message, type = 'success') {
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   
-  const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+  const icons = { 
+    success: 'fa-check-circle', 
+    error: 'fa-exclamation-circle', 
+    warning: 'fa-exclamation-triangle', 
+    info: 'fa-info-circle' 
+  };
+  
   toast.innerHTML = `
-    <div class="toast-icon"><i class="fas ${icons[type]}"></i></div>
+    <div class="toast-icon"><i class="fas ${icons[type] || 'fa-info-circle'}"></i></div>
     <div class="toast-message">${message}</div>
+    <div class="toast-progress">
+      <div class="toast-progress-bar"></div>
+    </div>
   `;
   
   const container = document.getElementById('toastContainer');
   if (container) {
     container.appendChild(toast);
     setTimeout(() => { 
-      toast.style.animation = 'slideOutRight 0.3s ease'; 
-      setTimeout(() => toast.remove(), 300); 
+      toast.style.animation = 'toastOut 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards'; 
+      setTimeout(() => toast.remove(), 350); 
     }, 4000);
   }
 }
@@ -263,36 +272,21 @@ function addActivity(text, icon = 'fa-info-circle') {
 function updateActivitiesDisplay() {
   const container = document.getElementById('recentActivities');
   if (!container) return;
-  
+
   if (recentActivities.length === 0) {
-    container.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 2rem;">Aucune activité récente</p>';
+    container.innerHTML = '<p class="sa-empty-msg">Aucune activité récente</p>';
     return;
   }
-  
-  // VERSION CAROUSEL RESPONSIVE
-  container.innerHTML = `
-    <div class="activities-carousel">
-      <button class="carousel-btn prev" onclick="scrollActivities('prev')" style="display: ${recentActivities.length > 1 ? 'flex' : 'none'};">
-        <i class="fas fa-chevron-left"></i>
-      </button>
-      <div class="carousel-container" id="activitiesCarousel">
-        ${recentActivities.map(activity => `
-          <div class="activity-item carousel-item">
-            <div class="activity-icon">
-              <i class="fas ${activity.icon}"></i>
-            </div>
-            <div class="activity-content">
-              <div class="activity-text">${activity.text}</div>
-              <div class="activity-time">${activity.time}</div>
-            </div>
-          </div>
-        `).join('')}
+
+  container.innerHTML = recentActivities.map(activity => `
+    <div class="sa-activity-item">
+      <div class="sa-activity-ico"><i class="fas ${activity.icon}"></i></div>
+      <div class="sa-activity-content">
+        <div class="sa-activity-text">${activity.text}</div>
+        <div class="sa-activity-time">${activity.time}</div>
       </div>
-      <button class="carousel-btn next" onclick="scrollActivities('next')" style="display: ${recentActivities.length > 1 ? 'flex' : 'none'};">
-        <i class="fas fa-chevron-right"></i>
-      </button>
     </div>
-  `;
+  `).join('');
 }
 
 // NOUVEAU: Fonction pour scroller le carousel
@@ -588,19 +582,28 @@ async function loadCurrentUser() {
 
 function updateUserDisplay() {
   const displayName = `${currentUser.prenom || ''} ${currentUser.nom || ''}`.trim() || 'Admin';
+  const initials = ((currentUser.prenom?.[0] || '') + (currentUser.nom?.[0] || '') || 'SA').toUpperCase();
+
+  // Anciens IDs (compatibilité)
   const userNameEl = document.getElementById('userName');
   if (userNameEl) userNameEl.textContent = displayName;
-  
-  const initials = (currentUser.prenom?.[0] || '') + (currentUser.nom?.[0] || '') || 'SA';
   const userInitialsEl = document.getElementById('userInitials');
-  if (userInitialsEl) userInitialsEl.textContent = initials.toUpperCase();
-  
+  if (userInitialsEl) userInitialsEl.textContent = initials;
+
+  // Nouveaux IDs (nouveau layout)
+  const sidebarAvatar = document.getElementById('sidebarAvatar');
+  if (sidebarAvatar) sidebarAvatar.textContent = initials;
+  const sidebarName = document.getElementById('sidebarName');
+  if (sidebarName) sidebarName.textContent = displayName;
+  const topbarAvatar = document.getElementById('topbarAvatar');
+  if (topbarAvatar) topbarAvatar.textContent = initials;
+  const topbarName = document.getElementById('topbarName');
+  if (topbarName) topbarName.textContent = displayName;
+
   const profileNom = document.getElementById('profileNom');
   if (profileNom) profileNom.value = currentUser.nom || '';
-  
   const profilePrenom = document.getElementById('profilePrenom');
   if (profilePrenom) profilePrenom.value = currentUser.prenom || '';
-  
   const profileEmail = document.getElementById('profileEmail');
   if (profileEmail) profileEmail.value = currentUser.email || '';
 }
@@ -665,11 +668,14 @@ async function handleUpdateProfile(e) {
 
 function openUserProfile() {
   if (currentUser) {
-    document.getElementById('profileNom').value = currentUser.nom || '';
-    document.getElementById('profilePrenom').value = currentUser.prenom || '';
-    document.getElementById('profileEmail').value = currentUser.email || '';
-    document.getElementById('profilePassword').value = '';
-    
+    const nom = document.getElementById('profileNom');
+    const prenom = document.getElementById('profilePrenom');
+    const email = document.getElementById('profileEmail');
+    const pwd = document.getElementById('profilePassword');
+    if (nom) nom.value = currentUser.nom || '';
+    if (prenom) prenom.value = currentUser.prenom || '';
+    if (email) email.value = currentUser.email || '';
+    if (pwd) pwd.value = '';
     const modal = document.getElementById('userProfileModal');
     if (modal) modal.classList.add('show');
   }
@@ -691,47 +697,60 @@ async function logout() {
 // ========================================
 
 function showSection(sectionName) {
-  document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
-  document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-  
+  // Cache toutes les sections (ancien et nouveau format)
+  document.querySelectorAll('.content-section, .sa-section').forEach(s => s.classList.remove('active'));
+  // Désactive tous les liens nav
+  document.querySelectorAll('.sidebar-link, .sa-nav-item').forEach(l => l.classList.remove('active'));
+
   const sectionMap = {
-    'dashboard': 'dashboardSection',
-    'members': 'membersSection',
-    'addMember': 'addMemberSection',
-    'addAdmin': 'addAdminSection',
-    'stats': 'statsSection',
-    'services': 'servicesSection',
-    'commissions': 'commissionsSection',
-    'administrators': 'administratorsSection',
-    'commissionDetails': 'commissionDetailsSection',
-    'serviceMembers': 'serviceMembersSection'
+    'dashboard':          'dashboardSection',
+    'members':            'membersSection',
+    'addMember':          'addMemberSection',
+    'addAdmin':           'addAdminSection',
+    'stats':              'statsSection',
+    'services':           'servicesSection',
+    'commissions':        'commissionsSection',
+    'administrators':     'administratorsSection',
+    'commissionDetails':  'commissionDetailsSection',
+    'serviceMembers':     'serviceMembersSection',
+    'evenements':         'eventsSection'
   };
-  
+
   const sectionId = sectionMap[sectionName];
   const sectionElement = document.getElementById(sectionId);
-  
+
   if (sectionElement) {
     sectionElement.classList.add('active');
     currentSection = sectionName;
-    
-    // MODIFICATION: Garder l'état actif pour commissions
-    if (sectionName === 'commissionDetails' || sectionName === 'commissions') {
-      const commissionsLink = document.querySelector('.sidebar-link[onclick*="commissions"]');
-      if (commissionsLink) commissionsLink.classList.add('active');
-    } else {
-      const links = document.querySelectorAll('.sidebar-link');
-      links.forEach(link => {
-        const onclickAttr = link.getAttribute('onclick');
-        if (onclickAttr && onclickAttr.includes(`showSection('${sectionName}')`)) {
-          link.classList.add('active');
-        }
-      });
-    }
-    
-    if (sectionName === 'members') loadAllMembersList();
+
+    // Activer le lien nav correspondant (nouveau format data-section)
+    document.querySelectorAll('.sa-nav-item[data-section]').forEach(item => {
+      if (item.dataset.section === sectionName ||
+          (sectionName === 'commissionDetails' && item.dataset.section === 'commissions') ||
+          (sectionName === 'serviceMembers' && item.dataset.section === 'commissions')) {
+        item.classList.add('active');
+      }
+    });
+    // Compatibilité ancien format
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      const oc = link.getAttribute('onclick') || '';
+      if (oc.includes(`showSection('${sectionName}')`) ||
+          (sectionName === 'commissionDetails' && oc.includes('commissions'))) {
+        link.classList.add('active');
+      }
+    });
+
+    // Actions au changement de section
+    if (sectionName === 'members')       loadAllMembersList();
     if (sectionName === 'administrators') loadAdministrators();
-    if (sectionName === 'dashboard') setRandomWelcomeMessage();
-    if (window.innerWidth <= 1024) toggleSidebar();
+    if (sectionName === 'dashboard')     setRandomWelcomeMessage();
+    if (sectionName === 'evenements')    loadAdminEvents();
+
+    // Fermer sidebar mobile si ouvert
+    const newSidebar = document.getElementById('saSidebar');
+    if (newSidebar && newSidebar.classList.contains('open') && window.innerWidth <= 1024) {
+      toggleSidebar();
+    }
   }
 }
 
@@ -740,9 +759,16 @@ function showAdministrators() {
 }
 
 function toggleSidebar() {
+  // Nouveau layout
+  const newSidebar = document.getElementById('saSidebar');
+  const overlay = document.getElementById('saOverlay');
+  if (newSidebar) {
+    const isOpen = newSidebar.classList.toggle('open');
+    if (overlay) overlay.classList.toggle('show', isOpen);
+  }
+  // Ancien layout (compatibilité)
   const sidebar = document.getElementById('sidebar');
   const hamburger = document.getElementById('hamburger');
-  
   if (sidebar && hamburger) {
     sidebar.classList.toggle('open');
     hamburger.classList.toggle('active');
@@ -979,22 +1005,26 @@ async function loadCommissions() {
 
     const commissionsGrid = document.getElementById('commissionsGrid');
     const commissionSelects = ['userCommission'];
-    
+
     if (commissionsGrid) commissionsGrid.innerHTML = '';
-    
+
     commissionSelects.forEach(id => {
       const selectEl = document.getElementById(id);
       if (selectEl) selectEl.innerHTML = '<option value="">Sélectionner une commission</option>';
     });
 
+    if (commissionsGrid && commissions.length === 0) {
+      commissionsGrid.innerHTML = '<p class="sa-empty-msg">Aucune commission trouvée</p>';
+    }
+
     commissions.forEach(commission => {
       if (commissionsGrid) {
         const card = document.createElement('div');
-        card.className = 'custom-card';
+        card.className = 'sa-grid-card';
         card.onclick = () => showCommissionDetails(commission.id, commission.nom);
         card.innerHTML = `
-          <div class="custom-card-title">${commission.nom}</div>
-          <div class="custom-card-footer"><i class="fas fa-sitemap"></i> Voir les détails</div>
+          <div class="sa-grid-card-title">${commission.nom}</div>
+          <div class="sa-grid-card-foot"><i class="fas fa-sitemap"></i> Voir les détails</div>
         `;
         commissionsGrid.appendChild(card);
       }
@@ -1009,10 +1039,8 @@ async function loadCommissions() {
         }
       });
     });
-    
-    setTimeout(() => {
-      customSelects.forEach(cs => cs.refresh());
-    }, 100);
+
+    setTimeout(() => { customSelects.forEach(cs => cs.refresh()); }, 100);
   } catch (error) {
     console.error('Erreur chargement commissions:', error);
   }
@@ -1099,70 +1127,113 @@ async function loadAllMembersList() {
 }
 
 function displayMembersList() {
+  // Nouveau tableau (nouveau layout)
+  const tbody = document.getElementById('membersTableBody');
+  // Ancien container (compatibilité)
   const container = document.getElementById('membersListContainer');
-  if (!container) return;
-  
-  if (filteredMembers.length === 0) {
-    container.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 2rem;">Aucun membre trouvé</p>';
-    const paginationDiv = document.getElementById('pagination');
-    if (paginationDiv) paginationDiv.innerHTML = '';
-    return;
-  }
+
+  // Mettre à jour les compteurs membres
+  const totalEl = document.getElementById('membersTotal');
+  const hommesEl = document.getElementById('membersHommes');
+  const femmesEl = document.getElementById('membersFemmes');
+  if (totalEl) totalEl.textContent = allMembers.length;
+  if (hommesEl) hommesEl.textContent = allMembers.filter(m => m.sexe === 'Homme').length;
+  if (femmesEl) femmesEl.textContent = allMembers.filter(m => m.sexe === 'Femme').length;
 
   const startIndex = (currentPage - 1) * membersPerPage;
   const endIndex = startIndex + membersPerPage;
   const paginated = filteredMembers.slice(startIndex, endIndex);
-  const allSelected = filteredMembers.every(m => selectedMembers.includes(m.id));
+  const allSelected = filteredMembers.length > 0 && filteredMembers.every(m => selectedMembers.includes(m.id));
 
-  let html = `
-    <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-      <button onclick="toggleSelectAllMembers()" class="btn-select-all">
-        <i class="fas ${allSelected ? 'fa-check-square' : 'fa-square'}"></i>
-        <span>${allSelected ? 'Tout désélectionner' : 'Tout sélectionner'}</span>
-      </button>
-      ${selectedMembers.length > 0 ? `
-        <span style="color: var(--primary-red); font-weight: 600;">
-          <i class="fas fa-check-circle"></i> ${selectedMembers.length} sélectionné(s)
-        </span>
-        <button onclick="confirmDeleteSelectedMembers()" class="btn-primary" style="background: var(--error); width: auto; padding: 0.75rem 1.5rem;">
+  // Mettre à jour la checkbox "tout sélectionner"
+  const selAll = document.getElementById('selectAllMembers');
+  if (selAll) selAll.checked = allSelected;
+
+  // Afficher les actions bulk
+  const selActionsEl = document.getElementById('membersSelActions');
+  if (selActionsEl) {
+    selActionsEl.innerHTML = selectedMembers.length > 0 ? `
+      <div class="sa-bulk-row" style="border:none;padding:0;">
+        <span class="sa-bulk-count"><i class="fas fa-check-circle"></i> ${selectedMembers.length} sélectionné(s)</span>
+        <button onclick="confirmDeleteSelectedMembers()" class="sa-btn sa-btn-primary" style="background:#ef4444;">
           <i class="fas fa-trash"></i> Supprimer
         </button>
-      ` : ''}
-    </div>
-    <div class="member-list">
-  `;
+      </div>` : '';
+  }
 
-  paginated.forEach(member => {
-    const isSelected = selectedMembers.includes(member.id);
-    html += `
-      <div class="member-item" style="position: relative;">
-        <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleMemberSelection(${member.id})" style="position: absolute; left: 1rem; top: 1.5rem;">
-        <div class="member-info" style="margin-left: 2rem;">
-          <h4>${member.nom} ${member.prenom}</h4>
-          <div class="member-details">
-            <div class="member-detail"><i class="fas fa-envelope"></i><span>${member.email || 'Pas d\'email'}</span></div>
-            <div class="member-detail"><i class="fas fa-phone"></i><span>${member.telephone || 'Pas de téléphone'}</span></div>
-            <div class="member-detail"><i class="fas fa-venus-mars"></i><span>${member.sexe || 'Non spécifié'}</span></div>
+  if (tbody) {
+    if (filteredMembers.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" class="sa-table-empty">Aucun membre trouvé</td></tr>`;
+      const pg = document.getElementById('membersPagination');
+      if (pg) pg.innerHTML = '';
+      return;
+    }
+    tbody.innerHTML = paginated.map(member => {
+      const isSelected = selectedMembers.includes(member.id);
+      const initials = ((member.prenom?.[0] || '') + (member.nom?.[0] || '')).toUpperCase() || 'M';
+      const isFemale = member.sexe === 'Femme';
+      return `
+        <tr>
+          <td><input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleMemberSelection(${member.id})"></td>
+          <td>
+            <div class="sa-tbl-user">
+              <div class="sa-tbl-av ${isFemale ? 'female' : ''}">${initials}</div>
+              <div>
+                <div class="sa-tbl-name">${member.nom} ${member.prenom}</div>
+                <div class="sa-tbl-sub">${member.service_nom || '—'}</div>
+              </div>
+            </div>
+          </td>
+          <td>${member.email || '—'}</td>
+          <td>${member.telephone || '—'}</td>
+          <td>${member.sexe || '—'}</td>
+          <td>${member.service_nom || '—'}</td>
+          <td>
+            <div class="sa-acts">
+              <button class="sa-act-btn edit" onclick="editMember(${member.id})" title="Modifier"><i class="fas fa-edit"></i></button>
+              <button class="sa-act-btn delete" onclick="confirmDeleteMember(${member.id})" title="Supprimer"><i class="fas fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+    renderNewPagination('membersPagination', filteredMembers.length, membersPerPage, currentPage, 'changePage');
+  } else if (container) {
+    // Fallback ancien layout
+    if (filteredMembers.length === 0) {
+      container.innerHTML = '<p style="text-align:center;color:var(--gray);padding:2rem;">Aucun membre trouvé</p>';
+      const paginationDiv = document.getElementById('pagination');
+      if (paginationDiv) paginationDiv.innerHTML = '';
+      return;
+    }
+    let html = `<div class="member-list">`;
+    paginated.forEach(member => {
+      const isSelected = selectedMembers.includes(member.id);
+      html += `
+        <div class="member-item" style="position:relative;">
+          <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleMemberSelection(${member.id})" style="position:absolute;left:1rem;top:1.5rem;">
+          <div class="member-info" style="margin-left:2rem;">
+            <h4>${member.nom} ${member.prenom}</h4>
+            <div class="member-details">
+              <div class="member-detail"><i class="fas fa-envelope"></i><span>${member.email || '—'}</span></div>
+              <div class="member-detail"><i class="fas fa-phone"></i><span>${member.telephone || '—'}</span></div>
+            </div>
           </div>
-        </div>
-        <div class="member-actions">
-          <button class="action-btn edit" onclick="editMember(${member.id})" title="Modifier"><i class="fas fa-edit"></i></button>
-          <button class="action-btn delete" onclick="confirmDeleteMember(${member.id})" title="Supprimer"><i class="fas fa-trash"></i></button>
-        </div>
-      </div>
-    `;
-  });
-
-  html += '</div>';
-  container.innerHTML = html;
+          <div class="member-actions">
+            <button class="action-btn edit" onclick="editMember(${member.id})"><i class="fas fa-edit"></i></button>
+            <button class="action-btn delete" onclick="confirmDeleteMember(${member.id})"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+    renderPagination();
+  }
 
   const searchInput = document.getElementById('memberSearch');
   if (searchInput) {
     searchInput.removeEventListener('keyup', searchMembers);
     searchInput.addEventListener('keyup', searchMembers);
   }
-
-  renderPagination();
 }
 
 function toggleSelectAllMembers() {
@@ -1198,25 +1269,46 @@ function searchMembers() {
 }
 
 function renderPagination() {
+  // Ancien layout pagination
   const container = document.getElementById('pagination');
-  if (!container) return;
-  
-  const totalPages = Math.ceil(filteredMembers.length / membersPerPage);
-  
-  if (totalPages <= 1) {
-    container.innerHTML = '';
-    return;
+  if (container) {
+    const totalPages = Math.ceil(filteredMembers.length / membersPerPage);
+    if (totalPages <= 1) { container.innerHTML = ''; return; }
+    let html = `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} class="page-btn"><i class="fas fa-chevron-left"></i></button>`;
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+        html += `<button onclick="changePage(${i})" class="page-btn ${i === currentPage ? 'active' : ''}">${i}</button>`;
+      } else if (i === currentPage - 2 || i === currentPage + 2) {
+        html += '<span style="padding:.5rem;">...</span>';
+      }
+    }
+    html += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} class="page-btn"><i class="fas fa-chevron-right"></i></button>`;
+    container.innerHTML = html;
   }
+}
 
-  let html = `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} class="page-btn"><i class="fas fa-chevron-left"></i></button>`;
+/**
+ * Pagination universelle pour le nouveau layout.
+ * @param {string} containerId - ID du conteneur
+ * @param {number} total       - Nombre total d'éléments
+ * @param {number} perPage     - Éléments par page
+ * @param {number} current     - Page courante
+ * @param {string} fnName      - Nom de la fonction de changement de page
+ */
+function renderNewPagination(containerId, total, perPage, current, fnName) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const totalPages = Math.ceil(total / perPage);
+  if (totalPages <= 1) { container.innerHTML = ''; return; }
+  let html = `<button onclick="${fnName}(${current - 1})" ${current === 1 ? 'disabled' : ''} class="sa-pg-btn"><i class="fas fa-chevron-left"></i></button>`;
   for (let i = 1; i <= totalPages; i++) {
-    if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-      html += `<button onclick="changePage(${i})" class="page-btn ${i === currentPage ? 'active' : ''}">${i}</button>`;
-    } else if (i === currentPage - 2 || i === currentPage + 2) {
-      html += '<span style="padding: 0.5rem;">...</span>';
+    if (i === 1 || i === totalPages || (i >= current - 1 && i <= current + 1)) {
+      html += `<button onclick="${fnName}(${i})" class="sa-pg-btn ${i === current ? 'active' : ''}">${i}</button>`;
+    } else if (i === current - 2 || i === current + 2) {
+      html += '<span style="padding:.4rem;">…</span>';
     }
   }
-  html += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} class="page-btn"><i class="fas fa-chevron-right"></i></button>`;
+  html += `<button onclick="${fnName}(${current + 1})" ${current === totalPages ? 'disabled' : ''} class="sa-pg-btn"><i class="fas fa-chevron-right"></i></button>`;
   container.innerHTML = html;
 }
 
@@ -1566,77 +1658,93 @@ async function loadAdministrators() {
 }
 
 function displayAdministratorsList() {
-  const container = document.getElementById('administratorsListContainer');
-  if (!container) return;
-  
-  if (filteredAdmins.length === 0) {
-    container.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 2rem;">Aucun administrateur trouvé</p>';
-    const adminPaginationDiv = document.getElementById('adminPagination');
-    if (adminPaginationDiv) adminPaginationDiv.innerHTML = '';
-    return;
-  }
+  // Mettre à jour les compteurs
+  const totalEl = document.getElementById('adminsTotal');
+  const superEl = document.getElementById('adminsSuper');
+  const comEl   = document.getElementById('adminsAdminCom');
+  if (totalEl) totalEl.textContent = allAdmins.length;
+  if (superEl) superEl.textContent = allAdmins.filter(a => a.role === 'superadmin').length;
+  if (comEl)   comEl.textContent   = allAdmins.filter(a => a.role === 'adminCom').length;
 
   const startIndex = (currentAdminPage - 1) * adminsPerPage;
-  const endIndex = startIndex + adminsPerPage;
-  const paginated = filteredAdmins.slice(startIndex, endIndex);
+  const endIndex   = startIndex + adminsPerPage;
+  const paginated  = filteredAdmins.slice(startIndex, endIndex);
   const selectableAdmins = filteredAdmins.filter(a => !currentUser || a.email !== currentUser.email);
-  const allSelected = selectableAdmins.every(a => selectedAdmins.includes(a.id));
+  const allSelected = selectableAdmins.length > 0 && selectableAdmins.every(a => selectedAdmins.includes(a.id));
 
-  let html = `
-    <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-      <button onclick="toggleSelectAllAdmins()" class="btn-select-all">
-        <i class="fas ${allSelected ? 'fa-check-square' : 'fa-square'}"></i>
-        <span>${allSelected ? 'Tout désélectionner' : 'Tout sélectionner'}</span>
-      </button>
-      ${selectedAdmins.length > 0 ? `
-        <span style="color: var(--primary-red); font-weight: 600;">
-          <i class="fas fa-check-circle"></i> ${selectedAdmins.length} sélectionné(s)
-        </span>
-        <button onclick="confirmDeleteSelectedAdmins()" class="btn-primary" style="background: var(--error); width: auto; padding: 0.75rem 1.5rem;">
+  // Checkbox selectAll
+  const selAll = document.getElementById('selectAllAdmins');
+  if (selAll) selAll.checked = allSelected;
+
+  // Actions bulk
+  const selActionsEl = document.getElementById('adminsSelActions');
+  if (selActionsEl) {
+    selActionsEl.innerHTML = selectedAdmins.length > 0 ? `
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        <span class="sa-bulk-count"><i class="fas fa-check-circle"></i> ${selectedAdmins.length} sélectionné(s)</span>
+        <button onclick="confirmDeleteSelectedAdmins()" class="sa-btn sa-btn-primary" style="background:#ef4444;">
           <i class="fas fa-trash"></i> Supprimer
         </button>
-      ` : ''}
-    </div>
-    <div class="member-list">
-  `;
+      </div>` : '';
+  }
 
-  paginated.forEach(admin => {
-    const isCurrentUser = currentUser && admin.email === currentUser.email;
-    const isSelected = selectedAdmins.includes(admin.id);
+  // Premium Admin Card Grid
+  const gridContainer = document.getElementById('adminsGridContainer');
+  if (gridContainer) {
+    if (filteredAdmins.length === 0) {
+      gridContainer.innerHTML = `<div class="sa-table-empty">Aucun administrateur trouvé</div>`;
+      const pg = document.getElementById('adminsPagination');
+      if (pg) pg.innerHTML = '';
+      return;
+    }
+    const roleBadge = { 'superadmin': 'SuperAdmin', 'adminCom': 'Admin Commission', 'admin': 'Admin Service' };
     
-    html += `
-      <div class="member-item admin" style="position: relative;">
-        ${!isCurrentUser ? `<input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleAdminSelection(${admin.id})" style="position: absolute; left: 1rem; top: 1.5rem;">` : ''}
-        <div class="member-info" style="${!isCurrentUser ? 'margin-left: 2rem;' : ''}">
-          <h4>
-            <i class="fas fa-shield-alt" style="color: var(--primary-red);"></i> 
-            ${admin.nom} ${admin.prenom}
-            ${isCurrentUser ? '<span style="font-size: 0.75rem; color: var(--success); margin-left: 0.5rem;">(Vous)</span>' : ''}
-          </h4>
-          <div class="member-details">
-            <div class="member-detail"><i class="fas fa-envelope"></i><span>${admin.email}</span></div>
-            <div class="member-detail"><i class="fas fa-user-tag"></i><span>${getRoleDisplayName(admin.role)}</span></div>
+    gridContainer.innerHTML = paginated.map(admin => {
+      const isCurrentUser = currentUser && admin.email === currentUser.email;
+      const isSelected = selectedAdmins.includes(admin.id);
+      const initials = ((admin.prenom?.[0] || '') + (admin.nom?.[0] || '')).toUpperCase() || 'A';
+      return `
+        <div class="sa-admin-card">
+          ${!isCurrentUser ? `
+            <div class="sa-admin-card-check">
+              <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleAdminSelection(${admin.id})">
+            </div>
+            <div class="sa-admin-card-actions">
+              <button class="sa-act-btn delete" onclick="confirmDeleteAdmin(${admin.id})" title="Supprimer"><i class="fas fa-trash"></i></button>
+            </div>
+          ` : ''}
+          
+          <div class="sa-admin-card-avatar">${initials}</div>
+          <div class="sa-admin-card-name">${admin.prenom} ${admin.nom} ${isCurrentUser ? '<span style="color:var(--sa-green);font-size:.7rem;">(Vous)</span>' : ''}</div>
+          <div class="sa-admin-card-email">${admin.email}</div>
+          
+          <span class="sa-badge ${admin.role}">${roleBadge[admin.role] || admin.role}</span>
+          
+          <div class="sa-admin-card-details">
+            <div class="sa-admin-card-detail">
+              <i class="fas fa-sitemap"></i>
+              <span>Commission : ${admin.commission_nom || 'Toutes (SuperAdmin)'}</span>
+            </div>
+            <div class="sa-admin-card-detail">
+              <i class="fas fa-phone"></i>
+              <span>Téléphone : ${admin.telephone || 'Non renseigné'}</span>
+            </div>
+            <div class="sa-admin-card-detail">
+              <i class="fas fa-shield-alt"></i>
+              <span>Statut : Actif</span>
+            </div>
           </div>
-        </div>
-        ${!isCurrentUser ? `
-          <div class="member-actions">
-            <button class="action-btn delete" onclick="confirmDeleteAdmin(${admin.id})" title="Supprimer"><i class="fas fa-trash"></i></button>
-          </div>
-        ` : ''}
-      </div>
-    `;
-  });
-
-  html += '</div>';
-  container.innerHTML = html;
+        </div>`;
+    }).join('');
+    
+    renderNewPagination('adminsPagination', filteredAdmins.length, adminsPerPage, currentAdminPage, 'changeAdminPage');
+  }
 
   const searchInput = document.getElementById('adminSearch');
   if (searchInput) {
     searchInput.removeEventListener('keyup', searchAdmins);
     searchInput.addEventListener('keyup', searchAdmins);
   }
-
-  renderAdminPagination();
 }
 
 function toggleSelectAllAdmins() {
@@ -2254,6 +2362,325 @@ function goBackToServices() {
 }
 
 // ========================================
+// GESTION DES ÉVÉNEMENTS (NOUVEAU)
+// ========================================
+
+let allEvents = [];
+let filteredEvents = [];
+let currentEventPage = 1;
+const eventsPerPage = 10;
+
+async function loadAdminEvents() {
+  try {
+    const tbody = document.getElementById('eventsTableBody');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="sa-table-empty"><i class="fas fa-spinner fa-spin"></i> Chargement...</td></tr>`;
+
+    const response = await fetch(`${API_BASE}/evenements/admin/all`, { headers: getAuthHeaders() });
+    if (!response.ok) throw new Error('Erreur API');
+    allEvents = await response.json();
+    filteredEvents = [...allEvents];
+    currentEventPage = 1;
+
+    // Compteurs
+    const totalEl = document.getElementById('eventsTotal');
+    const pubEl   = document.getElementById('eventsPublished');
+    const draftEl = document.getElementById('eventsDraft');
+    if (totalEl) totalEl.textContent = allEvents.length;
+    if (pubEl)   pubEl.textContent   = allEvents.filter(e => e.est_publie).length;
+    if (draftEl) draftEl.textContent = allEvents.filter(e => !e.est_publie).length;
+
+    renderEventsTable(filteredEvents);
+  } catch (error) {
+    console.error('Erreur chargement événements:', error);
+    const tbody = document.getElementById('eventsTableBody');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="sa-table-empty">Erreur de chargement des événements</td></tr>`;
+  }
+}
+
+function renderEventsTable(events) {
+  const tbody = document.getElementById('eventsTableBody');
+  if (!tbody) return;
+
+  if (events.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="sa-table-empty"><i class="fas fa-calendar-xmark"></i> Aucun événement trouvé</td></tr>`;
+    const pg = document.getElementById('eventsPagination');
+    if (pg) pg.innerHTML = '';
+    return;
+  }
+
+  const start = (currentEventPage - 1) * eventsPerPage;
+  const paginated = events.slice(start, start + eventsPerPage);
+
+  tbody.innerHTML = paginated.map(ev => {
+    const dateObj = ev.date_evenement ? new Date(ev.date_evenement) : null;
+    const dateStr = dateObj ? dateObj.toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' }) : '—';
+    const heure = ev.heure_debut ? ev.heure_debut.substring(0, 5) : '';
+    const heureFin = ev.heure_fin ? ` — ${ev.heure_fin.substring(0, 5)}` : '';
+    const auteur = ev.auteur_nom ? `${ev.auteur_prenom || ''} ${ev.auteur_nom}`.trim() : '—';
+    return `
+      <tr>
+        <td>
+          <div class="sa-tbl-user">
+            <div class="sa-tbl-av" style="border-radius:8px;background:linear-gradient(135deg,var(--sa-red),#ff6b6b);">
+              <i class="fas fa-calendar" style="font-size:.75rem;"></i>
+            </div>
+            <div class="sa-tbl-name">${ev.titre}</div>
+          </div>
+        </td>
+        <td><div class="sa-tbl-name">${dateStr}</div><div class="sa-tbl-sub">${heure}${heureFin}</div></td>
+        <td>${ev.lieu || '—'}</td>
+        <td><span class="sa-badge type-badge">${ev.type_evenement || 'Autre'}</span></td>
+        <td><span class="sa-badge ${ev.est_publie ? 'published' : 'draft'}">${ev.est_publie ? '<i class="fas fa-eye"></i> Publié' : '<i class="fas fa-eye-slash"></i> Brouillon'}</span></td>
+        <td>${auteur}</td>
+        <td>
+          <div class="sa-acts">
+            <button class="sa-act-btn ${ev.est_publie ? 'toggle' : 'pub-off'}" onclick="toggleEventPublish(${ev.id})" title="${ev.est_publie ? 'Dépublier' : 'Publier'}"><i class="fas ${ev.est_publie ? 'fa-eye-slash' : 'fa-eye'}"></i></button>
+            <button class="sa-act-btn edit" onclick="openEditEventModal(${ev.id})" title="Modifier"><i class="fas fa-edit"></i></button>
+            <button class="sa-act-btn delete" onclick="deleteEvent(${ev.id})" title="Supprimer"><i class="fas fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+
+  renderNewPagination('eventsPagination', events.length, eventsPerPage, currentEventPage, 'changeEventPage');
+}
+
+window.changeEventPage = function(page) {
+  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
+  if (page < 1 || page > totalPages) return;
+  currentEventPage = page;
+  renderEventsTable(filteredEvents);
+};
+
+function filterEventsTable() {
+  const search = (document.getElementById('eventSearch')?.value || '').toLowerCase();
+  const status = document.getElementById('eventStatusFilter')?.value || '';
+  const type   = document.getElementById('eventTypeFilter')?.value || '';
+
+  filteredEvents = allEvents.filter(ev => {
+    const matchSearch = !search || ev.titre.toLowerCase().includes(search);
+    const matchStatus = !status ||
+      (status === 'published' && ev.est_publie) ||
+      (status === 'draft' && !ev.est_publie);
+    const matchType = !type || ev.type_evenement === type;
+    return matchSearch && matchStatus && matchType;
+  });
+  currentEventPage = 1;
+  renderEventsTable(filteredEvents);
+}
+
+let eventBase64Str = null;
+
+function handleEventFileSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  if (file.size > 5 * 1024 * 1024) {
+    showToast('L\'image ne doit pas dépasser 5 Mo', 'error');
+    input.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    eventBase64Str = e.target.result;
+    
+    const previewContainer = document.getElementById('eventUploadPreview');
+    const previewImg = document.getElementById('eventPreviewImg');
+    const uploadZone = document.getElementById('eventUploadZone');
+    
+    if (previewImg) previewImg.src = eventBase64Str;
+    if (previewContainer) previewContainer.style.display = 'block';
+    if (uploadZone) uploadZone.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeEventImage(e) {
+  if (e) e.stopPropagation();
+  eventBase64Str = null;
+  
+  const fileInput = document.getElementById('eventFile');
+  if (fileInput) fileInput.value = '';
+  
+  const previewContainer = document.getElementById('eventUploadPreview');
+  const uploadZone = document.getElementById('eventUploadZone');
+  
+  if (previewContainer) previewContainer.style.display = 'none';
+  if (uploadZone) uploadZone.style.display = 'flex';
+  
+  const urlInput = document.getElementById('eventImageUrl');
+  if (urlInput) urlInput.value = '';
+}
+
+function openAddEventModal() {
+  document.getElementById('eventModalTitle').textContent = 'Nouvel Événement';
+  document.getElementById('eventForm').reset();
+  document.getElementById('eventId').value = '';
+  
+  removeEventImage();
+  
+  const publieEl = document.getElementById('eventPublie');
+  if (publieEl) publieEl.checked = true;
+  const pubLabel = document.getElementById('eventPublieLabel');
+  if (pubLabel) pubLabel.textContent = 'Publié immédiatement';
+  const modal = document.getElementById('eventModal');
+  if (modal) modal.classList.add('show');
+}
+
+async function openEditEventModal(eventId) {
+  const ev = allEvents.find(e => e.id === eventId);
+  if (!ev) {
+    showToast('Événement introuvable', 'error');
+    return;
+  }
+  document.getElementById('eventModalTitle').textContent = 'Modifier l\'Événement';
+  document.getElementById('eventId').value = ev.id;
+  document.getElementById('eventTitre').value = ev.titre || '';
+  document.getElementById('eventDate').value = ev.date_evenement ? ev.date_evenement.split('T')[0] : '';
+  document.getElementById('eventHeureDebut').value = ev.heure_debut?.substring(0, 5) || '';
+  document.getElementById('eventHeureFin').value = ev.heure_fin?.substring(0, 5) || '';
+  document.getElementById('eventLieu').value = ev.lieu || '';
+  document.getElementById('eventType').value = ev.type_evenement || '';
+  document.getElementById('eventDescription').value = ev.description || '';
+  
+  eventBase64Str = null;
+  const fileInput = document.getElementById('eventFile');
+  if (fileInput) fileInput.value = '';
+
+  const previewContainer = document.getElementById('eventUploadPreview');
+  const previewImg = document.getElementById('eventPreviewImg');
+  const uploadZone = document.getElementById('eventUploadZone');
+  const urlInput = document.getElementById('eventImageUrl');
+
+  if (urlInput) urlInput.value = ev.image_url || '';
+
+  if (ev.image_url) {
+    if (previewImg) previewImg.src = ev.image_url;
+    if (previewContainer) previewContainer.style.display = 'block';
+    if (uploadZone) uploadZone.style.display = 'none';
+  } else {
+    if (previewContainer) previewContainer.style.display = 'none';
+    if (uploadZone) uploadZone.style.display = 'flex';
+  }
+
+  const publieEl = document.getElementById('eventPublie');
+  if (publieEl) publieEl.checked = !!ev.est_publie;
+  const pubLabel = document.getElementById('eventPublieLabel');
+  if (pubLabel) pubLabel.textContent = ev.est_publie ? 'Publié' : 'Brouillon';
+  const modal = document.getElementById('eventModal');
+  if (modal) modal.classList.add('show');
+}
+
+function closeEventModal() {
+  const modal = document.getElementById('eventModal');
+  if (modal) modal.classList.remove('show');
+}
+
+async function handleEventFormSubmit(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitEventBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...'; }
+
+  const eventId = document.getElementById('eventId').value;
+  const isEdit  = !!eventId;
+
+  const payload = {
+    titre:           document.getElementById('eventTitre').value.trim(),
+    date_evenement:  document.getElementById('eventDate').value,
+    heure_debut:     document.getElementById('eventHeureDebut').value,
+    heure_fin:       document.getElementById('eventHeureFin').value || null,
+    lieu:            document.getElementById('eventLieu').value.trim(),
+    type_evenement:  document.getElementById('eventType').value,
+    description:     document.getElementById('eventDescription').value.trim(),
+    image_url:       document.getElementById('eventImageUrl').value.trim() || null,
+    image_base64:    eventBase64Str,
+    est_publie:      document.getElementById('eventPublie').checked
+  };
+
+  try {
+    const url    = isEdit ? `${API_BASE}/evenements/${eventId}` : `${API_BASE}/evenements`;
+    const method = isEdit ? 'PUT' : 'POST';
+    const response = await fetch(url, { method, headers: getAuthHeaders(), body: JSON.stringify(payload) });
+
+    if (response.ok) {
+      showSuccessAnimation();
+      showToast(isEdit ? 'Événement modifié avec succès !' : 'Événement créé avec succès !', 'success');
+      addActivity(isEdit ? `Événement modifié : ${payload.titre}` : `Événement créé : ${payload.titre}`, 'fa-calendar');
+      closeEventModal();
+      await loadAdminEvents();
+    } else {
+      const err = await response.json();
+      showToast('Erreur : ' + (err.error || 'Impossible de sauvegarder'), 'error');
+    }
+  } catch (error) {
+    showToast('Erreur de connexion', 'error');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Enregistrer'; }
+  }
+}
+
+async function toggleEventPublish(eventId) {
+  try {
+    const response = await fetch(`${API_BASE}/evenements/${eventId}/toggle-publish`, {
+      method: 'PATCH',
+      headers: getAuthHeaders()
+    });
+    if (response.ok) {
+      const result = await response.json();
+      const ev = allEvents.find(e => e.id === eventId);
+      const newState = result.evenement?.est_publie ?? !ev?.est_publie;
+      showToast(newState ? 'Événement publié !' : 'Événement dépublié', 'success');
+      addActivity(`Événement ${newState ? 'publié' : 'dépublié'} : ${ev?.titre || ''}`, 'fa-eye');
+      await loadAdminEvents();
+    } else {
+      showToast('Erreur lors du changement de statut', 'error');
+    }
+  } catch (error) {
+    showToast('Erreur de connexion', 'error');
+  }
+}
+
+async function deleteEvent(eventId) {
+  const ev = allEvents.find(e => e.id === eventId);
+  showConfirmModal(
+    'danger',
+    'Supprimer cet événement',
+    `Êtes-vous sûr de vouloir supprimer <strong>${ev?.titre || 'cet événement'}</strong> ? Cette action est irréversible.`,
+    async () => {
+      try {
+        const response = await fetch(`${API_BASE}/evenements/${eventId}`, { method: 'DELETE', headers: getAuthHeaders() });
+        if (response.ok) {
+          showSuccessAnimation();
+          showToast('Événement supprimé avec succès !', 'warning');
+          addActivity(`Événement supprimé : ${ev?.titre || ''}`, 'fa-calendar-xmark');
+          await loadAdminEvents();
+        } else {
+          const err = await response.json();
+          showToast('Erreur : ' + (err.error || 'Impossible de supprimer'), 'error');
+        }
+      } catch (error) {
+        showToast('Erreur de connexion', 'error');
+      }
+    }
+  );
+}
+
+// Filtre admins par rôle
+function filterAdminsByRole() {
+  const role = document.getElementById('adminRoleFilter')?.value || '';
+  const searchTerm = (document.getElementById('adminSearch')?.value || '').toLowerCase();
+  filteredAdmins = allAdmins.filter(admin => {
+    const matchRole = !role || admin.role === role;
+    const fullName = `${admin.nom} ${admin.prenom}`.toLowerCase();
+    const matchSearch = !searchTerm || fullName.includes(searchTerm) || admin.email.toLowerCase().includes(searchTerm);
+    return matchRole && matchSearch;
+  });
+  currentAdminPage = 1;
+  displayAdministratorsList();
+}
+
+// ========================================
 // FONCTIONS GLOBALES POUR L'UTILISATION HTML
 // ========================================
 
@@ -2283,6 +2710,7 @@ window.confirmDeleteAdmin = confirmDeleteAdmin;
 window.confirmDeleteSelectedAdmins = confirmDeleteSelectedAdmins;
 window.changeAdminPage = changeAdminPage;
 window.searchAdmins = searchAdmins;
+window.filterAdminsByRole = filterAdminsByRole;
 window.createService = createService;
 window.confirmDeleteService = confirmDeleteService;
 window.showCommissionDetails = showCommissionDetails;
@@ -2291,6 +2719,16 @@ window.goBackToCommissions = goBackToCommissions;
 window.goBackToServices = goBackToServices;
 window.showAdministrators = showAdministrators;
 window.loadStatistics = loadStatistics;
+// Événements
+window.loadAdminEvents = loadAdminEvents;
+window.openAddEventModal = openAddEventModal;
+window.openEditEventModal = openEditEventModal;
+window.closeEventModal = closeEventModal;
+window.toggleEventPublish = toggleEventPublish;
+window.deleteEvent = deleteEvent;
+window.filterEventsTable = filterEventsTable;
+window.handleEventFileSelect = handleEventFileSelect;
+window.removeEventImage = removeEventImage;
 
 // ========================================
 // INITIALISATION DES ÉVÉNEMENTS SUPPLÉMENTAIRES
@@ -2301,17 +2739,22 @@ document.addEventListener('DOMContentLoaded', function() {
   if (editMemberForm) {
     editMemberForm.addEventListener('submit', handleEditMember);
   }
+
+  const eventForm = document.getElementById('eventForm');
+  if (eventForm) {
+    eventForm.addEventListener('submit', handleEventFormSubmit);
+  }
   
-  document.querySelectorAll('.close-btn').forEach(btn => {
+  document.querySelectorAll('.close-btn, .sa-modal-close').forEach(btn => {
     btn.addEventListener('click', function() {
-      const modal = this.closest('.modal');
+      const modal = this.closest('.modal, .sa-modal');
       if (modal) modal.classList.remove('show');
     });
   });
   
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      document.querySelectorAll('.modal.show').forEach(modal => {
+      document.querySelectorAll('.modal.show, .sa-modal.show').forEach(modal => {
         modal.classList.remove('show');
       });
     }
